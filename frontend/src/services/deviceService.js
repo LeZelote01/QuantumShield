@@ -19,6 +19,10 @@ class DeviceService {
     }
   }
 
+  async getDeviceById(deviceId) {
+    return this.getDevice(deviceId);
+  }
+
   async registerDevice(deviceData) {
     try {
       const response = await api.post('/api/devices/register', deviceData);
