@@ -167,15 +167,18 @@ backend:
 
   - task: "Blockchain privée"
     implemented: true
-    working: "NA"
+    working: true
     file: "services/blockchain_service.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Blockchain privée pour IoT. Proof of Work, enregistrement firmware, validation intégrité."
+      - working: true
+        agent: "testing"
+        comment: "Blockchain privée fonctionnelle. Genesis block initialisé. API endpoints testés: /blockchain/stats, /blockchain/validate-chain, /blockchain/pending-transactions. Proof of Work avec difficulté 4. Intégration MongoDB OK."
 
   - task: "Système d'authentification"
     implemented: true
