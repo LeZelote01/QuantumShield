@@ -326,6 +326,9 @@ class AuthService:
                 "expires_at": {"$gt": datetime.utcnow()}
             })
             
+            # Récupérer les détails complets de l'utilisateur
+            user_doc = await self.users.find_one({"id": user_id})
+            
             return {
                 "user_id": user_id,
                 "username": user.username,
@@ -337,7 +340,7 @@ class AuthService:
                 "total_tokens_earned": total_earned,
                 "active_sessions": active_sessions,
                 "member_since": user.created_at,
-                "last_login": user_doc.get("last_login") if 'user_doc' in locals() else None
+                "last_login": user_doc.get("last_login") if user_doc else None
             }
             
         except Exception as e:
