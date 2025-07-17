@@ -237,7 +237,7 @@ backend:
     file: "services/device_service.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -245,6 +245,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Service de gestion des devices IoT fonctionnel. Enregistrement device testé avec succès. Endpoints testés: /devices/register, /devices/, /devices/types/available. Intégration avec système de récompenses OK."
+      - working: true
+        agent: "testing"
+        comment: "Service IoT retesté avec succès. Enregistrement device 'test_sensor_001' OK. Endpoints fonctionnels: /devices/register, /devices/types/available. Types de devices disponibles OK."
 
   - task: "Mining distribué"
     implemented: true
