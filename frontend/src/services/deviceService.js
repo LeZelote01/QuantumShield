@@ -19,6 +19,10 @@ class DeviceService {
     }
   }
 
+  async getDeviceById(deviceId) {
+    return this.getDevice(deviceId);
+  }
+
   async registerDevice(deviceData) {
     try {
       const response = await api.post('/api/devices/register', deviceData);
@@ -31,6 +35,15 @@ class DeviceService {
   async updateDevice(deviceId, updateData) {
     try {
       const response = await api.put(`/api/devices/${deviceId}`, updateData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateHeartbeat(deviceId, heartbeatData) {
+    try {
+      const response = await api.post(`/api/devices/${deviceId}/heartbeat`, heartbeatData);
       return response.data;
     } catch (error) {
       throw error;
@@ -102,3 +115,4 @@ class DeviceService {
 }
 
 export default new DeviceService();
+export const deviceService = new DeviceService();
