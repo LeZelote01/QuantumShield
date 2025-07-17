@@ -115,3 +115,4 @@ class DeviceService {
 }
 
 export default new DeviceService();
+export const deviceService = new DeviceService();
