@@ -133,16 +133,19 @@ backend:
         comment: "Toutes les dépendances backend installées avec succès. FastAPI, MongoDB, cryptographie, blockchain, web3 fonctionnels."
 
   - task: "Configuration environnement backend"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: ".env"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Variables d'environnement configurées. MongoDB URL, clés secrètes, blockchain settings."
+      - working: true
+        agent: "main"
+        comment: "Backend démarré avec succès sur port 8001. Health check OK. Services NTRU, blockchain, database operationnels."
 
   - task: "Services cryptographiques NTRU++"
     implemented: true
