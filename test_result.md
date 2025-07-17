@@ -201,7 +201,7 @@ backend:
     file: "services/auth_service.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -209,6 +209,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Système d'authentification complet et fonctionnel. Registration/login OK. JWT tokens générés et vérifiés. Endpoints testés: /auth/register, /auth/login, /auth/verify-token, /auth/profile. Génération automatique wallet address."
+      - working: true
+        agent: "testing"
+        comment: "Authentification retestée avec succès. Registration utilisateur 'quantum_tester' OK. Login et génération JWT token OK. Vérification token OK. Génération wallet automatique fonctionnelle."
 
   - task: "Gestion des tokens $QS"
     implemented: true
