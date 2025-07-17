@@ -118,16 +118,19 @@ backend:
         comment: "Projet QuantumShield cloné avec succès. Architecture FastAPI avec services: NTRU crypto, blockchain, devices, tokens, auth, mining. Toutes les routes définies."
 
   - task: "Installation des dépendances backend"
-    implemented: false
-    working: "NA"
+    implemented: true
+    working: true
     file: "requirements.txt"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Dépendances identifiées: FastAPI, MongoDB, cryptographie, blockchain. À installer et vérifier."
+      - working: true
+        agent: "main"
+        comment: "Toutes les dépendances backend installées avec succès. FastAPI, MongoDB, cryptographie, blockchain, web3 fonctionnels."
 
   - task: "Configuration environnement backend"
     implemented: false
