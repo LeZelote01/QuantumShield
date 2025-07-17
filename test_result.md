@@ -315,12 +315,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Installation des dépendances backend"
-    - "Installation dépendances frontend"
-    - "Configuration environnement backend"
-    - "Services cryptographiques NTRU++"
-    - "Blockchain privée"
-    - "Système d'authentification"
+    - "Système d'authentification frontend"
+    - "Système de notifications"
+    - "Pages et composants UI"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
