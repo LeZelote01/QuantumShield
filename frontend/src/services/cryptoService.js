@@ -22,6 +22,10 @@ class CryptoService {
     }
   }
 
+  async encryptData(data, publicKey) {
+    return this.encryptMessage(data, publicKey);
+  }
+
   async decryptMessage(encryptedData, privateKey) {
     try {
       const response = await api.post('/api/crypto/decrypt', {
