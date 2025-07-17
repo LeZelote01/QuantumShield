@@ -41,6 +41,15 @@ class DeviceService {
     }
   }
 
+  async updateHeartbeat(deviceId, heartbeatData) {
+    try {
+      const response = await api.post(`/api/devices/${deviceId}/heartbeat`, heartbeatData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async sendHeartbeat(heartbeatData) {
     try {
       const response = await api.post('/api/devices/heartbeat', heartbeatData);
