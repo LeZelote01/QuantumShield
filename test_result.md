@@ -212,15 +212,18 @@ backend:
 
   - task: "Gestion des dispositifs IoT"
     implemented: true
-    working: "NA"
+    working: true
     file: "services/device_service.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Enregistrement devices, monitoring, heartbeat, détection anomalies."
+      - working: true
+        agent: "testing"
+        comment: "Service de gestion des devices IoT fonctionnel. Enregistrement device testé avec succès. Endpoints testés: /devices/register, /devices/, /devices/types/available. Intégration avec système de récompenses OK."
 
   - task: "Mining distribué"
     implemented: true
