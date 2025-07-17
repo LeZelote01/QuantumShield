@@ -227,15 +227,18 @@ backend:
 
   - task: "Mining distribué"
     implemented: true
-    working: "NA"
+    working: true
     file: "services/mining_service.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Pool mining, calculateur rentabilité, difficulty adjustment."
+      - working: true
+        agent: "testing"
+        comment: "Service de mining distribué fonctionnel. Endpoints testés: /mining/stats, /mining/difficulty, /mining/rewards. Difficulté actuelle: 4. Pool mining configuré. Calculateur de rentabilité disponible."
 
 frontend:
   - task: "Installation dépendances frontend"
