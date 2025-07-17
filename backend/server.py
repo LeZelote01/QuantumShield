@@ -11,22 +11,6 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 import json
 
-# Import custom modules
-from models.quantum_models import *
-from services.ntru_service import NTRUService
-from services.blockchain_service import BlockchainService
-from services.device_service import DeviceService
-from services.token_service import TokenService
-from services.auth_service import AuthService
-from services.mining_service import MiningService
-from routes.auth_routes import auth_router
-from routes.crypto_routes import crypto_router
-from routes.blockchain_routes import blockchain_router
-from routes.device_routes import device_router
-from routes.token_routes import token_router
-from routes.mining_routes import mining_router
-from routes.dashboard_routes import dashboard_router
-
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -49,6 +33,13 @@ api_router = APIRouter(prefix="/api")
 security = HTTPBearer()
 
 # Initialize services
+from services.ntru_service import NTRUService
+from services.blockchain_service import BlockchainService
+from services.device_service import DeviceService
+from services.token_service import TokenService
+from services.auth_service import AuthService
+from services.mining_service import MiningService
+
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
 device_service = DeviceService(db)
@@ -57,6 +48,14 @@ auth_service = AuthService(db)
 mining_service = MiningService(db, blockchain_service)
 
 # Include routers
+from routes.auth_routes import router as auth_router
+from routes.crypto_routes import router as crypto_router
+from routes.blockchain_routes import router as blockchain_router
+from routes.device_routes import router as device_router
+from routes.token_routes import router as token_router
+from routes.mining_routes import router as mining_router
+from routes.dashboard_routes import router as dashboard_router
+
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
 api_router.include_router(blockchain_router, prefix="/blockchain", tags=["blockchain"])
@@ -100,6 +99,8 @@ logger = logging.getLogger(__name__)
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting QuantumShield API...")
+    # Initialize token system
+    await token_service.initialize_token_system()
     # Initialize blockchain if needed
     await blockchain_service.initialize_genesis_block()
     # Start mining process
@@ -107,6 +108,7 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    await mining_service.stop_mining()
     client.close()
 
 if __name__ == "__main__":
