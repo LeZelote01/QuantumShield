@@ -5,6 +5,7 @@ Routes de cryptographie post-quantique
 from fastapi import APIRouter, HTTPException, Depends, status
 from pydantic import BaseModel
 from typing import Dict, Any
+from datetime import datetime
 
 from models.quantum_models import (
     NTRUKeyPair, EncryptionRequest, DecryptionRequest, 
