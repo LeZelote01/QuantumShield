@@ -318,8 +318,9 @@ test_plan:
     - "Système d'authentification frontend"
     - "Système de notifications"
     - "Pages et composants UI"
+    - "Configuration React App"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
