@@ -219,7 +219,7 @@ backend:
     file: "services/token_service.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -227,6 +227,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Minor: Endpoint /tokens/stats a une erreur de sérialisation ObjectId mais fonctionnalité core OK. Système de tokens $QS fonctionnel. Balance utilisateur OK (50 QS initial). Endpoints testés: /tokens/balance, /tokens/transactions, /tokens/reward-rates, /tokens/market-info."
+      - working: true
+        agent: "testing"
+        comment: "Système de tokens $QS retesté avec succès. Balance utilisateur: 50.0 QS. Tous les endpoints fonctionnels: /tokens/balance, /tokens/transactions, /tokens/reward-rates, /tokens/market-info. Système économique opérationnel."
 
   - task: "Gestion des dispositifs IoT"
     implemented: true
