@@ -183,7 +183,7 @@ backend:
     file: "services/blockchain_service.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -191,6 +191,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Blockchain privée fonctionnelle. Genesis block initialisé. API endpoints testés: /blockchain/stats, /blockchain/validate-chain, /blockchain/pending-transactions. Proof of Work avec difficulté 4. Intégration MongoDB OK."
+      - working: true
+        agent: "testing"
+        comment: "Blockchain retestée avec succès. Tous les endpoints fonctionnels: /blockchain/stats, /blockchain/validate-chain. Difficulté actuelle: 4. Validation de chaîne OK."
 
   - task: "Système d'authentification"
     implemented: true
