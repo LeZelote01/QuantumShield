@@ -354,15 +354,18 @@ frontend:
 
   - task: "Système de notifications"
     implemented: true
-    working: "NA"
+    working: true
     file: "src/contexts/ToastContext.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Toast context pour messages utilisateur. Success, error, warning."
+      - working: true
+        agent: "testing"
+        comment: "ToastContext testé et fonctionnel. Système de notifications implémenté avec addToast, removeToast, showSuccess, showError, showWarning, showInfo. Auto-removal après durée configurée. Intégré dans l'application."
 
   - task: "Pages et composants UI"
     implemented: true
