@@ -89,7 +89,16 @@ class QuantumShieldTester:
             "ota_firmware_list": False,
             "ota_update_schedule": False,
             "ota_update_queue": False,
-            "ota_config": False
+            "ota_config": False,
+            # New Advanced Crypto Features Tests
+            "advanced_crypto_generate_zk_proof": False,
+            "advanced_crypto_verify_zk_proof": False,
+            "advanced_crypto_setup_threshold_signature": False,
+            "advanced_crypto_threshold_sign": False,
+            "advanced_crypto_verify_threshold_signature": False,
+            "advanced_crypto_audit_trail": False,
+            "advanced_crypto_verify_audit_integrity": False,
+            "advanced_crypto_crypto_statistics": False
         }
         self.test_data = {}
 
