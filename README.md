@@ -265,11 +265,16 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
 - `POST /api/crypto/sign` - Signature
 - `POST /api/crypto/verify` - Vérification signature
 
-#### Dispositifs
-- `POST /api/devices/register` - Enregistrement dispositif
-- `GET /api/devices/` - Liste des dispositifs
-- `POST /api/devices/heartbeat` - Heartbeat dispositif
-- `GET /api/devices/{device_id}/metrics` - Métriques dispositif
+#### Protocoles IoT
+- `POST /api/iot-protocol/mqtt/start` - Démarrage broker MQTT
+- `POST /api/iot-protocol/mqtt/publish` - Publication message MQTT
+- `GET /api/iot-protocol/mqtt/topics` - Topics MQTT configurés
+- `POST /api/iot-protocol/coap/start` - Démarrage serveur CoAP
+- `GET /api/iot-protocol/coap/resources` - Ressources CoAP
+- `POST /api/iot-protocol/lorawan/start` - Démarrage passerelle LoRaWAN
+- `POST /api/iot-protocol/lorawan/downlink` - Message downlink LoRaWAN
+- `GET /api/iot-protocol/protocols/status` - Statut tous protocoles
+- `GET /api/iot-protocol/protocols/statistics` - Statistiques messages
 
 #### Blockchain
 - `GET /api/blockchain/stats` - Statistiques blockchain
