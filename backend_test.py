@@ -37,7 +37,21 @@ class QuantumShieldTester:
             "blockchain_stats": False,
             "tokens_balance": False,
             "mining_stats": False,
-            "dashboard_overview": False
+            "dashboard_overview": False,
+            # Advanced Crypto Tests
+            "advanced_crypto_supported_algorithms": False,
+            "advanced_crypto_generate_keypair": False,
+            "advanced_crypto_hybrid_encrypt": False,
+            "advanced_crypto_hybrid_decrypt": False,
+            "advanced_crypto_batch_encrypt": False,
+            "advanced_crypto_batch_decrypt": False,
+            "advanced_crypto_sign_dilithium": False,
+            "advanced_crypto_verify_dilithium": False,
+            "advanced_crypto_setup_key_rotation": False,
+            "advanced_crypto_rotate_keys": False,
+            "advanced_crypto_key_rotation_status": False,
+            "advanced_crypto_performance_comparison": False,
+            "advanced_crypto_algorithm_recommendations": False
         }
         self.test_data = {}
 
@@ -411,6 +425,476 @@ class QuantumShieldTester:
         
         return False
 
+    async def test_advanced_crypto_supported_algorithms(self):
+        """Test des algorithmes supportés par le service de cryptographie avancée"""
+        print("\n🔬 Test Advanced Crypto Supported Algorithms...")
+        
+        try:
+            response = await self.make_request("GET", "/advanced-crypto/supported-algorithms")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("algorithms") and data.get("status") == "success":
+                    print("✅ Supported algorithms retrieved")
+                    algorithms = data["algorithms"]
+                    print(f"   Available algorithms: {len(algorithms)}")
+                    for alg_name, alg_info in algorithms.items():
+                        print(f"   - {alg_name}: {alg_info.get('description', 'N/A')}")
+                    self.test_results["advanced_crypto_supported_algorithms"] = True
+                    return True
+                else:
+                    print(f"❌ Supported algorithms incomplete: {data}")
+            else:
+                print(f"❌ Supported algorithms HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Supported algorithms exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_generate_keypair(self):
+        """Test de génération de paire de clés multi-algorithmes"""
+        print("\n🔑 Test Advanced Crypto Generate Multi-Algorithm Keypair...")
+        
+        try:
+            keypair_request = {
+                "encryption_algorithm": "Kyber-768",
+                "signature_algorithm": "Dilithium-3"
+            }
+            response = await self.make_request("POST", "/advanced-crypto/generate-multi-algorithm-keypair", 
+                                             keypair_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("keypair") and data.get("status") == "success":
+                    keypair = data["keypair"]
+                    print("✅ Multi-algorithm keypair generation successful")
+                    print(f"   Keypair ID: {keypair.get('keypair_id')}")
+                    print(f"   Encryption Algorithm: {keypair.get('encryption_algorithm')}")
+                    print(f"   Signature Algorithm: {keypair.get('signature_algorithm')}")
+                    print(f"   Encryption Public Key: {keypair.get('encryption_public_key')[:30]}...")
+                    print(f"   Signature Public Key: {keypair.get('signature_public_key')[:30]}...")
+                    
+                    # Store keypair ID for other tests
+                    self.test_data["advanced_keypair_id"] = keypair.get("keypair_id")
+                    self.test_results["advanced_crypto_generate_keypair"] = True
+                    return True
+                else:
+                    print(f"❌ Multi-algorithm keypair generation failed: {data}")
+            else:
+                print(f"❌ Multi-algorithm keypair generation HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Multi-algorithm keypair generation exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_hybrid_encrypt(self):
+        """Test de chiffrement hybride"""
+        print("\n🔒 Test Advanced Crypto Hybrid Encrypt...")
+        
+        if not self.test_data.get("advanced_keypair_id"):
+            print("❌ No advanced keypair ID available for hybrid encryption test")
+            return False
+        
+        try:
+            encrypt_request = {
+                "message": "Hello QuantumShield! This is a test message for hybrid encryption with Kyber KEM and AES.",
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/hybrid-encrypt", 
+                                             encrypt_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("encrypted_data") and data.get("status") == "success":
+                    encrypted_data = data["encrypted_data"]
+                    print("✅ Hybrid encryption successful")
+                    print(f"   Algorithm: {encrypted_data.get('algorithm')}")
+                    print(f"   KEM Ciphertext: {encrypted_data.get('kem_ciphertext')[:50]}...")
+                    print(f"   AES IV: {encrypted_data.get('aes_iv')}")
+                    print(f"   Encrypted Message: {encrypted_data.get('encrypted_message')[:50]}...")
+                    
+                    # Store encrypted data for decryption test
+                    self.test_data["hybrid_encrypted_data"] = encrypted_data
+                    self.test_results["advanced_crypto_hybrid_encrypt"] = True
+                    return True
+                else:
+                    print(f"❌ Hybrid encryption failed: {data}")
+            else:
+                print(f"❌ Hybrid encryption HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Hybrid encryption exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_hybrid_decrypt(self):
+        """Test de déchiffrement hybride"""
+        print("\n🔓 Test Advanced Crypto Hybrid Decrypt...")
+        
+        if not self.test_data.get("hybrid_encrypted_data") or not self.test_data.get("advanced_keypair_id"):
+            print("❌ No hybrid encrypted data or keypair ID available for decryption test")
+            return False
+        
+        try:
+            decrypt_request = {
+                "encrypted_data": self.test_data["hybrid_encrypted_data"],
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/hybrid-decrypt", 
+                                             decrypt_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("decrypted_message") and data.get("status") == "success":
+                    print("✅ Hybrid decryption successful")
+                    print(f"   Decrypted Message: {data.get('decrypted_message')}")
+                    self.test_results["advanced_crypto_hybrid_decrypt"] = True
+                    return True
+                else:
+                    print(f"❌ Hybrid decryption failed: {data}")
+            else:
+                print(f"❌ Hybrid decryption HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Hybrid decryption exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_batch_encrypt(self):
+        """Test de chiffrement par lots"""
+        print("\n📦 Test Advanced Crypto Batch Encrypt...")
+        
+        if not self.test_data.get("advanced_keypair_id"):
+            print("❌ No advanced keypair ID available for batch encryption test")
+            return False
+        
+        try:
+            batch_request = {
+                "messages": [
+                    "Message 1: IoT sensor data encryption test",
+                    "Message 2: Blockchain transaction data",
+                    "Message 3: Device authentication token"
+                ],
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/batch-encrypt", 
+                                             batch_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("results") and data.get("status") == "success":
+                    results = data["results"]
+                    summary = data["summary"]
+                    print("✅ Batch encryption successful")
+                    print(f"   Total messages: {summary.get('total')}")
+                    print(f"   Successful: {summary.get('successful')}")
+                    print(f"   Failed: {summary.get('failed')}")
+                    
+                    # Store batch encrypted data for decryption test
+                    successful_encryptions = [r["data"] for r in results if r["success"]]
+                    self.test_data["batch_encrypted_data"] = successful_encryptions
+                    self.test_results["advanced_crypto_batch_encrypt"] = True
+                    return True
+                else:
+                    print(f"❌ Batch encryption failed: {data}")
+            else:
+                print(f"❌ Batch encryption HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Batch encryption exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_batch_decrypt(self):
+        """Test de déchiffrement par lots"""
+        print("\n📦 Test Advanced Crypto Batch Decrypt...")
+        
+        if not self.test_data.get("batch_encrypted_data") or not self.test_data.get("advanced_keypair_id"):
+            print("❌ No batch encrypted data or keypair ID available for batch decryption test")
+            return False
+        
+        try:
+            batch_request = {
+                "encrypted_messages": self.test_data["batch_encrypted_data"],
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/batch-decrypt", 
+                                             batch_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("results") and data.get("status") == "success":
+                    results = data["results"]
+                    summary = data["summary"]
+                    print("✅ Batch decryption successful")
+                    print(f"   Total messages: {summary.get('total')}")
+                    print(f"   Successful: {summary.get('successful')}")
+                    print(f"   Failed: {summary.get('failed')}")
+                    
+                    # Show decrypted messages
+                    for i, result in enumerate(results):
+                        if result["success"]:
+                            print(f"   Message {i+1}: {result['data']}")
+                    
+                    self.test_results["advanced_crypto_batch_decrypt"] = True
+                    return True
+                else:
+                    print(f"❌ Batch decryption failed: {data}")
+            else:
+                print(f"❌ Batch decryption HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Batch decryption exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_sign_dilithium(self):
+        """Test de signature avec Dilithium"""
+        print("\n✍️ Test Advanced Crypto Sign with Dilithium...")
+        
+        if not self.test_data.get("advanced_keypair_id"):
+            print("❌ No advanced keypair ID available for Dilithium signing test")
+            return False
+        
+        try:
+            sign_request = {
+                "message": "This is a test message for Dilithium digital signature verification.",
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/sign-dilithium", 
+                                             sign_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("signature_data") and data.get("status") == "success":
+                    signature_data = data["signature_data"]
+                    print("✅ Dilithium signing successful")
+                    print(f"   Algorithm: {signature_data.get('algorithm')}")
+                    print(f"   Message: {signature_data.get('message')}")
+                    print(f"   Signature: {signature_data.get('signature')[:50]}...")
+                    print(f"   Keypair ID: {signature_data.get('keypair_id')}")
+                    
+                    # Store signature for verification test
+                    self.test_data["dilithium_signature"] = signature_data["signature"]
+                    self.test_data["signed_message"] = signature_data["message"]
+                    self.test_results["advanced_crypto_sign_dilithium"] = True
+                    return True
+                else:
+                    print(f"❌ Dilithium signing failed: {data}")
+            else:
+                print(f"❌ Dilithium signing HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Dilithium signing exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_verify_dilithium(self):
+        """Test de vérification de signature Dilithium"""
+        print("\n✅ Test Advanced Crypto Verify Dilithium Signature...")
+        
+        if not self.test_data.get("dilithium_signature") or not self.test_data.get("advanced_keypair_id"):
+            print("❌ No Dilithium signature or keypair ID available for verification test")
+            return False
+        
+        try:
+            verify_request = {
+                "message": self.test_data["signed_message"],
+                "signature": self.test_data["dilithium_signature"],
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/verify-dilithium", 
+                                             verify_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "is_valid" in data and data.get("status") == "success":
+                    print("✅ Dilithium signature verification successful")
+                    print(f"   Signature Valid: {data.get('is_valid')}")
+                    print(f"   Message: {data.get('message')}")
+                    print(f"   Verification Time: {data.get('verification_time')}")
+                    self.test_results["advanced_crypto_verify_dilithium"] = True
+                    return True
+                else:
+                    print(f"❌ Dilithium signature verification failed: {data}")
+            else:
+                print(f"❌ Dilithium signature verification HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Dilithium signature verification exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_setup_key_rotation(self):
+        """Test de configuration de rotation des clés"""
+        print("\n🔄 Test Advanced Crypto Setup Key Rotation...")
+        
+        if not self.test_data.get("advanced_keypair_id"):
+            print("❌ No advanced keypair ID available for key rotation setup test")
+            return False
+        
+        try:
+            rotation_request = {
+                "keypair_id": self.test_data["advanced_keypair_id"],
+                "policy": "time_based",
+                "rotation_interval": 24
+            }
+            response = await self.make_request("POST", "/advanced-crypto/setup-key-rotation", 
+                                             rotation_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("rotation_config") and data.get("status") == "success":
+                    config = data["rotation_config"]
+                    print("✅ Key rotation setup successful")
+                    print(f"   Keypair ID: {config.get('keypair_id')}")
+                    print(f"   Policy: {config.get('policy')}")
+                    print(f"   Next Rotation: {config.get('next_rotation')}")
+                    print(f"   Status: {config.get('status')}")
+                    self.test_results["advanced_crypto_setup_key_rotation"] = True
+                    return True
+                else:
+                    print(f"❌ Key rotation setup failed: {data}")
+            else:
+                print(f"❌ Key rotation setup HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Key rotation setup exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_rotate_keys(self):
+        """Test de rotation des clés"""
+        print("\n🔄 Test Advanced Crypto Rotate Keys...")
+        
+        if not self.test_data.get("advanced_keypair_id"):
+            print("❌ No advanced keypair ID available for key rotation test")
+            return False
+        
+        try:
+            rotation_request = {
+                "keypair_id": self.test_data["advanced_keypair_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/rotate-keys", 
+                                             rotation_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("rotation_result") and data.get("status") == "success":
+                    result = data["rotation_result"]
+                    print("✅ Key rotation successful")
+                    print(f"   Old Keypair ID: {result.get('old_keypair_id')}")
+                    print(f"   New Keypair ID: {result.get('new_keypair_id')}")
+                    print(f"   Rotation Time: {result.get('rotation_time')}")
+                    print(f"   Status: {result.get('status')}")
+                    
+                    # Update keypair ID for status check
+                    self.test_data["rotated_keypair_id"] = result.get("old_keypair_id")
+                    self.test_results["advanced_crypto_rotate_keys"] = True
+                    return True
+                else:
+                    print(f"❌ Key rotation failed: {data}")
+            else:
+                print(f"❌ Key rotation HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Key rotation exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_key_rotation_status(self):
+        """Test de récupération du statut de rotation des clés"""
+        print("\n📊 Test Advanced Crypto Key Rotation Status...")
+        
+        keypair_id = self.test_data.get("rotated_keypair_id") or self.test_data.get("advanced_keypair_id")
+        if not keypair_id:
+            print("❌ No keypair ID available for key rotation status test")
+            return False
+        
+        try:
+            response = await self.make_request("GET", f"/advanced-crypto/key-rotation-status/{keypair_id}", 
+                                             auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("rotation_status") and data.get("status") == "success":
+                    status = data["rotation_status"]
+                    print("✅ Key rotation status retrieved")
+                    print(f"   Keypair ID: {status.get('keypair_id')}")
+                    print(f"   Status: {status.get('status')}")
+                    if status.get("status") == "configured":
+                        print(f"   Policy: {status.get('policy')}")
+                        print(f"   Last Rotation: {status.get('last_rotation')}")
+                        print(f"   Next Rotation: {status.get('next_rotation')}")
+                        print(f"   Time to Rotation (hours): {status.get('time_to_rotation_hours')}")
+                        print(f"   Rotation Needed: {status.get('rotation_needed')}")
+                    self.test_results["advanced_crypto_key_rotation_status"] = True
+                    return True
+                else:
+                    print(f"❌ Key rotation status retrieval failed: {data}")
+            else:
+                print(f"❌ Key rotation status HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Key rotation status exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_performance_comparison(self):
+        """Test de comparaison des performances des algorithmes"""
+        print("\n📈 Test Advanced Crypto Performance Comparison...")
+        
+        try:
+            response = await self.make_request("GET", "/advanced-crypto/performance-comparison")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("performance_comparison") and data.get("status") == "success":
+                    comparison = data["performance_comparison"]
+                    print("✅ Performance comparison retrieved")
+                    print(f"   Available algorithms: {len(comparison.get('algorithms', {}))}")
+                    print(f"   Recommended combinations: {len(comparison.get('recommended_combinations', []))}")
+                    
+                    # Show some algorithm performance info
+                    algorithms = comparison.get("algorithms", {})
+                    for alg_name, alg_perf in list(algorithms.items())[:3]:  # Show first 3
+                        print(f"   - {alg_name}: {alg_perf.get('memory_usage')} memory, Quantum Resistant: {alg_perf.get('quantum_resistant')}")
+                    
+                    self.test_results["advanced_crypto_performance_comparison"] = True
+                    return True
+                else:
+                    print(f"❌ Performance comparison failed: {data}")
+            else:
+                print(f"❌ Performance comparison HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Performance comparison exception: {e}")
+        
+        return False
+
+    async def test_advanced_crypto_algorithm_recommendations(self):
+        """Test de récupération des recommandations d'algorithmes"""
+        print("\n💡 Test Advanced Crypto Algorithm Recommendations...")
+        
+        try:
+            response = await self.make_request("GET", "/advanced-crypto/algorithm-recommendations")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("recommendations") and data.get("status") == "success":
+                    recommendations = data["recommendations"]
+                    print("✅ Algorithm recommendations retrieved")
+                    print(f"   Available recommendations: {len(recommendations)}")
+                    
+                    # Show recommendations
+                    for use_case, rec in recommendations.items():
+                        print(f"   - {use_case}: {rec.get('encryption')} + {rec.get('signature')}")
+                        print(f"     Description: {rec.get('description')}")
+                    
+                    selection_criteria = data.get("selection_criteria", {})
+                    print(f"   Selection criteria: {len(selection_criteria)} factors")
+                    
+                    self.test_results["advanced_crypto_algorithm_recommendations"] = True
+                    return True
+                else:
+                    print(f"❌ Algorithm recommendations failed: {data}")
+            else:
+                print(f"❌ Algorithm recommendations HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Algorithm recommendations exception: {e}")
+        
+        return False
+
     async def run_all_tests(self):
         """Exécute tous les tests dans l'ordre"""
         print("🚀 Démarrage des tests QuantumShield Backend")
@@ -431,7 +915,21 @@ class QuantumShieldTester:
             self.test_blockchain_stats,
             self.test_tokens_balance,
             self.test_mining_stats,
-            self.test_dashboard_overview
+            self.test_dashboard_overview,
+            # Advanced Crypto Tests
+            self.test_advanced_crypto_supported_algorithms,
+            self.test_advanced_crypto_generate_keypair,
+            self.test_advanced_crypto_hybrid_encrypt,
+            self.test_advanced_crypto_hybrid_decrypt,
+            self.test_advanced_crypto_batch_encrypt,
+            self.test_advanced_crypto_batch_decrypt,
+            self.test_advanced_crypto_sign_dilithium,
+            self.test_advanced_crypto_verify_dilithium,
+            self.test_advanced_crypto_setup_key_rotation,
+            self.test_advanced_crypto_rotate_keys,
+            self.test_advanced_crypto_key_rotation_status,
+            self.test_advanced_crypto_performance_comparison,
+            self.test_advanced_crypto_algorithm_recommendations
         ]
         
         for test_func in test_functions:

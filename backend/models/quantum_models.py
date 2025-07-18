@@ -21,6 +21,26 @@ class BlockType(str, Enum):
     FIRMWARE = "firmware"
     DEVICE_REGISTRATION = "device_registration"
 
+class CryptoAlgorithm(str, Enum):
+    NTRU_PLUS = "NTRU++"
+    KYBER_512 = "Kyber-512"
+    KYBER_768 = "Kyber-768"
+    KYBER_1024 = "Kyber-1024"
+    DILITHIUM_2 = "Dilithium-2"
+    DILITHIUM_3 = "Dilithium-3"
+    DILITHIUM_5 = "Dilithium-5"
+
+class KeyType(str, Enum):
+    ENCRYPTION = "encryption"
+    SIGNATURE = "signature"
+    HYBRID = "hybrid"
+
+class KeyRotationPolicy(str, Enum):
+    MANUAL = "manual"
+    AUTOMATIC = "automatic"
+    TIME_BASED = "time_based"
+    USAGE_BASED = "usage_based"
+
 # User Models
 class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -208,3 +228,35 @@ class AnomalyReport(BaseModel):
     severity: str
     description: str
     sensor_data: Dict[str, Any] = {}
+
+# Advanced Cryptography Models
+class AdvancedKeyPair(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    encryption_algorithm: CryptoAlgorithm
+    signature_algorithm: CryptoAlgorithm
+    encryption_public_key: str
+    signature_public_key: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    active: bool = True
+
+class HybridEncryptionData(BaseModel):
+    kem_ciphertext: str
+    aes_iv: str
+    encrypted_message: str
+    algorithm: str
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class KeyRotationConfig(BaseModel):
+    keypair_id: str
+    policy: KeyRotationPolicy
+    rotation_interval: int  # hours
+    last_rotation: datetime = Field(default_factory=datetime.utcnow)
+    next_rotation: datetime
+    active: bool = True
+
+class BatchOperationResult(BaseModel):
+    index: int
+    success: bool
+    data: Optional[Any] = None
+    error: Optional[str] = None

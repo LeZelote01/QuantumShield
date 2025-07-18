@@ -21,6 +21,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Devices IoT', href: '/devices', icon: CpuChipIcon },
     { name: 'Cryptographie', href: '/cryptography', icon: ShieldCheckIcon },
+    { name: 'Crypto Avancée', href: '/advanced-cryptography', icon: ShieldCheckIcon },
     { name: 'Blockchain', href: '/blockchain', icon: CubeIcon },
     { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
     { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },

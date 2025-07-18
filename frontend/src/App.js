@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Devices from './pages/Devices/Devices';
 import DeviceDetails from './pages/Devices/DeviceDetails';
 import Cryptography from './pages/Cryptography/Cryptography';
+import AdvancedCryptography from './pages/Cryptography/AdvancedCryptography';
 import Blockchain from './pages/Blockchain/Blockchain';
 import Mining from './pages/Mining/Mining';
 import Tokens from './pages/Tokens/Tokens';
@@ -63,6 +64,7 @@ function App() {
                   <Route path="devices" element={<Devices />} />
                   <Route path="devices/:deviceId" element={<DeviceDetails />} />
                   <Route path="cryptography" element={<Cryptography />} />
+                  <Route path="advanced-cryptography" element={<AdvancedCryptography />} />
                   <Route path="blockchain" element={<Blockchain />} />
                   <Route path="mining" element={<Mining />} />
                   <Route path="tokens" element={<Tokens />} />
