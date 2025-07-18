@@ -109,13 +109,8 @@
 - [x] Staking et DeFi basique ✅ **IMPLÉMENTÉ**
 - [x] Prêts/emprunts de tokens ✅ **IMPLÉMENTÉ**
 - [x] Assurance décentralisée ✅ **IMPLÉMENTÉ**
-<<<<<<< HEAD
 - [x] Tokenisation d'actifs physiques ✅ **IMPLÉMENTÉ**
 - [x] Mécanismes de gouvernance décentralisée ✅ **IMPLÉMENTÉ**
-=======
-- [ ] Tokenisation d'actifs physiques
-- [ ] Mécanismes de gouvernance
->>>>>>> main
 
 #### 🛡️ **Sécurité Renforcée**
 - [x] Authentification multi-facteur (2FA/MFA) ✅ **IMPLÉMENTÉ**
