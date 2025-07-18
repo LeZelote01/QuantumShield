@@ -290,10 +290,10 @@ class AdvancedCryptoService:
                 "error": str(e)
             }
     
-    async def generate_multi_algorithm_keypair(self, 
-                                             encryption_alg: CryptoAlgorithm = CryptoAlgorithm.KYBER_768,
-                                             signature_alg: CryptoAlgorithm = CryptoAlgorithm.DILITHIUM_3,
-                                             user_id: str = None) -> Dict[str, Any]:
+    async def generate_hybrid_keypair(self, 
+                                     encryption_alg: CryptoAlgorithm = CryptoAlgorithm.KYBER_768,
+                                     signature_alg: CryptoAlgorithm = CryptoAlgorithm.DILITHIUM_3,
+                                     user_id: str = None) -> Dict[str, Any]:
         """Génère une paire de clés hybride avec algorithmes multiples"""
         try:
             keypair_data = {
