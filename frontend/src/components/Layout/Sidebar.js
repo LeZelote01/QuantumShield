@@ -11,7 +11,8 @@ import {
   Cog6ToothIcon,
   XMarkIcon,
   KeyIcon,
-  LockClosedIcon
+  LockClosedIcon,
+  MapPinIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -22,6 +23,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Devices IoT', href: '/devices', icon: CpuChipIcon },
+    { name: 'Géolocalisation', href: '/geolocation', icon: MapPinIcon },
     { name: 'Cryptographie', href: '/cryptography', icon: ShieldCheckIcon },
     { name: 'Crypto Avancée', href: '/advanced-cryptography', icon: ShieldCheckIcon },
     { name: 'Gestion Clés', href: '/advanced-key-management', icon: KeyIcon },

@@ -86,6 +86,51 @@ class DecryptionResponse(BaseModel):
     verification_status: bool
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
+# Geolocation Models
+class Coordinates(BaseModel):
+    latitude: float
+    longitude: float
+    altitude: Optional[float] = None
+    accuracy: Optional[float] = None  # en mètres
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class Location(BaseModel):
+    coordinates: Coordinates
+    address: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    postal_code: Optional[str] = None
+    geofence_zones: List[str] = []
+
+class GeofenceZone(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: Optional[str] = None
+    coordinates: List[Coordinates]  # Points définissant la zone
+    zone_type: str  # "circle", "polygon", "rectangle"
+    radius: Optional[float] = None  # pour cercle
+    created_by: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    is_active: bool = True
+
+class LocationHistory(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    device_id: str
+    location: Location
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    source: str  # "gps", "wifi", "cellular", "manual"
+    quality: float  # 0-1, qualité du signal
+
+class GeolocationAlert(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    device_id: str
+    alert_type: str  # "zone_entry", "zone_exit", "movement_detected", "device_lost"
+    zone_id: Optional[str] = None
+    location: Location
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    resolved: bool = False
+    description: str
+
 # Device Models
 class Device(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -98,7 +143,9 @@ class Device(BaseModel):
     public_key: str
     last_heartbeat: datetime = Field(default_factory=datetime.utcnow)
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    location: Optional[str] = None
+    location: Optional[str] = None  # Deprecated - use geolocation
+    current_location: Optional[Location] = None
+    geolocation_enabled: bool = True
     capabilities: List[str] = []
 
 class DeviceCreate(BaseModel):

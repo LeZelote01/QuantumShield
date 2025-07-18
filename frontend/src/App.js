@@ -24,6 +24,7 @@ import Mining from './pages/Mining/Mining';
 import Tokens from './pages/Tokens/Tokens';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
+import Geolocation from './pages/Geolocation';
 
 // Security Pages
 import SecurityDashboard from './pages/Security/SecurityDashboard';
@@ -74,6 +75,7 @@ function App() {
                   <Route path="blockchain" element={<Blockchain />} />
                   <Route path="mining" element={<Mining />} />
                   <Route path="tokens" element={<Tokens />} />
+                  <Route path="geolocation" element={<Geolocation />} />
                   <Route path="security" element={<SecurityDashboard />} />
                   <Route path="security/advanced" element={<AdvancedSecurity />} />
                   <Route path="profile" element={<Profile />} />
