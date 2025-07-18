@@ -915,7 +915,21 @@ class QuantumShieldTester:
             self.test_blockchain_stats,
             self.test_tokens_balance,
             self.test_mining_stats,
-            self.test_dashboard_overview
+            self.test_dashboard_overview,
+            # Advanced Crypto Tests
+            self.test_advanced_crypto_supported_algorithms,
+            self.test_advanced_crypto_generate_keypair,
+            self.test_advanced_crypto_hybrid_encrypt,
+            self.test_advanced_crypto_hybrid_decrypt,
+            self.test_advanced_crypto_batch_encrypt,
+            self.test_advanced_crypto_batch_decrypt,
+            self.test_advanced_crypto_sign_dilithium,
+            self.test_advanced_crypto_verify_dilithium,
+            self.test_advanced_crypto_setup_key_rotation,
+            self.test_advanced_crypto_rotate_keys,
+            self.test_advanced_crypto_key_rotation_status,
+            self.test_advanced_crypto_performance_comparison,
+            self.test_advanced_crypto_algorithm_recommendations
         ]
         
         for test_func in test_functions:
