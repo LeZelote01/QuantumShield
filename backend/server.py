@@ -127,6 +127,9 @@ async def health_check():
             "advanced_economy": advanced_economy_service.is_ready(),
             "iot_protocol": iot_protocol_service.is_ready(),
             "ota_update": ota_update_service.is_ready(),
+            "geolocation": geolocation_service.is_ready(),
+            "x509": x509_service.is_ready(),
+            "marketplace": marketplace_service.is_ready(),
             "database": True
         }
     }
