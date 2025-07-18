@@ -109,11 +109,15 @@ import routes.ota_routes
 import routes.geolocation_routes
 import routes.x509_routes
 import routes.marketplace_routes
+import routes.graphql_routes
+import routes.webhook_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
 routes.geolocation_routes.geolocation_service = geolocation_service
 routes.x509_routes.x509_service = x509_service
 routes.marketplace_routes.marketplace_service = marketplace_service
+routes.graphql_routes.init_graphql_service(db, services_dict)
+routes.webhook_routes.init_webhook_service(db)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
