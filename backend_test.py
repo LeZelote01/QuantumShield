@@ -1108,6 +1108,33 @@ class QuantumShieldTester:
         
         return False
 
+    # ===== IOT PROTOCOL SERVICE TESTS =====
+    
+    async def test_iot_protocol_health(self):
+        """Test de santé du service IoT Protocol"""
+        print("\n🌐 Test IoT Protocol Health Check...")
+        
+        try:
+            response = await self.make_request("GET", "/iot-protocol/health")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "service" in data and data.get("status") in ["healthy", "unhealthy"]:
+                    print("✅ IoT Protocol health check successful")
+                    print(f"   Status: {data.get('status')}")
+                    print(f"   Service: {data.get('service')}")
+                    print(f"   Protocols Available: {data.get('protocols_available', 0)}")
+                    self.test_results["iot_protocol_health"] = True
+                    return True
+                else:
+                    print(f"❌ IoT Protocol health check failed: {data}")
+            else:
+                print(f"❌ IoT Protocol health check HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ IoT Protocol health check exception: {e}")
+        
+        return False
+
     # ===== AI ANALYTICS SERVICE TESTS =====
     
     async def test_ai_analytics_device_anomalies(self):
