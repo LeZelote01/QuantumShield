@@ -1361,13 +1361,10 @@ class AdvancedEconomyService:
                 },
                 "tokenization": {
                     "tokenized_assets": tokenized_assets
-<<<<<<< HEAD
                 },
                 "governance": {
                     "active_proposals": await self.db.governance_proposals.count_documents({"status": "active"}),
                     "total_proposals": await self.db.governance_proposals.count_documents({})
-=======
->>>>>>> main
                 }
             }
             
