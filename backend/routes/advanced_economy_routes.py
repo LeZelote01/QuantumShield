@@ -90,6 +90,24 @@ class BuyAssetTokensRequest(BaseModel):
     asset_id: str
     token_count: int
 
+# Governance
+class ProposalRequest(BaseModel):
+    proposal_type: ProposalType
+    title: str
+    description: str
+    voting_power_required: float = 0.1
+    execution_delay_hours: int = 24
+    voting_duration_hours: int = 168
+    parameters: Dict[str, Any] = {}
+
+class VoteRequest(BaseModel):
+    proposal_id: str
+    vote_option: VoteOption
+    voting_power: Optional[float] = None
+
+class ExecuteProposalRequest(BaseModel):
+    proposal_id: str
+
 # ===== ROUTES MARKETPLACE =====
 
 @router.post("/marketplace/services/create")
