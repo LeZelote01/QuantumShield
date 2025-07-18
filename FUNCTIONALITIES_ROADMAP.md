@@ -100,15 +100,15 @@
 - [x] Système de rollback automatique ✅ **IMPLÉMENTÉ**
 - [x] Vérification d'intégrité et signatures ✅ **IMPLÉMENTÉ**
 - [x] Mises à jour en masse (bulk updates) ✅ **IMPLÉMENTÉ**
-- [ ] Monitoring prédictif avec ML ❌ **À IMPLÉMENTER**
+- [x] Monitoring prédictif avec ML ✅ **IMPLÉMENTÉ**
 - [x] Géolocalisation des dispositifs ✅ **IMPLÉMENTÉ**
-- [ ] Gestion des certificats X.509 ❌ **À IMPLÉMENTER**
+- [x] Gestion des certificats X.509 ✅ **IMPLÉMENTÉ**
 
 #### 💰 **Économie Avancée**
-- [ ] Marketplace de services
-- [ ] Staking et DeFi basique
-- [ ] Prêts/emprunts de tokens
-- [ ] Assurance décentralisée
+- [x] Marketplace de services ✅ **IMPLÉMENTÉ**
+- [x] Staking et DeFi basique ✅ **IMPLÉMENTÉ**
+- [x] Prêts/emprunts de tokens ✅ **IMPLÉMENTÉ**
+- [x] Assurance décentralisée ✅ **IMPLÉMENTÉ**
 - [ ] Tokenisation d'actifs physiques
 - [ ] Mécanismes de gouvernance
 
