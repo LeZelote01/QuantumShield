@@ -42,6 +42,7 @@ from services.mining_service import MiningService
 from services.advanced_crypto_service import AdvancedCryptoService
 from services.security_service import SecurityService
 from services.ai_analytics_service import AIAnalyticsService
+from services.advanced_economy_service import AdvancedEconomyService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -52,6 +53,7 @@ mining_service = MiningService(db, blockchain_service)
 advanced_crypto_service = AdvancedCryptoService(db)
 security_service = SecurityService(db)
 ai_analytics_service = AIAnalyticsService(db)
+advanced_economy_service = AdvancedEconomyService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
