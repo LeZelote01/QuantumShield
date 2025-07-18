@@ -13,7 +13,7 @@ from services.webhook_service import WebhookService, WebhookEvent, WebhookStatus
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/webhooks", tags=["Webhooks"])
+router = APIRouter(prefix="/webhooks", tags=["Webhooks"])
 
 # Variables globales pour les services
 _webhook_service = None
