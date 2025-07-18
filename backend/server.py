@@ -134,6 +134,7 @@ async def health_check():
             "geolocation": geolocation_service.is_ready(),
             "x509": x509_service.is_ready(),
             "marketplace": marketplace_service.is_ready(),
+            "hsm": hsm_service.is_ready(),
             "database": True
         }
     }
