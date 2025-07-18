@@ -325,6 +325,35 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
 - `GET /api/ota/update/{update_id}/status` - Statut mise à jour
 - `POST /api/ota/device/{device_id}/rollback` - Rollback firmware
 
+#### Gouvernance Décentralisée
+- `POST /api/advanced-economy/governance/proposals/create` - Créer une proposition
+- `POST /api/advanced-economy/governance/proposals/vote` - Voter sur une proposition
+- `POST /api/advanced-economy/governance/proposals/execute` - Exécuter une proposition
+- `GET /api/advanced-economy/governance/proposals` - Liste des propositions
+- `GET /api/advanced-economy/governance/proposals/{proposal_id}` - Détails d'une proposition
+- `GET /api/advanced-economy/governance/dashboard` - Dashboard de gouvernance
+- `GET /api/advanced-economy/governance/user/{user_id}/voting-power` - Pouvoir de vote utilisateur
+
+#### Sécurité Renforcée Avancée
+- `POST /api/security/honeypots/create` - Créer un honeypot
+- `POST /api/security/honeypots/trigger` - Déclencher un honeypot
+- `GET /api/security/honeypots/report` - Rapport des honeypots
+- `POST /api/security/backup/create` - Créer une sauvegarde sécurisée
+- `POST /api/security/backup/restore` - Restaurer une sauvegarde
+- `GET /api/security/backup/report` - Rapport des sauvegardes
+- `POST /api/security/gdpr/report` - Générer rapport GDPR
+- `POST /api/security/gdpr/delete-user-data` - Supprimer données utilisateur
+- `GET /api/security/compliance/report` - Rapport de conformité
+- `GET /api/security/comprehensive-report` - Rapport sécurité complet
+- `GET /api/security/health-check` - Contrôle santé sécurité
+
+#### Tokenisation d'Actifs
+- `POST /api/advanced-economy/tokenization/assets/create` - Tokeniser un actif
+- `POST /api/advanced-economy/tokenization/assets/buy` - Acheter tokens d'actif
+- `GET /api/advanced-economy/marketplace/stats` - Statistiques marketplace
+- `GET /api/advanced-economy/staking/pools` - Pools de staking disponibles
+- `GET /api/advanced-economy/recommendations` - Recommandations économiques
+
 #### Blockchain
 - `GET /api/blockchain/stats` - Statistiques blockchain
 - `GET /api/blockchain/blocks` - Liste des blocs
