@@ -35,6 +35,7 @@ security = HTTPBearer()
 # Initialize services
 from services.ntru_service import NTRUService
 from services.blockchain_service import BlockchainService
+from services.advanced_blockchain_service import AdvancedBlockchainService
 from services.device_service import DeviceService
 from services.token_service import TokenService
 from services.auth_service import AuthService
@@ -54,6 +55,7 @@ from services.webhook_service import WebhookService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
+advanced_blockchain_service = AdvancedBlockchainService(db, blockchain_service)
 device_service = DeviceService(db)
 token_service = TokenService(db)
 auth_service = AuthService(db)
@@ -87,6 +89,7 @@ from routes.auth_routes import router as auth_router
 from routes.crypto_routes import router as crypto_router
 from routes.advanced_crypto_routes import router as advanced_crypto_router
 from routes.blockchain_routes import router as blockchain_router
+from routes.advanced_blockchain_routes import router as advanced_blockchain_router
 from routes.device_routes import router as device_router
 from routes.token_routes import router as token_router
 from routes.mining_routes import router as mining_router
@@ -123,6 +126,7 @@ api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
 api_router.include_router(advanced_crypto_router, prefix="/advanced-crypto", tags=["advanced-cryptography"])
 api_router.include_router(blockchain_router, prefix="/blockchain", tags=["blockchain"])
+api_router.include_router(advanced_blockchain_router, prefix="/advanced-blockchain", tags=["advanced-blockchain"])
 api_router.include_router(device_router, prefix="/devices", tags=["devices"])
 api_router.include_router(token_router, prefix="/tokens", tags=["tokens"])
 api_router.include_router(mining_router, prefix="/mining", tags=["mining"])
@@ -148,6 +152,7 @@ async def health_check():
         "services": {
             "ntru": ntru_service.is_ready(),
             "blockchain": await blockchain_service.is_ready(),
+            "advanced_blockchain": await advanced_blockchain_service.is_ready(),
             "advanced_crypto": advanced_crypto_service.is_ready(),
             "security": security_service.is_ready(),
             "ai_analytics": ai_analytics_service.is_ready(),
@@ -189,6 +194,8 @@ async def startup_event():
     await token_service.initialize_token_system()
     # Initialize blockchain if needed
     await blockchain_service.initialize_genesis_block()
+    # Initialize advanced blockchain service
+    await advanced_blockchain_service.initialize()
     # Start mining process
     asyncio.create_task(mining_service.start_mining())
 

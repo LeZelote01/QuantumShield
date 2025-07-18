@@ -20,6 +20,7 @@ import Cryptography from './pages/Cryptography/Cryptography';
 import AdvancedCryptography from './pages/Cryptography/AdvancedCryptography';
 import AdvancedKeyManagement from './pages/Cryptography/AdvancedKeyManagement';
 import Blockchain from './pages/Blockchain/Blockchain';
+import AdvancedBlockchain from './pages/Blockchain/AdvancedBlockchain';
 import Mining from './pages/Mining/Mining';
 import Tokens from './pages/Tokens/Tokens';
 import Profile from './pages/Profile/Profile';
@@ -73,6 +74,7 @@ function App() {
                   <Route path="advanced-cryptography" element={<AdvancedCryptography />} />
                   <Route path="advanced-key-management" element={<AdvancedKeyManagement />} />
                   <Route path="blockchain" element={<Blockchain />} />
+                  <Route path="advanced-blockchain" element={<AdvancedBlockchain />} />
                   <Route path="mining" element={<Mining />} />
                   <Route path="tokens" element={<Tokens />} />
                   <Route path="geolocation" element={<Geolocation />} />
