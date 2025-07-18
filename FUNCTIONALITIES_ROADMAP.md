@@ -65,21 +65,21 @@
 ### 🔧 **FONCTIONNALITÉS À AJOUTER AU MVP**
 
 #### 🔐 **Cryptographie Avancée**
-- [x] Support algorithmes post-quantiques multiples (Kyber, Dilithium)
-- [x] Génération de clés hybrides (chiffrement + signature)
-- [x] Simulation d'algorithmes pour tests et développement
-- [x] Comparaison de performances entre algorithmes
-- [x] Recommandations d'algorithmes selon contexte
-- [x] Gestion avancée des clés (rotation, expiration)
-- [x] Chiffrement par lots pour gros volumes
-- [x] Signature à seuil (threshold signatures)
-- [x] Zero-knowledge proofs pour confidentialité
-- [x] Audit trail cryptographique complet
-- [x] Opérations en masse sur les clés (rotation, archivage, sauvegarde)
-- [x] Dashboard avancé de cryptographie
-- [x] Monitoring des expirations de clés
-- [x] Compatibilité HSM (planifiée)
-- [x] Conformité export et certifications
+- [x] Support algorithmes post-quantiques multiples (Kyber, Dilithium) ✅ **IMPLÉMENTÉ**
+- [x] Génération de clés hybrides (chiffrement + signature) ✅ **IMPLÉMENTÉ**
+- [x] Simulation d'algorithmes pour tests et développement ✅ **IMPLÉMENTÉ**
+- [x] Comparaison de performances entre algorithmes ✅ **IMPLÉMENTÉ**
+- [x] Recommandations d'algorithmes selon contexte ✅ **IMPLÉMENTÉ**
+- [x] Gestion avancée des clés (rotation, expiration) ✅ **IMPLÉMENTÉ**
+- [x] Chiffrement par lots pour gros volumes ✅ **IMPLÉMENTÉ**
+- [x] Signature à seuil (threshold signatures) ✅ **IMPLÉMENTÉ**
+- [x] Zero-knowledge proofs pour confidentialité ✅ **IMPLÉMENTÉ**
+- [x] Audit trail cryptographique complet ✅ **IMPLÉMENTÉ**
+- [x] Opérations en masse sur les clés (rotation, archivage, sauvegarde) ✅ **IMPLÉMENTÉ**
+- [x] Dashboard avancé de cryptographie ✅ **IMPLÉMENTÉ**
+- [x] Monitoring des expirations de clés ✅ **IMPLÉMENTÉ**
+- [x] Compatibilité HSM ⚠️ **SIMULATION - RÉEL EN DÉVELOPPEMENT**
+- [x] Conformité export et certifications ⚠️ **SIMULATION - RÉEL EN DÉVELOPPEMENT**
 
 #### 🔗 **Blockchain Améliorée**
 - [ ] Consensus hybride (PoW + PoS)
