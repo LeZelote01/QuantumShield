@@ -814,6 +814,493 @@ class AdvancedEconomyService:
             logger.error(f"Erreur achat tokens actif: {e}")
             raise Exception(f"Impossible d'acheter les tokens: {e}")
     
+    # ===== GOUVERNANCE DÉCENTRALISÉE =====
+    
+    async def create_proposal(self, proposer_id: str, proposal_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Crée une proposition de gouvernance"""
+        try:
+            # Vérifier que le proposeur a suffisamment de tokens pour proposer
+            proposer = await self.db.users.find_one({"id": proposer_id})
+            if not proposer:
+                raise ValueError("Utilisateur non trouvé")
+            
+            min_tokens_to_propose = 1000  # Minimum 1000 QS pour proposer
+            if proposer.get("qs_balance", 0) < min_tokens_to_propose:
+                raise ValueError(f"Minimum {min_tokens_to_propose} QS requis pour proposer")
+            
+            # Créer la proposition
+            proposal = {
+                "id": str(uuid.uuid4()),
+                "proposer_id": proposer_id,
+                "proposal_type": proposal_data["proposal_type"],
+                "title": proposal_data["title"],
+                "description": proposal_data["description"],
+                "voting_power_required": proposal_data.get("voting_power_required", 0.1),  # 10% par défaut
+                "execution_delay_hours": proposal_data.get("execution_delay_hours", 24),
+                "voting_duration_hours": proposal_data.get("voting_duration_hours", 168),  # 7 jours
+                "parameters": proposal_data.get("parameters", {}),
+                "status": ProposalStatus.ACTIVE.value,
+                "created_at": datetime.utcnow(),
+                "voting_starts": datetime.utcnow(),
+                "voting_ends": datetime.utcnow() + timedelta(hours=proposal_data.get("voting_duration_hours", 168)),
+                "execution_date": None,
+                "votes_yes": 0.0,
+                "votes_no": 0.0,
+                "votes_abstain": 0.0,
+                "voters": [],
+                "executed": False,
+                "execution_result": None
+            }
+            
+            await self.db.governance_proposals.insert_one(proposal)
+            
+            return {
+                "proposal_id": proposal["id"],
+                "voting_ends": proposal["voting_ends"],
+                "voting_power_required": proposal["voting_power_required"] * 100,
+                "min_tokens_to_propose": min_tokens_to_propose,
+                "status": "created"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur création proposition: {e}")
+            raise Exception(f"Impossible de créer la proposition: {e}")
+    
+    async def vote_on_proposal(self, voter_id: str, proposal_id: str, vote_option: VoteOption, 
+                              voting_power: Optional[float] = None) -> Dict[str, Any]:
+        """Vote sur une proposition"""
+        try:
+            # Récupérer la proposition
+            proposal = await self.db.governance_proposals.find_one({"id": proposal_id})
+            if not proposal:
+                raise ValueError("Proposition non trouvée")
+            
+            # Vérifier que le vote est ouvert
+            if proposal["status"] != ProposalStatus.ACTIVE.value:
+                raise ValueError("Vote fermé pour cette proposition")
+            
+            if datetime.utcnow() > proposal["voting_ends"]:
+                raise ValueError("Période de vote terminée")
+            
+            # Vérifier que l'utilisateur n'a pas déjà voté
+            existing_vote = next((v for v in proposal["voters"] if v["voter_id"] == voter_id), None)
+            if existing_vote:
+                raise ValueError("Vous avez déjà voté sur cette proposition")
+            
+            # Calculer le pouvoir de vote basé sur les tokens détenus
+            voter = await self.db.users.find_one({"id": voter_id})
+            if not voter:
+                raise ValueError("Voteur non trouvé")
+            
+            # Pouvoir de vote = balance + tokens stakés
+            voter_balance = voter.get("qs_balance", 0)
+            
+            # Ajouter les tokens stakés
+            staked_positions = await self.db.staking_positions.find({"user_id": voter_id, "active": True}).to_list(None)
+            staked_amount = sum(pos["amount"] for pos in staked_positions)
+            
+            # Ajouter les tokens d'actifs tokenisés
+            asset_ownerships = await self.db.asset_ownerships.find({"buyer_id": voter_id}).to_list(None)
+            asset_tokens = 0
+            for ownership in asset_ownerships:
+                asset = await self.db.tokenized_assets.find_one({"id": ownership["asset_id"]})
+                if asset:
+                    asset_tokens += (ownership["token_count"] / asset["total_tokens"]) * asset["total_value"]
+            
+            total_voting_power = voter_balance + staked_amount + asset_tokens
+            
+            # Utiliser le pouvoir de vote spécifié ou le maximum disponible
+            if voting_power is None:
+                voting_power = total_voting_power
+            else:
+                voting_power = min(voting_power, total_voting_power)
+            
+            if voting_power <= 0:
+                raise ValueError("Pouvoir de vote insuffisant")
+            
+            # Enregistrer le vote
+            vote_record = {
+                "voter_id": voter_id,
+                "vote_option": vote_option.value,
+                "voting_power": voting_power,
+                "voted_at": datetime.utcnow()
+            }
+            
+            # Mettre à jour les compteurs de votes
+            update_data = {
+                "$push": {"voters": vote_record},
+                "$set": {"updated_at": datetime.utcnow()}
+            }
+            
+            if vote_option == VoteOption.YES:
+                update_data["$inc"] = {"votes_yes": voting_power}
+            elif vote_option == VoteOption.NO:
+                update_data["$inc"] = {"votes_no": voting_power}
+            elif vote_option == VoteOption.ABSTAIN:
+                update_data["$inc"] = {"votes_abstain": voting_power}
+            
+            await self.db.governance_proposals.update_one(
+                {"id": proposal_id},
+                update_data
+            )
+            
+            # Vérifier si la proposition peut être exécutée
+            await self._check_proposal_execution(proposal_id)
+            
+            return {
+                "vote_registered": True,
+                "voting_power_used": voting_power,
+                "vote_option": vote_option.value,
+                "total_voting_power": total_voting_power,
+                "remaining_voting_power": total_voting_power - voting_power
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur vote proposition: {e}")
+            raise Exception(f"Impossible de voter: {e}")
+    
+    async def _check_proposal_execution(self, proposal_id: str):
+        """Vérifie si une proposition peut être exécutée"""
+        try:
+            proposal = await self.db.governance_proposals.find_one({"id": proposal_id})
+            if not proposal:
+                return
+            
+            # Calculer le total des votes
+            total_votes = proposal["votes_yes"] + proposal["votes_no"] + proposal["votes_abstain"]
+            
+            # Calculer le supply total de tokens pour déterminer le quorum
+            total_supply = 0
+            cursor = await self.db.token_balances.find({})
+            async for balance in cursor:
+                total_supply += balance["balance"]
+            
+            # Vérifier le quorum (minimum 5% de participation)
+            min_quorum = total_supply * 0.05
+            if total_votes < min_quorum:
+                return  # Pas assez de participation
+            
+            # Vérifier si la proposition est passée
+            if proposal["votes_yes"] > proposal["votes_no"]:
+                # Vérifier le seuil de votes requis
+                required_votes = total_supply * proposal["voting_power_required"]
+                if proposal["votes_yes"] >= required_votes:
+                    # Programmer l'exécution
+                    execution_date = datetime.utcnow() + timedelta(hours=proposal["execution_delay_hours"])
+                    
+                    await self.db.governance_proposals.update_one(
+                        {"id": proposal_id},
+                        {
+                            "$set": {
+                                "status": ProposalStatus.PASSED.value,
+                                "execution_date": execution_date,
+                                "updated_at": datetime.utcnow()
+                            }
+                        }
+                    )
+            else:
+                # Proposition rejetée
+                await self.db.governance_proposals.update_one(
+                    {"id": proposal_id},
+                    {
+                        "$set": {
+                            "status": ProposalStatus.REJECTED.value,
+                            "updated_at": datetime.utcnow()
+                        }
+                    }
+                )
+        
+        except Exception as e:
+            logger.error(f"Erreur vérification exécution proposition: {e}")
+    
+    async def execute_proposal(self, proposal_id: str, executor_id: str = None) -> Dict[str, Any]:
+        """Exécute une proposition approuvée"""
+        try:
+            proposal = await self.db.governance_proposals.find_one({"id": proposal_id})
+            if not proposal:
+                raise ValueError("Proposition non trouvée")
+            
+            if proposal["status"] != ProposalStatus.PASSED.value:
+                raise ValueError("Proposition non approuvée pour exécution")
+            
+            if proposal["executed"]:
+                raise ValueError("Proposition déjà exécutée")
+            
+            # Vérifier que le délai d'exécution est passé
+            if datetime.utcnow() < proposal["execution_date"]:
+                raise ValueError("Délai d'exécution non atteint")
+            
+            # Exécuter selon le type de proposition
+            execution_result = await self._execute_proposal_by_type(proposal)
+            
+            # Marquer comme exécutée
+            await self.db.governance_proposals.update_one(
+                {"id": proposal_id},
+                {
+                    "$set": {
+                        "status": ProposalStatus.EXECUTED.value,
+                        "executed": True,
+                        "execution_result": execution_result,
+                        "executed_at": datetime.utcnow(),
+                        "executed_by": executor_id
+                    }
+                }
+            )
+            
+            return {
+                "proposal_id": proposal_id,
+                "execution_result": execution_result,
+                "executed_at": datetime.utcnow(),
+                "status": "executed"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur exécution proposition: {e}")
+            raise Exception(f"Impossible d'exécuter la proposition: {e}")
+    
+    async def _execute_proposal_by_type(self, proposal: Dict[str, Any]) -> Dict[str, Any]:
+        """Exécute une proposition selon son type"""
+        try:
+            proposal_type = proposal["proposal_type"]
+            parameters = proposal.get("parameters", {})
+            
+            if proposal_type == ProposalType.PARAMETER_CHANGE.value:
+                # Modifier les paramètres du système
+                return await self._execute_parameter_change(parameters)
+            
+            elif proposal_type == ProposalType.TOKENOMICS.value:
+                # Modifier les paramètres économiques
+                return await self._execute_tokenomics_change(parameters)
+            
+            elif proposal_type == ProposalType.GOVERNANCE.value:
+                # Modifier les règles de gouvernance
+                return await self._execute_governance_change(parameters)
+            
+            elif proposal_type == ProposalType.EMERGENCY.value:
+                # Exécution d'urgence
+                return await self._execute_emergency_action(parameters)
+            
+            else:
+                # Proposition générale - enregistrer seulement
+                return {
+                    "type": "general",
+                    "message": "Proposition générale approuvée et enregistrée",
+                    "parameters": parameters
+                }
+                
+        except Exception as e:
+            logger.error(f"Erreur exécution par type: {e}")
+            return {"error": str(e)}
+    
+    async def _execute_parameter_change(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+        """Exécute un changement de paramètres"""
+        try:
+            changes_made = []
+            
+            # Modifier les taux de récompense
+            if "reward_rates" in parameters:
+                for reward_type, new_rate in parameters["reward_rates"].items():
+                    if reward_type in self.reward_rates:
+                        old_rate = self.reward_rates[reward_type]
+                        self.reward_rates[reward_type] = new_rate
+                        changes_made.append(f"Taux {reward_type}: {old_rate} → {new_rate}")
+            
+            # Modifier les frais de marketplace
+            if "marketplace_fee" in parameters:
+                old_fee = self.marketplace_fee
+                self.marketplace_fee = parameters["marketplace_fee"]
+                changes_made.append(f"Frais marketplace: {old_fee} → {self.marketplace_fee}")
+            
+            # Modifier les taux de staking
+            if "staking_rewards" in parameters:
+                for staking_type, new_apy in parameters["staking_rewards"].items():
+                    if staking_type in self.staking_rewards:
+                        old_apy = self.staking_rewards[staking_type]
+                        self.staking_rewards[staking_type] = new_apy
+                        changes_made.append(f"APY {staking_type}: {old_apy} → {new_apy}")
+            
+            return {
+                "type": "parameter_change",
+                "changes_made": changes_made,
+                "timestamp": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur changement paramètres: {e}")
+            return {"error": str(e)}
+    
+    async def _execute_tokenomics_change(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+        """Exécute un changement de tokenomique"""
+        try:
+            changes_made = []
+            
+            # Modifier l'offre maximale
+            if "max_supply" in parameters:
+                old_max = self.max_supply
+                self.max_supply = parameters["max_supply"]
+                changes_made.append(f"Offre max: {old_max} → {self.max_supply}")
+            
+            # Émettre de nouveaux tokens
+            if "mint_tokens" in parameters:
+                amount = parameters["mint_tokens"]["amount"]
+                recipient = parameters["mint_tokens"]["recipient"]
+                
+                # Vérifier que l'émission ne dépasse pas l'offre max
+                current_supply = await self._get_total_supply()
+                if current_supply + amount > self.max_supply:
+                    raise ValueError("Émission dépasserait l'offre maximale")
+                
+                # Émettre les tokens
+                await self.db.token_balances.update_one(
+                    {"user_id": recipient},
+                    {"$inc": {"balance": amount}},
+                    upsert=True
+                )
+                
+                changes_made.append(f"Émission: {amount} QS vers {recipient}")
+            
+            return {
+                "type": "tokenomics_change",
+                "changes_made": changes_made,
+                "timestamp": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur changement tokenomique: {e}")
+            return {"error": str(e)}
+    
+    async def _execute_governance_change(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+        """Exécute un changement de gouvernance"""
+        try:
+            changes_made = []
+            
+            # Modifier les seuils de gouvernance
+            if "voting_thresholds" in parameters:
+                # Enregistrer les nouveaux seuils dans la base de données
+                governance_config = {
+                    "voting_thresholds": parameters["voting_thresholds"],
+                    "updated_at": datetime.utcnow()
+                }
+                
+                await self.db.governance_config.update_one(
+                    {"type": "voting_thresholds"},
+                    {"$set": governance_config},
+                    upsert=True
+                )
+                
+                changes_made.append(f"Seuils de vote mis à jour")
+            
+            return {
+                "type": "governance_change",
+                "changes_made": changes_made,
+                "timestamp": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur changement gouvernance: {e}")
+            return {"error": str(e)}
+    
+    async def _execute_emergency_action(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+        """Exécute une action d'urgence"""
+        try:
+            actions_taken = []
+            
+            # Pause d'urgence
+            if parameters.get("emergency_pause", False):
+                await self.db.system_config.update_one(
+                    {"type": "emergency"},
+                    {"$set": {"paused": True, "paused_at": datetime.utcnow()}},
+                    upsert=True
+                )
+                actions_taken.append("Système mis en pause d'urgence")
+            
+            # Gel des transferts
+            if parameters.get("freeze_transfers", False):
+                await self.db.system_config.update_one(
+                    {"type": "transfers"},
+                    {"$set": {"frozen": True, "frozen_at": datetime.utcnow()}},
+                    upsert=True
+                )
+                actions_taken.append("Transferts gelés")
+            
+            return {
+                "type": "emergency_action",
+                "actions_taken": actions_taken,
+                "timestamp": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur action d'urgence: {e}")
+            return {"error": str(e)}
+    
+    async def _get_total_supply(self) -> float:
+        """Calcule l'offre totale de tokens"""
+        try:
+            total = 0
+            cursor = await self.db.token_balances.find({})
+            async for balance in cursor:
+                total += balance["balance"]
+            return total
+        except Exception as e:
+            logger.error(f"Erreur calcul offre totale: {e}")
+            return 0
+    
+    async def get_governance_dashboard(self, user_id: str = None) -> Dict[str, Any]:
+        """Récupère le tableau de bord de gouvernance"""
+        try:
+            # Statistiques générales
+            active_proposals = await self.db.governance_proposals.count_documents({"status": ProposalStatus.ACTIVE.value})
+            total_proposals = await self.db.governance_proposals.count_documents({})
+            
+            # Propositions récentes
+            recent_proposals = await self.db.governance_proposals.find({}).sort("created_at", -1).limit(10).to_list(None)
+            
+            # Statistiques de vote de l'utilisateur
+            user_stats = {}
+            if user_id:
+                user = await self.db.users.find_one({"id": user_id})
+                if user:
+                    # Calculer le pouvoir de vote
+                    voting_power = user.get("qs_balance", 0)
+                    
+                    # Ajouter les tokens stakés
+                    staked_positions = await self.db.staking_positions.find({"user_id": user_id, "active": True}).to_list(None)
+                    staked_amount = sum(pos["amount"] for pos in staked_positions)
+                    voting_power += staked_amount
+                    
+                    # Compter les votes
+                    votes_cast = await self.db.governance_proposals.count_documents({"voters.voter_id": user_id})
+                    
+                    user_stats = {
+                        "voting_power": voting_power,
+                        "votes_cast": votes_cast,
+                        "can_propose": voting_power >= 1000
+                    }
+            
+            return {
+                "governance_stats": {
+                    "active_proposals": active_proposals,
+                    "total_proposals": total_proposals,
+                    "recent_proposals": recent_proposals,
+                    "min_tokens_to_propose": 1000,
+                    "min_quorum_percentage": 5.0
+                },
+                "user_stats": user_stats,
+                "timestamp": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur dashboard gouvernance: {e}")
+            return {
+                "governance_stats": {
+                    "active_proposals": 0,
+                    "total_proposals": 0,
+                    "recent_proposals": []
+                },
+                "user_stats": {},
+                "error": str(e)
+            }
+    
     # ===== MÉTHODES UTILITAIRES =====
     
     def _get_lock_period(self, staking_type: str) -> int:
