@@ -65,7 +65,11 @@
 ### 🔧 **FONCTIONNALITÉS À AJOUTER AU MVP**
 
 #### 🔐 **Cryptographie Avancée**
-- [ ] Support algorithmes post-quantiques multiples (Kyber, Dilithium)
+- [x] Support algorithmes post-quantiques multiples (Kyber, Dilithium)
+- [x] Génération de clés hybrides (chiffrement + signature)
+- [x] Simulation d'algorithmes pour tests et développement
+- [x] Comparaison de performances entre algorithmes
+- [x] Recommandations d'algorithmes selon contexte
 - [ ] Gestion avancée des clés (rotation, expiration)
 - [ ] Chiffrement par lots pour gros volumes
 - [ ] Signature à seuil (threshold signatures)
@@ -81,9 +85,16 @@
 - [ ] Archivage automatique des anciens blocs
 
 #### 📱 **IoT Étendu**
-- [ ] SDK pour différents langages (Python, C++, JavaScript, Rust)
-- [ ] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN)
-- [ ] Gestion des mises à jour OTA sécurisées
+- [x] SDK pour différents langages (Python, C++, JavaScript, Rust)
+- [x] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN)
+- [x] Support pour Zigbee, Z-Wave, Thread, Matter
+- [x] Système de messages IoT unifié
+- [x] Gestion des heartbeats et données capteurs
+- [x] Infrastructure pour commandes et alertes
+- [x] Gestion des mises à jour OTA sécurisées
+- [x] Système de rollback automatique
+- [x] Vérification d'intégrité et signatures
+- [x] Mises à jour en masse (bulk updates)
 - [ ] Monitoring prédictif avec ML
 - [ ] Géolocalisation des dispositifs
 - [ ] Gestion des certificats X.509

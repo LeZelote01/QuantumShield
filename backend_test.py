@@ -9,7 +9,7 @@ import aiohttp
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 
 # Configuration des tests
@@ -70,7 +70,26 @@ class QuantumShieldTester:
             "ai_analytics_models_status": False,
             "ai_analytics_summary": False,
             "ai_analytics_recommendations": False,
-            "ai_analytics_health": False
+            "ai_analytics_health": False,
+            # IoT Protocol Service Tests
+            "iot_protocol_health": False,
+            "iot_protocol_status": False,
+            "iot_protocol_statistics": False,
+            "iot_protocol_mqtt_start": False,
+            "iot_protocol_mqtt_publish": False,
+            "iot_protocol_coap_start": False,
+            "iot_protocol_lorawan_start": False,
+            "iot_protocol_device_command": False,
+            "iot_protocol_sensor_data": False,
+            "iot_protocol_config": False,
+            # OTA Update Service Tests
+            "ota_health": False,
+            "ota_statistics": False,
+            "ota_firmware_register": False,
+            "ota_firmware_list": False,
+            "ota_update_schedule": False,
+            "ota_update_queue": False,
+            "ota_config": False
         }
         self.test_data = {}
 
@@ -1089,6 +1108,85 @@ class QuantumShieldTester:
         
         return False
 
+    # ===== IOT PROTOCOL SERVICE TESTS =====
+    
+    async def test_iot_protocol_health(self):
+        """Test de santé du service IoT Protocol"""
+        print("\n🌐 Test IoT Protocol Health Check...")
+        
+        try:
+            response = await self.make_request("GET", "/iot-protocol/health")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "service" in data and data.get("status") in ["healthy", "unhealthy"]:
+                    print("✅ IoT Protocol health check successful")
+                    print(f"   Status: {data.get('status')}")
+                    print(f"   Service: {data.get('service')}")
+                    print(f"   Protocols Available: {data.get('protocols_available', 0)}")
+                    self.test_results["iot_protocol_health"] = True
+                    return True
+                else:
+                    print(f"❌ IoT Protocol health check failed: {data}")
+            else:
+                print(f"❌ IoT Protocol health check HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ IoT Protocol health check exception: {e}")
+        
+        return False
+    
+    async def test_iot_protocol_status(self):
+        """Test du statut des protocoles IoT"""
+        print("\n📡 Test IoT Protocol Status...")
+        
+        try:
+            response = await self.make_request("GET", "/iot-protocol/protocols/status")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("success") and "protocols" in data:
+                    protocols = data["protocols"]
+                    print("✅ IoT Protocol status retrieved")
+                    print(f"   Available protocols: {len(protocols)}")
+                    for protocol, status in protocols.items():
+                        print(f"   - {protocol}: enabled={status.get('enabled', False)}")
+                    self.test_results["iot_protocol_status"] = True
+                    return True
+                else:
+                    print(f"❌ IoT Protocol status failed: {data}")
+            else:
+                print(f"❌ IoT Protocol status HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ IoT Protocol status exception: {e}")
+        
+        return False
+    
+    async def test_iot_protocol_statistics(self):
+        """Test des statistiques des messages IoT"""
+        print("\n📊 Test IoT Protocol Statistics...")
+        
+        try:
+            response = await self.make_request("GET", "/iot-protocol/protocols/statistics")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("success") and "statistics" in data:
+                    stats = data["statistics"]
+                    print("✅ IoT Protocol statistics retrieved")
+                    print(f"   Total messages: {stats.get('total_messages', 0)}")
+                    print(f"   Message types: {len(stats.get('by_type', {}))}")
+                    print(f"   Protocol breakdown: {len(stats.get('by_protocol', {}))}")
+                    self.test_results["iot_protocol_statistics"] = True
+                    return True
+                else:
+                    print(f"❌ IoT Protocol statistics failed: {data}")
+            else:
+                print(f"❌ IoT Protocol statistics HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ IoT Protocol statistics exception: {e}")
+        
+        return False
+
     # ===== AI ANALYTICS SERVICE TESTS =====
     
     async def test_ai_analytics_device_anomalies(self):
@@ -1491,7 +1589,11 @@ class QuantumShieldTester:
             self.test_ai_analytics_models_status,
             self.test_ai_analytics_summary,
             self.test_ai_analytics_recommendations,
-            self.test_ai_analytics_health
+            self.test_ai_analytics_health,
+            # IoT Protocol Service Tests
+            self.test_iot_protocol_health,
+            self.test_iot_protocol_status,
+            self.test_iot_protocol_statistics
         ]
         
         for test_func in test_functions:
