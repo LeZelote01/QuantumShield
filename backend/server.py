@@ -107,6 +107,9 @@ api_router.include_router(ai_analytics_router, prefix="/ai-analytics", tags=["ai
 api_router.include_router(advanced_economy_router, prefix="/advanced-economy", tags=["advanced-economy"])
 api_router.include_router(iot_protocol_router, prefix="/iot-protocol", tags=["iot-protocol"])
 api_router.include_router(ota_router, prefix="/ota", tags=["ota-updates"])
+api_router.include_router(geolocation_router, prefix="/geolocation", tags=["geolocation"])
+api_router.include_router(x509_router, prefix="/x509", tags=["x509-certificates"])
+api_router.include_router(marketplace_router, prefix="/marketplace", tags=["marketplace"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 
 # Health check endpoint
