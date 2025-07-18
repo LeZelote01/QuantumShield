@@ -1,6 +1,7 @@
 """
 Service de cryptographie post-quantique avancée
 Support pour Kyber, Dilithium et fonctionnalités avancées
+Nouvelles fonctionnalités : Zero-Knowledge Proofs, Audit Trail, Threshold Signatures
 """
 
 import hashlib
@@ -14,6 +15,9 @@ import uuid
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
+import base64
+import hmac
+import secrets
 
 try:
     # Tentative d'import des algorithmes pqcrypto
