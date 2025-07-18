@@ -45,6 +45,9 @@ from services.ai_analytics_service import AIAnalyticsService
 from services.advanced_economy_service import AdvancedEconomyService
 from services.iot_protocol_service import IoTProtocolService
 from services.ota_update_service import OTAUpdateService
+from services.geolocation_service import GeolocationService
+from services.x509_service import X509Service
+from services.marketplace_service import MarketplaceService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -58,6 +61,9 @@ ai_analytics_service = AIAnalyticsService(db)
 advanced_economy_service = AdvancedEconomyService(db)
 iot_protocol_service = IoTProtocolService(db)
 ota_update_service = OTAUpdateService(db)
+geolocation_service = GeolocationService(db)
+x509_service = X509Service(db)
+marketplace_service = MarketplaceService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
@@ -72,13 +78,22 @@ from routes.ai_analytics_routes import router as ai_analytics_router
 from routes.advanced_economy_routes import router as advanced_economy_router
 from routes.iot_protocol_routes import router as iot_protocol_router
 from routes.ota_routes import router as ota_router
+from routes.geolocation_routes import router as geolocation_router
+from routes.x509_routes import router as x509_router
+from routes.marketplace_routes import router as marketplace_router
 from routes.dashboard_routes import router as dashboard_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
 import routes.ota_routes
+import routes.geolocation_routes
+import routes.x509_routes
+import routes.marketplace_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
+routes.geolocation_routes.geolocation_service = geolocation_service
+routes.x509_routes.x509_service = x509_service
+routes.marketplace_routes.marketplace_service = marketplace_service
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
@@ -92,6 +107,9 @@ api_router.include_router(ai_analytics_router, prefix="/ai-analytics", tags=["ai
 api_router.include_router(advanced_economy_router, prefix="/advanced-economy", tags=["advanced-economy"])
 api_router.include_router(iot_protocol_router, prefix="/iot-protocol", tags=["iot-protocol"])
 api_router.include_router(ota_router, prefix="/ota", tags=["ota-updates"])
+api_router.include_router(geolocation_router, prefix="/geolocation", tags=["geolocation"])
+api_router.include_router(x509_router, prefix="/x509", tags=["x509-certificates"])
+api_router.include_router(marketplace_router, prefix="/marketplace", tags=["marketplace"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 
 # Health check endpoint
@@ -109,6 +127,9 @@ async def health_check():
             "advanced_economy": advanced_economy_service.is_ready(),
             "iot_protocol": iot_protocol_service.is_ready(),
             "ota_update": ota_update_service.is_ready(),
+            "geolocation": geolocation_service.is_ready(),
+            "x509": x509_service.is_ready(),
+            "marketplace": marketplace_service.is_ready(),
             "database": True
         }
     }

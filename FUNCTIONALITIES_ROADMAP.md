@@ -116,6 +116,7 @@
 - [ ] Conformité réglementaire (GDPR, CCPA)
 
 #### 📊 **Analytics et IA**
+
 - [ ] Machine Learning pour détection d'anomalies
 - [ ] Prédiction de pannes
 - [ ] Optimisation énergétique
