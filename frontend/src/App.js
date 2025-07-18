@@ -25,6 +25,10 @@ import Tokens from './pages/Tokens/Tokens';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 
+// Security Pages
+import SecurityDashboard from './pages/Security/SecurityDashboard';
+import AdvancedSecurity from './pages/Security/AdvancedSecurity';
+
 import './App.css';
 
 // Create a client
@@ -70,6 +74,8 @@ function App() {
                   <Route path="blockchain" element={<Blockchain />} />
                   <Route path="mining" element={<Mining />} />
                   <Route path="tokens" element={<Tokens />} />
+                  <Route path="security" element={<SecurityDashboard />} />
+                  <Route path="security/advanced" element={<AdvancedSecurity />} />
                   <Route path="profile" element={<Profile />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
