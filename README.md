@@ -301,6 +301,19 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
 - `GET /api/iot-protocol/protocols/status` - Statut tous protocoles
 - `GET /api/iot-protocol/protocols/statistics` - Statistiques messages
 
+#### Géolocalisation
+- `POST /api/geolocation/update-location` - Mise à jour position dispositif
+- `GET /api/geolocation/device/{device_id}/location` - Position actuelle
+- `GET /api/geolocation/device/{device_id}/location-history` - Historique positions
+- `GET /api/geolocation/device/{device_id}/travel-path` - Chemin parcouru
+- `POST /api/geolocation/geofences` - Création zone géographique
+- `GET /api/geolocation/geofences` - Liste zones géographiques
+- `GET /api/geolocation/geofences/{zone_id}/devices` - Dispositifs dans zone
+- `POST /api/geolocation/nearby-devices` - Recherche dispositifs proches
+- `GET /api/geolocation/alerts` - Alertes géolocalisation
+- `POST /api/geolocation/alerts/{alert_id}/resolve` - Résoudre alerte
+- `GET /api/geolocation/statistics` - Statistiques géolocalisation
+
 #### Mises à jour OTA
 - `POST /api/ota/firmware/register` - Enregistrement nouveau firmware
 - `GET /api/ota/firmware/list` - Liste des firmwares disponibles
