@@ -1537,7 +1537,9 @@ class QuantumShieldTester:
             self.test_ai_analytics_models_status,
             self.test_ai_analytics_summary,
             self.test_ai_analytics_recommendations,
-            self.test_ai_analytics_health
+            self.test_ai_analytics_health,
+            # IoT Protocol Service Tests
+            self.test_iot_protocol_health
         ]
         
         for test_func in test_functions:
