@@ -168,6 +168,7 @@ async def health_check():
             "marketplace": marketplace_service.is_ready(),
             "hsm": hsm_service.is_ready(),
             "webhook": webhook_service.is_ready(),
+            "governance": governance_service.is_ready(),
             "database": True
         }
     }
