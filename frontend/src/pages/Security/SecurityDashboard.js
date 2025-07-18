@@ -4,7 +4,6 @@ import {
   KeyIcon, 
   ExclamationTriangleIcon,
   CogIcon,
-  DocumentReportIcon,
   BackupIcon,
   EyeIcon,
   UserIcon,
