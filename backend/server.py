@@ -49,6 +49,8 @@ from services.geolocation_service import GeolocationService
 from services.x509_service import X509Service
 from services.marketplace_service import MarketplaceService
 from services.hsm_service import HSMService
+from services.graphql_service import GraphQLService
+from services.webhook_service import WebhookService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
