@@ -40,6 +40,8 @@ from services.token_service import TokenService
 from services.auth_service import AuthService
 from services.mining_service import MiningService
 from services.advanced_crypto_service import AdvancedCryptoService
+from services.security_service import SecurityService
+from services.ai_analytics_service import AIAnalyticsService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -48,6 +50,8 @@ token_service = TokenService(db)
 auth_service = AuthService(db)
 mining_service = MiningService(db, blockchain_service)
 advanced_crypto_service = AdvancedCryptoService(db)
+security_service = SecurityService(db)
+ai_analytics_service = AIAnalyticsService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
