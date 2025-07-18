@@ -109,16 +109,28 @@
 - [x] Staking et DeFi basique ✅ **IMPLÉMENTÉ**
 - [x] Prêts/emprunts de tokens ✅ **IMPLÉMENTÉ**
 - [x] Assurance décentralisée ✅ **IMPLÉMENTÉ**
+<<<<<<< HEAD
+- [x] Tokenisation d'actifs physiques ✅ **IMPLÉMENTÉ**
+- [x] Mécanismes de gouvernance décentralisée ✅ **IMPLÉMENTÉ**
+=======
 - [ ] Tokenisation d'actifs physiques
 - [ ] Mécanismes de gouvernance
+>>>>>>> main
 
 #### 🛡️ **Sécurité Renforcée**
 - [x] Authentification multi-facteur (2FA/MFA) ✅ **IMPLÉMENTÉ**
 - [x] Audit de sécurité automatisé ✅ **IMPLÉMENTÉ**
+<<<<<<< HEAD
+- [x] Honeypots et pièges ✅ **IMPLÉMENTÉ**
+- [x] Analyse comportementale ✅ **IMPLÉMENTÉ**
+- [x] Backup et récupération avancés ✅ **IMPLÉMENTÉ**
+- [x] Conformité réglementaire (GDPR, CCPA) ✅ **IMPLÉMENTÉ**
+=======
 - [x] Honeypots et pièges ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
 - [x] Analyse comportementale ✅ **IMPLÉMENTÉ**
 - [x] Backup et récupération avancés ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
 - [x] Conformité réglementaire (GDPR, CCPA) ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
+>>>>>>> main
 
 #### 📊 **Analytics et IA**
 
