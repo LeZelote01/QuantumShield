@@ -519,12 +519,21 @@ class AdvancedCryptoService:
             signature_bytes = bytes.fromhex(signature)
             
             # Vérifier avec Dilithium
-            if algorithm == CryptoAlgorithm.DILITHIUM_2.value and PQ_AVAILABLE:
-                return dilithium2.verify(message_bytes, signature_bytes, public_key)
-            elif algorithm == CryptoAlgorithm.DILITHIUM_3.value and PQ_AVAILABLE:
-                return dilithium3.verify(message_bytes, signature_bytes, public_key)
-            elif algorithm == CryptoAlgorithm.DILITHIUM_5.value and PQ_AVAILABLE:
-                return dilithium5.verify(message_bytes, signature_bytes, public_key)
+            if algorithm == CryptoAlgorithm.DILITHIUM_2.value:
+                if DILITHIUM_AVAILABLE:
+                    return dilithium2.verify(message_bytes, signature_bytes, public_key)
+                else:
+                    return self._fallback_verify(message_bytes, signature_bytes, public_key, algorithm)
+            elif algorithm == CryptoAlgorithm.DILITHIUM_3.value:
+                if DILITHIUM_AVAILABLE:
+                    return dilithium3.verify(message_bytes, signature_bytes, public_key)
+                else:
+                    return self._fallback_verify(message_bytes, signature_bytes, public_key, algorithm)
+            elif algorithm == CryptoAlgorithm.DILITHIUM_5.value:
+                if DILITHIUM_AVAILABLE:
+                    return dilithium5.verify(message_bytes, signature_bytes, public_key)
+                else:
+                    return self._fallback_verify(message_bytes, signature_bytes, public_key, algorithm)
             else:
                 raise ValueError(f"Algorithme non supporté: {algorithm}")
             
