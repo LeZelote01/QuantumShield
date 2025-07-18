@@ -245,9 +245,9 @@ class AdvancedCryptoService:
         except:
             return False
     
-    def get_supported_algorithms(self) -> Dict[str, Any]:
-        """Retourne les algorithmes supportés"""
-        return self.supported_algorithms
+    def is_ready(self) -> bool:
+        """Vérifie si le service est prêt"""
+        return self.is_initialized
     
     async def generate_multi_algorithm_keypair(self, 
                                              encryption_alg: CryptoAlgorithm = CryptoAlgorithm.KYBER_768,
