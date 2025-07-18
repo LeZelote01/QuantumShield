@@ -16,11 +16,30 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 
 try:
-    from pqcrypto.kem import kyber512, kyber768, kyber1024
-    from pqcrypto.sign import dilithium2, dilithium3, dilithium5
+    # Tentative d'import des algorithmes pqcrypto
+    # Note: La version actuelle peut ne pas avoir tous les algorithmes
+    import pqcrypto
     PQ_AVAILABLE = True
+    KYBER_AVAILABLE = False
+    DILITHIUM_AVAILABLE = False
+    
+    # Vérifier les algorithmes disponibles
+    try:
+        from pqcrypto.kem import kyber512, kyber768, kyber1024
+        KYBER_AVAILABLE = True
+    except ImportError:
+        pass
+    
+    try:
+        from pqcrypto.sign import dilithium2, dilithium3, dilithium5
+        DILITHIUM_AVAILABLE = True
+    except ImportError:
+        pass
+        
 except ImportError:
     PQ_AVAILABLE = False
+    KYBER_AVAILABLE = False
+    DILITHIUM_AVAILABLE = False
     logging.warning("pqcrypto not available, using fallback implementations")
 
 logger = logging.getLogger(__name__)
