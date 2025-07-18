@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
           // Set the token in API headers
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
-          // Verify token with backend
+          // Verify token with backend with timeout
           const response = await api.get('/auth/verify-token');
           
           dispatch({
@@ -100,6 +100,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
+    
+    // Timeout de sécurité pour éviter le blocage
+    const timeoutId = setTimeout(() => {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }, 5000);  // 5 secondes maximum
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Login function
