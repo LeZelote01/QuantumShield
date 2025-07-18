@@ -428,3 +428,217 @@ async def get_algorithm_recommendations():
         },
         "status": "success"
     }
+
+# ==================== NOUVELLES ROUTES AVANCÉES ====================
+
+@router.post("/generate-zk-proof")
+async def generate_zk_proof(
+    request: ZKProofRequest,
+    current_user = Depends(get_current_user)
+):
+    """Génère une preuve zero-knowledge"""
+    from server import advanced_crypto_service
+    
+    try:
+        proof = await advanced_crypto_service.generate_zk_proof(
+            proof_type=request.proof_type,
+            secret_value=request.secret_value,
+            public_parameters=request.public_parameters,
+            user_id=current_user["id"]
+        )
+        
+        return {
+            "proof": proof,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur lors de la génération de la preuve ZK: {str(e)}"
+        )
+
+@router.post("/verify-zk-proof")
+async def verify_zk_proof(
+    request: ZKProofVerificationRequest,
+    current_user = Depends(get_current_user)
+):
+    """Vérifie une preuve zero-knowledge"""
+    from server import advanced_crypto_service
+    
+    try:
+        verification_result = await advanced_crypto_service.verify_zk_proof(
+            proof_id=request.proof_id,
+            verifier_id=current_user["id"]
+        )
+        
+        return {
+            "verification_result": verification_result,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur lors de la vérification de la preuve ZK: {str(e)}"
+        )
+
+@router.post("/setup-threshold-signature")
+async def setup_threshold_signature(
+    request: ThresholdSetupRequest,
+    current_user = Depends(get_current_user)
+):
+    """Configure un schéma de signature à seuil"""
+    from server import advanced_crypto_service
+    
+    try:
+        if request.threshold > 20 or request.total_parties > 50:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Limites: threshold ≤ 20, total_parties ≤ 50"
+            )
+        
+        scheme = await advanced_crypto_service.setup_threshold_signature(
+            threshold=request.threshold,
+            total_parties=request.total_parties,
+            user_id=current_user["id"]
+        )
+        
+        return {
+            "scheme": scheme,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur lors de la configuration du schéma: {str(e)}"
+        )
+
+@router.post("/threshold-sign")
+async def threshold_sign(
+    request: ThresholdSignRequest,
+    current_user = Depends(get_current_user)
+):
+    """Crée une signature à seuil"""
+    from server import advanced_crypto_service
+    
+    try:
+        signature = await advanced_crypto_service.threshold_sign(
+            scheme_id=request.scheme_id,
+            message=request.message,
+            signing_parties=request.signing_parties,
+            user_id=current_user["id"]
+        )
+        
+        return {
+            "signature": signature,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur lors de la signature à seuil: {str(e)}"
+        )
+
+@router.post("/verify-threshold-signature")
+async def verify_threshold_signature(
+    request: ThresholdVerifyRequest,
+    current_user = Depends(get_current_user)
+):
+    """Vérifie une signature à seuil"""
+    from server import advanced_crypto_service
+    
+    try:
+        verification_result = await advanced_crypto_service.verify_threshold_signature(
+            signature_id=request.signature_id,
+            verifier_id=current_user["id"]
+        )
+        
+        return {
+            "verification_result": verification_result,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur lors de la vérification de la signature: {str(e)}"
+        )
+
+@router.get("/audit-trail")
+async def get_audit_trail(
+    limit: int = 100,
+    current_user = Depends(get_current_user)
+):
+    """Récupère le trail d'audit cryptographique"""
+    from server import advanced_crypto_service
+    
+    try:
+        if limit > 1000:
+            limit = 1000
+        
+        audit_trail = await advanced_crypto_service.get_audit_trail(
+            user_id=current_user["id"],
+            limit=limit
+        )
+        
+        return {
+            "audit_trail": audit_trail,
+            "count": len(audit_trail),
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur lors de la récupération de l'audit: {str(e)}"
+        )
+
+@router.get("/verify-audit-integrity/{audit_id}")
+async def verify_audit_integrity(
+    audit_id: str,
+    current_user = Depends(get_current_user)
+):
+    """Vérifie l'intégrité d'un événement d'audit"""
+    from server import advanced_crypto_service
+    
+    try:
+        is_valid = await advanced_crypto_service.verify_audit_integrity(audit_id)
+        
+        return {
+            "audit_id": audit_id,
+            "integrity_valid": is_valid,
+            "verified_at": datetime.utcnow(),
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur lors de la vérification de l'intégrité: {str(e)}"
+        )
+
+@router.get("/crypto-statistics")
+async def get_crypto_statistics(
+    current_user = Depends(get_current_user)
+):
+    """Récupère les statistiques cryptographiques"""
+    from server import advanced_crypto_service
+    
+    try:
+        stats = await advanced_crypto_service.get_crypto_statistics(
+            user_id=current_user["id"]
+        )
+        
+        return {
+            "statistics": stats,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur lors de la récupération des statistiques: {str(e)}"
+        )
