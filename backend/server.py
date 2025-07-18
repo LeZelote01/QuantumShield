@@ -108,6 +108,7 @@ async def health_check():
             "ai_analytics": ai_analytics_service.is_ready(),
             "advanced_economy": advanced_economy_service.is_ready(),
             "iot_protocol": iot_protocol_service.is_ready(),
+            "ota_update": ota_update_service.is_ready(),
             "database": True
         }
     }
