@@ -57,6 +57,9 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 - **Monitoring temps réel** : Heartbeat et métriques de performance
 - **Détection d'anomalies** : IA pour identifier les comportements suspects
 - **Mise à jour OTA** : Over-the-air updates sécurisées
+- **Protocoles IoT** : Support MQTT, CoAP, LoRaWAN, Zigbee, Z-Wave, Thread, Matter
+- **Communication unifiée** : Système de messages unifié pour tous les protocoles
+- **Gestion centralisée** : Dashboard pour surveiller tous les dispositifs connectés
 
 ### 5. ⛏️ Mining distribué
 
