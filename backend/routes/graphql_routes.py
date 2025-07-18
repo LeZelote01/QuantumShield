@@ -14,7 +14,7 @@ from services.graphql_service import GraphQLService
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/graphql", tags=["GraphQL"])
+router = APIRouter(prefix="/graphql", tags=["GraphQL"])
 
 class GraphQLRequest(BaseModel):
     query: str
