@@ -120,6 +120,8 @@ import routes.x509_routes
 import routes.marketplace_routes
 import routes.graphql_routes
 import routes.webhook_routes
+import routes.personalized_recommendations_routes
+import routes.personalizable_dashboard_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
 routes.geolocation_routes.geolocation_service = geolocation_service
@@ -127,6 +129,8 @@ routes.x509_routes.x509_service = x509_service
 routes.marketplace_routes.marketplace_service = marketplace_service
 routes.graphql_routes.init_graphql_service(db, services_dict)
 routes.webhook_routes.init_webhook_service(db)
+routes.personalized_recommendations_routes.init_recommendations_service(personalized_recommendations_service)
+routes.personalizable_dashboard_routes.init_dashboard_service(personalizable_dashboard_service)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
