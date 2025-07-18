@@ -285,6 +285,18 @@ backend:
         agent: "testing"
         comment: "Tests complets des fonctionnalités de sécurité renforcée effectués. RÉSULTATS: ✅ Health check sécurité (service ready: true) ✅ Dashboard sécurité (score: 100.0, événements 24h: 0, alertes actives: 0) ✅ Infrastructure de base fonctionnelle. PROBLÈMES IDENTIFIÉS: ❌ MFA TOTP setup (erreur 'User' object not subscriptable - problème d'accès aux données utilisateur) ❌ MFA status (erreur HTTP 500) ❌ Analyse comportementale (erreur HTTP 500) ❌ Recommandations sécurité (erreur HTTP 500). Le service est opérationnel pour les fonctions de base mais nécessite corrections pour MFA et analyse comportementale."
 
+  - task: "Fonctionnalités de sécurité renforcée avancées"
+    implemented: false
+    working: "NA"
+    file: "services/security_service.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Tests des fonctionnalités avancées de sécurité demandées: 1) Honeypots et pièges (fake_login, fake_api) - NON TESTÉS (endpoints non disponibles) 2) Backup et récupération avancés avec chiffrement - NON TESTÉS (endpoints non disponibles) 3) Conformité GDPR/CCPA avec rapports et suppression données - NON TESTÉS (endpoints non disponibles) 4) Audit de sécurité automatisé complet - PARTIELLEMENT TESTÉ (dashboard OK, rapports d'audit non testés) 5) Analyse comportementale avancée - IMPLÉMENTÉ mais DÉFAILLANT (erreur HTTP 500). Les fonctionnalités avancées de sécurité ne sont pas entièrement implémentées ou accessibles via les endpoints API."
+
   - task: "Service d'Analytics et IA (AIAnalyticsService)"
     implemented: true
     working: true
