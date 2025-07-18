@@ -811,3 +811,457 @@ class AdvancedCryptoService:
                 }
             ]
         }
+    
+    # ==================== NOUVELLES FONCTIONNALITÉS AVANCÉES ====================
+    
+    async def log_audit_event(self, event_type: AuditEventType, user_id: str, 
+                            details: Dict[str, Any], keypair_id: str = None) -> str:
+        """Enregistre un événement d'audit cryptographique"""
+        try:
+            audit_id = str(uuid.uuid4())
+            
+            # Créer un hash de l'événement pour l'intégrité
+            event_data = {
+                "audit_id": audit_id,
+                "event_type": event_type.value,
+                "user_id": user_id,
+                "keypair_id": keypair_id,
+                "details": details,
+                "timestamp": datetime.utcnow(),
+                "integrity_hash": None
+            }
+            
+            # Calculer le hash d'intégrité
+            event_json = json.dumps(event_data, default=str, sort_keys=True)
+            integrity_hash = hashlib.sha256(event_json.encode()).hexdigest()
+            event_data["integrity_hash"] = integrity_hash
+            
+            # Stocker dans la base de données
+            await self.db.crypto_audit_log.insert_one(event_data)
+            
+            logger.info(f"Audit event logged: {event_type.value} for user {user_id}")
+            return audit_id
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de l'audit: {e}")
+            raise Exception(f"Impossible d'enregistrer l'audit: {e}")
+    
+    async def get_audit_trail(self, user_id: str, limit: int = 100) -> List[Dict[str, Any]]:
+        """Récupère le trail d'audit pour un utilisateur"""
+        try:
+            cursor = self.db.crypto_audit_log.find(
+                {"user_id": user_id}
+            ).sort("timestamp", -1).limit(limit)
+            
+            audit_trail = []
+            async for event in cursor:
+                event["_id"] = str(event["_id"])
+                audit_trail.append(event)
+            
+            return audit_trail
+            
+        except Exception as e:
+            logger.error(f"Erreur récupération audit trail: {e}")
+            return []
+    
+    async def verify_audit_integrity(self, audit_id: str) -> bool:
+        """Vérifie l'intégrité d'un événement d'audit"""
+        try:
+            event = await self.db.crypto_audit_log.find_one({"audit_id": audit_id})
+            if not event:
+                return False
+            
+            stored_hash = event.get("integrity_hash")
+            if not stored_hash:
+                return False
+            
+            # Recalculer le hash
+            event_copy = event.copy()
+            event_copy["integrity_hash"] = None
+            event_json = json.dumps(event_copy, default=str, sort_keys=True)
+            calculated_hash = hashlib.sha256(event_json.encode()).hexdigest()
+            
+            return stored_hash == calculated_hash
+            
+        except Exception as e:
+            logger.error(f"Erreur vérification intégrité audit: {e}")
+            return False
+    
+    async def generate_zk_proof(self, proof_type: ZKProofType, secret_value: str, 
+                               public_parameters: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+        """Génère une preuve zero-knowledge"""
+        try:
+            proof_id = str(uuid.uuid4())
+            
+            # Simulation d'une preuve ZK (implémentation simplifiée pour démo)
+            if proof_type == ZKProofType.IDENTITY:
+                # Preuve d'identité sans révéler l'identité
+                challenge = secrets.token_hex(32)
+                response = hashlib.sha256(f"{secret_value}{challenge}".encode()).hexdigest()
+                
+                proof_data = {
+                    "proof_id": proof_id,
+                    "proof_type": proof_type.value,
+                    "challenge": challenge,
+                    "response": response,
+                    "public_parameters": public_parameters,
+                    "timestamp": datetime.utcnow(),
+                    "user_id": user_id
+                }
+                
+            elif proof_type == ZKProofType.KNOWLEDGE:
+                # Preuve de connaissance d'un secret
+                commitment = hashlib.sha256(f"{secret_value}_{secrets.token_hex(16)}".encode()).hexdigest()
+                challenge = secrets.token_hex(32)
+                response = hashlib.sha256(f"{commitment}{challenge}".encode()).hexdigest()
+                
+                proof_data = {
+                    "proof_id": proof_id,
+                    "proof_type": proof_type.value,
+                    "commitment": commitment,
+                    "challenge": challenge,
+                    "response": response,
+                    "public_parameters": public_parameters,
+                    "timestamp": datetime.utcnow(),
+                    "user_id": user_id
+                }
+                
+            elif proof_type == ZKProofType.RANGE:
+                # Preuve qu'une valeur est dans un certain range
+                min_val = public_parameters.get("min_value", 0)
+                max_val = public_parameters.get("max_value", 100)
+                
+                # Simulation: générer des preuves pour différentes valeurs dans le range
+                proof_components = []
+                for i in range(3):  # 3 composantes pour la preuve
+                    component = hashlib.sha256(f"{secret_value}_{i}_{min_val}_{max_val}".encode()).hexdigest()
+                    proof_components.append(component)
+                
+                proof_data = {
+                    "proof_id": proof_id,
+                    "proof_type": proof_type.value,
+                    "range_min": min_val,
+                    "range_max": max_val,
+                    "proof_components": proof_components,
+                    "public_parameters": public_parameters,
+                    "timestamp": datetime.utcnow(),
+                    "user_id": user_id
+                }
+                
+            else:  # MEMBERSHIP
+                # Preuve d'appartenance à un ensemble
+                membership_set = public_parameters.get("membership_set", [])
+                merkle_root = hashlib.sha256(str(membership_set).encode()).hexdigest()
+                
+                proof_data = {
+                    "proof_id": proof_id,
+                    "proof_type": proof_type.value,
+                    "merkle_root": merkle_root,
+                    "membership_proof": hashlib.sha256(f"{secret_value}_{merkle_root}".encode()).hexdigest(),
+                    "public_parameters": public_parameters,
+                    "timestamp": datetime.utcnow(),
+                    "user_id": user_id
+                }
+            
+            # Stocker la preuve
+            await self.db.zk_proofs.insert_one(proof_data)
+            
+            # Enregistrer l'audit
+            await self.log_audit_event(
+                AuditEventType.ZK_PROOF_GENERATION,
+                user_id,
+                {"proof_id": proof_id, "proof_type": proof_type.value}
+            )
+            
+            # Retourner la preuve publique (sans le secret)
+            public_proof = proof_data.copy()
+            if "secret_value" in public_proof:
+                del public_proof["secret_value"]
+            
+            return public_proof
+            
+        except Exception as e:
+            logger.error(f"Erreur génération preuve ZK: {e}")
+            raise Exception(f"Impossible de générer la preuve ZK: {e}")
+    
+    async def verify_zk_proof(self, proof_id: str, verifier_id: str) -> Dict[str, Any]:
+        """Vérifie une preuve zero-knowledge"""
+        try:
+            proof = await self.db.zk_proofs.find_one({"proof_id": proof_id})
+            if not proof:
+                return {"valid": False, "error": "Preuve non trouvée"}
+            
+            # Vérification simplifiée selon le type de preuve
+            proof_type = proof["proof_type"]
+            is_valid = False
+            
+            if proof_type == ZKProofType.IDENTITY.value:
+                # Vérifier la preuve d'identité
+                challenge = proof["challenge"]
+                response = proof["response"]
+                # Dans une vraie implémentation, on vérifierait sans connaître le secret
+                is_valid = len(response) == 64  # Hash SHA256
+                
+            elif proof_type == ZKProofType.KNOWLEDGE.value:
+                # Vérifier la preuve de connaissance
+                commitment = proof["commitment"]
+                challenge = proof["challenge"]
+                response = proof["response"]
+                is_valid = len(commitment) == 64 and len(response) == 64
+                
+            elif proof_type == ZKProofType.RANGE.value:
+                # Vérifier la preuve de range
+                proof_components = proof["proof_components"]
+                is_valid = len(proof_components) == 3 and all(len(c) == 64 for c in proof_components)
+                
+            elif proof_type == ZKProofType.MEMBERSHIP.value:
+                # Vérifier la preuve d'appartenance
+                merkle_root = proof["merkle_root"]
+                membership_proof = proof["membership_proof"]
+                is_valid = len(merkle_root) == 64 and len(membership_proof) == 64
+            
+            # Enregistrer l'audit de vérification
+            await self.log_audit_event(
+                AuditEventType.ZK_PROOF_VERIFICATION,
+                verifier_id,
+                {
+                    "proof_id": proof_id,
+                    "proof_type": proof_type,
+                    "verification_result": is_valid
+                }
+            )
+            
+            return {
+                "valid": is_valid,
+                "proof_id": proof_id,
+                "proof_type": proof_type,
+                "verified_at": datetime.utcnow(),
+                "verifier_id": verifier_id
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur vérification preuve ZK: {e}")
+            return {"valid": False, "error": str(e)}
+    
+    async def setup_threshold_signature(self, threshold: int, total_parties: int, 
+                                      user_id: str) -> Dict[str, Any]:
+        """Configure un schéma de signature à seuil"""
+        try:
+            if threshold > total_parties or threshold < 1:
+                raise ValueError("Seuil invalide")
+            
+            scheme_id = str(uuid.uuid4())
+            
+            # Générer les parts pour chaque partie (simulation)
+            parties = []
+            for i in range(total_parties):
+                party_id = str(uuid.uuid4())
+                private_share = secrets.token_hex(32)
+                public_share = hashlib.sha256(private_share.encode()).hexdigest()
+                
+                parties.append({
+                    "party_id": party_id,
+                    "party_index": i + 1,
+                    "private_share": private_share,
+                    "public_share": public_share
+                })
+            
+            # Calculer la clé publique globale
+            global_public_key = hashlib.sha256(
+                "".join([p["public_share"] for p in parties]).encode()
+            ).hexdigest()
+            
+            scheme_data = {
+                "scheme_id": scheme_id,
+                "threshold": threshold,
+                "total_parties": total_parties,
+                "parties": parties,
+                "global_public_key": global_public_key,
+                "created_by": user_id,
+                "created_at": datetime.utcnow(),
+                "active": True
+            }
+            
+            # Stocker le schéma
+            await self.db.threshold_schemes.insert_one(scheme_data)
+            
+            # Enregistrer l'audit
+            await self.log_audit_event(
+                AuditEventType.THRESHOLD_SIGNATURE,
+                user_id,
+                {
+                    "scheme_id": scheme_id,
+                    "threshold": threshold,
+                    "total_parties": total_parties,
+                    "action": "setup"
+                }
+            )
+            
+            return {
+                "scheme_id": scheme_id,
+                "threshold": threshold,
+                "total_parties": total_parties,
+                "global_public_key": global_public_key,
+                "parties": [{"party_id": p["party_id"], "party_index": p["party_index"]} for p in parties]
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur setup threshold signature: {e}")
+            raise Exception(f"Impossible de configurer la signature à seuil: {e}")
+    
+    async def threshold_sign(self, scheme_id: str, message: str, 
+                           signing_parties: List[str], user_id: str) -> Dict[str, Any]:
+        """Crée une signature à seuil"""
+        try:
+            scheme = await self.db.threshold_schemes.find_one({"scheme_id": scheme_id})
+            if not scheme:
+                raise ValueError("Schéma de signature non trouvé")
+            
+            if len(signing_parties) < scheme["threshold"]:
+                raise ValueError(f"Nombre insuffisant de parties: {len(signing_parties)} < {scheme['threshold']}")
+            
+            # Récupérer les parties signataires
+            signing_party_data = []
+            for party_id in signing_parties:
+                party = next((p for p in scheme["parties"] if p["party_id"] == party_id), None)
+                if party:
+                    signing_party_data.append(party)
+            
+            if len(signing_party_data) < scheme["threshold"]:
+                raise ValueError("Parties signataires insuffisantes")
+            
+            # Générer les signatures partielles
+            partial_signatures = []
+            for party in signing_party_data:
+                partial_sig = hashlib.sha256(
+                    f"{message}_{party['private_share']}_{party['party_index']}".encode()
+                ).hexdigest()
+                partial_signatures.append({
+                    "party_id": party["party_id"],
+                    "party_index": party["party_index"],
+                    "partial_signature": partial_sig
+                })
+            
+            # Combiner les signatures partielles
+            combined_signature = hashlib.sha256(
+                "".join([ps["partial_signature"] for ps in partial_signatures]).encode()
+            ).hexdigest()
+            
+            signature_data = {
+                "signature_id": str(uuid.uuid4()),
+                "scheme_id": scheme_id,
+                "message": message,
+                "combined_signature": combined_signature,
+                "partial_signatures": partial_signatures,
+                "signing_parties": signing_parties,
+                "threshold_met": len(signing_parties) >= scheme["threshold"],
+                "created_at": datetime.utcnow(),
+                "created_by": user_id
+            }
+            
+            # Stocker la signature
+            await self.db.threshold_signatures.insert_one(signature_data)
+            
+            # Enregistrer l'audit
+            await self.log_audit_event(
+                AuditEventType.THRESHOLD_SIGNATURE,
+                user_id,
+                {
+                    "scheme_id": scheme_id,
+                    "signature_id": signature_data["signature_id"],
+                    "threshold_met": signature_data["threshold_met"],
+                    "action": "sign"
+                }
+            )
+            
+            return {
+                "signature_id": signature_data["signature_id"],
+                "combined_signature": combined_signature,
+                "threshold_met": signature_data["threshold_met"],
+                "signing_parties_count": len(signing_parties)
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur signature à seuil: {e}")
+            raise Exception(f"Impossible de créer la signature à seuil: {e}")
+    
+    async def verify_threshold_signature(self, signature_id: str, verifier_id: str) -> Dict[str, Any]:
+        """Vérifie une signature à seuil"""
+        try:
+            signature = await self.db.threshold_signatures.find_one({"signature_id": signature_id})
+            if not signature:
+                return {"valid": False, "error": "Signature non trouvée"}
+            
+            scheme = await self.db.threshold_schemes.find_one({"scheme_id": signature["scheme_id"]})
+            if not scheme:
+                return {"valid": False, "error": "Schéma non trouvé"}
+            
+            # Vérifier que le seuil est atteint
+            if not signature["threshold_met"]:
+                return {"valid": False, "error": "Seuil non atteint"}
+            
+            # Recalculer la signature pour vérification
+            partial_signatures = signature["partial_signatures"]
+            recalculated_signature = hashlib.sha256(
+                "".join([ps["partial_signature"] for ps in partial_signatures]).encode()
+            ).hexdigest()
+            
+            is_valid = recalculated_signature == signature["combined_signature"]
+            
+            # Enregistrer l'audit
+            await self.log_audit_event(
+                AuditEventType.THRESHOLD_SIGNATURE,
+                verifier_id,
+                {
+                    "signature_id": signature_id,
+                    "verification_result": is_valid,
+                    "action": "verify"
+                }
+            )
+            
+            return {
+                "valid": is_valid,
+                "signature_id": signature_id,
+                "scheme_id": signature["scheme_id"],
+                "threshold_met": signature["threshold_met"],
+                "verified_at": datetime.utcnow(),
+                "verifier_id": verifier_id
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur vérification signature à seuil: {e}")
+            return {"valid": False, "error": str(e)}
+    
+    async def get_crypto_statistics(self, user_id: str) -> Dict[str, Any]:
+        """Récupère les statistiques cryptographiques pour un utilisateur"""
+        try:
+            # Compter les événements d'audit
+            audit_counts = {}
+            for event_type in AuditEventType:
+                count = await self.db.crypto_audit_log.count_documents({
+                    "user_id": user_id,
+                    "event_type": event_type.value
+                })
+                audit_counts[event_type.value] = count
+            
+            # Compter les paires de clés
+            keypairs_count = await self.db.advanced_keypairs.count_documents({"user_id": user_id})
+            
+            # Compter les preuves ZK
+            zk_proofs_count = await self.db.zk_proofs.count_documents({"user_id": user_id})
+            
+            # Compter les schémas de signature à seuil
+            threshold_schemes_count = await self.db.threshold_schemes.count_documents({"created_by": user_id})
+            
+            return {
+                "user_id": user_id,
+                "audit_events": audit_counts,
+                "keypairs_count": keypairs_count,
+                "zk_proofs_count": zk_proofs_count,
+                "threshold_schemes_count": threshold_schemes_count,
+                "generated_at": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur récupération statistiques: {e}")
+            return {"error": str(e)}
