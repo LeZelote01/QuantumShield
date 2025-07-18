@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Devices from './pages/Devices/Devices';
 import DeviceDetails from './pages/Devices/DeviceDetails';
 import Cryptography from './pages/Cryptography/Cryptography';
+import AdvancedCryptography from './pages/Cryptography/AdvancedCryptography';
 import Blockchain from './pages/Blockchain/Blockchain';
 import Mining from './pages/Mining/Mining';
 import Tokens from './pages/Tokens/Tokens';
