@@ -48,6 +48,7 @@ from services.ota_update_service import OTAUpdateService
 from services.geolocation_service import GeolocationService
 from services.x509_service import X509Service
 from services.marketplace_service import MarketplaceService
+from services.hsm_service import HSMService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
