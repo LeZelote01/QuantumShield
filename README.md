@@ -73,6 +73,7 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 - **Gestion centralisée** : Dashboard pour surveiller tous les dispositifs connectés
 - **Rollback automatique** : Récupération en cas d'échec de mise à jour
 - **Mises à jour en masse** : Déploiement simultané sur plusieurs dispositifs
+- **Géolocalisation avancée** : Tracking GPS, géofencing, alertes de mouvement
 
 ### 5. ⛏️ Mining distribué
 
