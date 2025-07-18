@@ -24,6 +24,7 @@ import Mining from './pages/Mining/Mining';
 import Tokens from './pages/Tokens/Tokens';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
+import Geolocation from './pages/Geolocation';
 
 // Security Pages
 import SecurityDashboard from './pages/Security/SecurityDashboard';
