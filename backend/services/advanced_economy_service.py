@@ -1301,8 +1301,6 @@ class AdvancedEconomyService:
                 "error": str(e)
             }
     
-=======
->>>>>>> main
     # ===== MÉTHODES UTILITAIRES =====
     
     def _get_lock_period(self, staking_type: str) -> int:
