@@ -116,7 +116,41 @@ class QuantumShieldTester:
             "security_gdpr_delete_data": False,
             "security_compliance_report": False,
             "security_comprehensive_report": False,
-            "security_health_check": False
+            "security_health_check": False,
+            # Advanced Blockchain Features Tests
+            "advanced_blockchain_health": False,
+            "advanced_blockchain_overview": False,
+            "advanced_blockchain_metrics": False,
+            "advanced_blockchain_network_health": False,
+            # Smart Contracts Tests
+            "smart_contracts_templates": False,
+            "smart_contracts_deploy": False,
+            "smart_contracts_list": False,
+            "smart_contracts_get": False,
+            "smart_contracts_execute": False,
+            "smart_contracts_executions": False,
+            # Governance Tests
+            "governance_proposals_list": False,
+            "governance_proposal_create": False,
+            "governance_proposal_get": False,
+            "governance_proposal_vote": False,
+            "governance_proposal_votes": False,
+            "governance_voting_power": False,
+            "governance_proposal_execute": False,
+            # Consensus Tests
+            "consensus_validators": False,
+            "consensus_stake": False,
+            "consensus_stake_pools": False,
+            "consensus_status": False,
+            # Interoperability Tests
+            "interop_bridges": False,
+            "interop_bridge_transfer": False,
+            "interop_transactions": False,
+            # Compression/Archiving Tests
+            "management_compress_blocks": False,
+            "management_archive_blocks": False,
+            "management_compressed_blocks": False,
+            "management_archive_periods": False
         }
         self.test_data = {}
 
