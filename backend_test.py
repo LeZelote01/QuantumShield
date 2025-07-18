@@ -9,6 +9,7 @@ import aiohttp
 import json
 import os
 import sys
+import uuid
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 
@@ -98,7 +99,24 @@ class QuantumShieldTester:
             "advanced_crypto_verify_threshold_signature": False,
             "advanced_crypto_audit_trail": False,
             "advanced_crypto_verify_audit_integrity": False,
-            "advanced_crypto_crypto_statistics": False
+            "advanced_crypto_crypto_statistics": False,
+            # Enhanced Security Features Tests
+            "security_mfa_verify_totp_setup": False,
+            "security_mfa_verify_totp": False,
+            "security_mfa_disable": False,
+            "security_audit_report": False,
+            "security_log_event": False,
+            "security_honeypot_create": False,
+            "security_honeypot_trigger": False,
+            "security_honeypot_report": False,
+            "security_backup_create": False,
+            "security_backup_restore": False,
+            "security_backup_report": False,
+            "security_gdpr_report": False,
+            "security_gdpr_delete_data": False,
+            "security_compliance_report": False,
+            "security_comprehensive_report": False,
+            "security_health_check": False
         }
         self.test_data = {}
 
@@ -1117,6 +1135,114 @@ class QuantumShieldTester:
         
         return False
 
+    # ===== ENHANCED SECURITY FEATURES TESTS =====
+    
+    async def test_security_mfa_verify_totp_setup(self):
+        """Test de vérification et activation TOTP"""
+        print("\n🔐 Test Security MFA Verify TOTP Setup...")
+        
+        if not self.test_data.get("mfa_secret"):
+            print("❌ No MFA secret available for TOTP setup verification test")
+            return False
+        
+        try:
+            # Générer un code TOTP valide pour le test
+            import pyotp
+            totp = pyotp.TOTP(self.test_data["mfa_secret"])
+            totp_code = totp.now()
+            
+            verify_request = {
+                "totp_code": totp_code
+            }
+            response = await self.make_request("POST", "/security/mfa/verify-totp-setup", 
+                                             verify_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("verification_data") and data.get("status") == "success":
+                    verification = data["verification_data"]
+                    print("✅ TOTP setup verification successful")
+                    print(f"   Status: {verification.get('status')}")
+                    print(f"   MFA Enabled: {verification.get('mfa_enabled')}")
+                    print(f"   Backup Codes: {len(verification.get('backup_codes', []))}")
+                    self.test_results["security_mfa_verify_totp_setup"] = True
+                    return True
+                else:
+                    print(f"❌ TOTP setup verification failed: {data}")
+            else:
+                print(f"❌ TOTP setup verification HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ TOTP setup verification exception: {e}")
+        
+        return False
+    
+    async def test_security_mfa_verify_totp(self):
+        """Test de vérification code TOTP"""
+        print("\n🔍 Test Security MFA Verify TOTP...")
+        
+        if not self.test_data.get("mfa_secret"):
+            print("❌ No MFA secret available for TOTP verification test")
+            return False
+        
+        try:
+            # Générer un code TOTP valide pour le test
+            import pyotp
+            totp = pyotp.TOTP(self.test_data["mfa_secret"])
+            totp_code = totp.now()
+            
+            verify_request = {
+                "totp_code": totp_code
+            }
+            response = await self.make_request("POST", "/security/mfa/verify-totp", 
+                                             verify_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "valid" in data and data.get("status") == "success":
+                    print("✅ TOTP verification successful")
+                    print(f"   Valid: {data.get('valid')}")
+                    print(f"   Timestamp: {data.get('timestamp')}")
+                    self.test_results["security_mfa_verify_totp"] = True
+                    return True
+                else:
+                    print(f"❌ TOTP verification failed: {data}")
+            else:
+                print(f"❌ TOTP verification HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ TOTP verification exception: {e}")
+        
+        return False
+    
+    async def test_security_mfa_disable(self):
+        """Test de désactivation MFA"""
+        print("\n🔒 Test Security MFA Disable...")
+        
+        try:
+            disable_request = {
+                "method": "totp"
+            }
+            response = await self.make_request("POST", "/security/mfa/disable", 
+                                             disable_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("disable_data") and data.get("status") == "success":
+                    disable_data = data["disable_data"]
+                    print("✅ MFA disable successful")
+                    print(f"   Status: {disable_data.get('status')}")
+                    print(f"   Method: {disable_data.get('method')}")
+                    print(f"   Disabled At: {disable_data.get('disabled_at')}")
+                    self.test_results["security_mfa_disable"] = True
+                    return True
+                else:
+                    print(f"❌ MFA disable failed: {data}")
+            else:
+                print(f"❌ MFA disable HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ MFA disable exception: {e}")
+        
+        return False
+
     # ===== IOT PROTOCOL SERVICE TESTS =====
     
     async def test_iot_protocol_health(self):
@@ -1871,10 +1997,13 @@ class QuantumShieldTester:
             self.test_advanced_crypto_algorithm_recommendations,
             # Security Service Tests
             self.test_security_mfa_setup,
+            self.test_security_mfa_verify_totp_setup,
+            self.test_security_mfa_verify_totp,
             self.test_security_mfa_status,
             self.test_security_behavior_analysis,
             self.test_security_dashboard,
             self.test_security_recommendations,
+            self.test_security_mfa_disable,
             self.test_security_health,
             # AI Analytics Service Tests
             self.test_ai_analytics_device_anomalies,

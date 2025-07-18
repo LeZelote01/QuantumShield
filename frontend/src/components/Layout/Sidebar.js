@@ -10,7 +10,8 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
   XMarkIcon,
-  KeyIcon
+  KeyIcon,
+  LockClosedIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -27,6 +28,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Blockchain', href: '/blockchain', icon: CubeIcon },
     { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
     { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },
+    { name: 'Sécurité', href: '/security', icon: LockClosedIcon },
     { name: 'Profil', href: '/profile', icon: UserCircleIcon },
     { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
   ];

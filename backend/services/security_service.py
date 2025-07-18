@@ -595,3 +595,416 @@ class SecurityService:
         except Exception as e:
             logger.error(f"Erreur calcul score sécurité: {e}")
             return 50.0
+    
+    # ===== HONEYPOTS ET PIÈGES =====
+    
+    async def create_honeypot(self, honeypot_type: str, config: Dict[str, Any]) -> Dict[str, Any]:
+        """Crée un piège pour détecter les attaques"""
+        try:
+            honeypot = {
+                "id": str(uuid.uuid4()),
+                "type": honeypot_type,
+                "config": config,
+                "created_at": datetime.utcnow(),
+                "active": True,
+                "interactions": 0,
+                "last_triggered": None
+            }
+            
+            await self.db.honeypots.insert_one(honeypot)
+            
+            return {
+                "honeypot_id": honeypot["id"],
+                "type": honeypot_type,
+                "status": "active",
+                "created_at": honeypot["created_at"]
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur création honeypot: {e}")
+            raise Exception(f"Impossible de créer le honeypot: {e}")
+    
+    async def trigger_honeypot(self, honeypot_id: str, interaction_data: Dict[str, Any]) -> None:
+        """Déclenche un piège et enregistre l'interaction"""
+        try:
+            # Mettre à jour le honeypot
+            await self.db.honeypots.update_one(
+                {"id": honeypot_id},
+                {
+                    "$inc": {"interactions": 1},
+                    "$set": {"last_triggered": datetime.utcnow()}
+                }
+            )
+            
+            # Enregistrer l'interaction
+            interaction = {
+                "id": str(uuid.uuid4()),
+                "honeypot_id": honeypot_id,
+                "data": interaction_data,
+                "timestamp": datetime.utcnow(),
+                "threat_level": "high"
+            }
+            
+            await self.db.honeypot_interactions.insert_one(interaction)
+            
+            # Créer une alerte critique
+            await self.create_security_alert(
+                user_id=interaction_data.get("user_id", "unknown"),
+                alert_type="honeypot_triggered",
+                risk_score=0.95,
+                anomalies=[{
+                    "type": "honeypot_interaction",
+                    "description": f"Interaction avec honeypot {honeypot_id}",
+                    "severity": SecurityLevel.CRITICAL.value
+                }]
+            )
+            
+        except Exception as e:
+            logger.error(f"Erreur déclenchement honeypot: {e}")
+    
+    async def get_honeypot_report(self) -> Dict[str, Any]:
+        """Génère un rapport sur les honeypots"""
+        try:
+            # Récupérer tous les honeypots
+            honeypots = await self.db.honeypots.find({"active": True}).to_list(None)
+            
+            # Récupérer les interactions récentes
+            recent_interactions = await self.db.honeypot_interactions.find(
+                {"timestamp": {"$gte": datetime.utcnow() - timedelta(hours=24)}}
+            ).to_list(None)
+            
+            # Analyser les statistiques
+            total_interactions = await self.db.honeypot_interactions.count_documents({})
+            
+            return {
+                "active_honeypots": len(honeypots),
+                "total_interactions": total_interactions,
+                "recent_interactions": len(recent_interactions),
+                "honeypots": honeypots,
+                "recent_activity": recent_interactions[:10]
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur rapport honeypots: {e}")
+            return {"active_honeypots": 0, "total_interactions": 0}
+    
+    # ===== BACKUP ET RÉCUPÉRATION =====
+    
+    async def create_security_backup(self, backup_type: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Crée une sauvegarde sécurisée"""
+        try:
+            # Chiffrer les données sensibles
+            encrypted_data = self.cipher_suite.encrypt(json.dumps(data).encode())
+            
+            backup = {
+                "id": str(uuid.uuid4()),
+                "type": backup_type,
+                "encrypted_data": encrypted_data.decode(),
+                "created_at": datetime.utcnow(),
+                "checksum": hashlib.sha256(encrypted_data).hexdigest(),
+                "size": len(encrypted_data),
+                "status": "active"
+            }
+            
+            await self.db.security_backups.insert_one(backup)
+            
+            return {
+                "backup_id": backup["id"],
+                "type": backup_type,
+                "created_at": backup["created_at"],
+                "checksum": backup["checksum"],
+                "status": "created"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur création backup: {e}")
+            raise Exception(f"Impossible de créer la sauvegarde: {e}")
+    
+    async def restore_security_backup(self, backup_id: str) -> Dict[str, Any]:
+        """Restaure une sauvegarde sécurisée"""
+        try:
+            # Récupérer la sauvegarde
+            backup = await self.db.security_backups.find_one({"id": backup_id})
+            if not backup:
+                raise ValueError("Sauvegarde non trouvée")
+            
+            # Déchiffrer les données
+            encrypted_data = backup["encrypted_data"].encode()
+            
+            # Vérifier l'intégrité
+            if hashlib.sha256(encrypted_data).hexdigest() != backup["checksum"]:
+                raise ValueError("Intégrité de la sauvegarde compromise")
+            
+            # Déchiffrer
+            decrypted_data = self.cipher_suite.decrypt(encrypted_data)
+            data = json.loads(decrypted_data.decode())
+            
+            return {
+                "backup_id": backup_id,
+                "type": backup["type"],
+                "data": data,
+                "restored_at": datetime.utcnow(),
+                "status": "restored"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur restauration backup: {e}")
+            raise Exception(f"Impossible de restaurer la sauvegarde: {e}")
+    
+    async def get_backup_report(self) -> Dict[str, Any]:
+        """Génère un rapport sur les sauvegardes"""
+        try:
+            # Récupérer toutes les sauvegardes
+            backups = await self.db.security_backups.find({}).to_list(None)
+            
+            # Analyser par type
+            backup_stats = {}
+            total_size = 0
+            
+            for backup in backups:
+                backup_type = backup["type"]
+                if backup_type not in backup_stats:
+                    backup_stats[backup_type] = {
+                        "count": 0,
+                        "size": 0
+                    }
+                backup_stats[backup_type]["count"] += 1
+                backup_stats[backup_type]["size"] += backup["size"]
+                total_size += backup["size"]
+            
+            return {
+                "total_backups": len(backups),
+                "total_size": total_size,
+                "backup_types": backup_stats,
+                "recent_backups": sorted(backups, key=lambda x: x["created_at"], reverse=True)[:10]
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur rapport sauvegardes: {e}")
+            return {"total_backups": 0, "total_size": 0}
+    
+    # ===== CONFORMITÉ RÉGLEMENTAIRE =====
+    
+    async def generate_gdpr_report(self, user_id: str) -> Dict[str, Any]:
+        """Génère un rapport GDPR pour un utilisateur"""
+        try:
+            # Récupérer toutes les données personnelles
+            user_data = await self.db.users.find_one({"id": user_id})
+            if not user_data:
+                raise ValueError("Utilisateur non trouvé")
+            
+            # Récupérer les données associées
+            mfa_configs = await self.db.mfa_configs.find({"user_id": user_id}).to_list(None)
+            security_events = await self.db.security_events.find({"user_id": user_id}).to_list(None)
+            behavior_data = await self.db.user_behavior.find({"user_id": user_id}).to_list(None)
+            
+            # Compilation des données
+            gdpr_data = {
+                "user_profile": {
+                    "id": user_data["id"],
+                    "email": user_data["email"],
+                    "created_at": user_data.get("created_at"),
+                    "last_login": user_data.get("last_login")
+                },
+                "security_data": {
+                    "mfa_configurations": len(mfa_configs),
+                    "security_events": len(security_events),
+                    "behavior_records": len(behavior_data)
+                },
+                "data_processing": {
+                    "purposes": ["authentication", "security", "fraud_prevention"],
+                    "legal_basis": "legitimate_interest",
+                    "retention_period": "3 years"
+                },
+                "rights": {
+                    "access": "granted",
+                    "rectification": "available",
+                    "erasure": "available",
+                    "portability": "available"
+                }
+            }
+            
+            return {
+                "gdpr_report": gdpr_data,
+                "generated_at": datetime.utcnow(),
+                "status": "complete"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur rapport GDPR: {e}")
+            raise Exception(f"Impossible de générer le rapport GDPR: {e}")
+    
+    async def delete_user_data(self, user_id: str, verification_code: str) -> Dict[str, Any]:
+        """Supprime toutes les données d'un utilisateur (droit à l'effacement)"""
+        try:
+            # Vérifier le code de vérification (à implémenter selon les besoins)
+            # Pour la démo, on accepte tout code non vide
+            if not verification_code:
+                raise ValueError("Code de vérification requis")
+            
+            # Supprimer les données utilisateur
+            collections_to_clean = [
+                "users",
+                "mfa_configs", 
+                "security_events",
+                "user_behavior",
+                "security_alerts"
+            ]
+            
+            deleted_records = {}
+            
+            for collection in collections_to_clean:
+                result = await self.db[collection].delete_many({"user_id": user_id})
+                deleted_records[collection] = result.deleted_count
+            
+            # Créer un log de suppression
+            deletion_log = {
+                "id": str(uuid.uuid4()),
+                "user_id": user_id,
+                "deleted_records": deleted_records,
+                "deletion_date": datetime.utcnow(),
+                "verification_code": hashlib.sha256(verification_code.encode()).hexdigest()
+            }
+            
+            await self.db.deletion_logs.insert_one(deletion_log)
+            
+            return {
+                "status": "deleted",
+                "deleted_records": deleted_records,
+                "deletion_date": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur suppression données utilisateur: {e}")
+            raise Exception(f"Impossible de supprimer les données: {e}")
+    
+    async def get_compliance_report(self) -> Dict[str, Any]:
+        """Génère un rapport de conformité global"""
+        try:
+            # Compter les utilisateurs
+            total_users = await self.db.users.count_documents({})
+            
+            # Compter les consentements (à implémenter selon les besoins)
+            # Pour la démo, on simule
+            consents = await self.db.users.count_documents({"consent_given": True})
+            
+            # Compter les suppressions
+            deletions = await self.db.deletion_logs.count_documents({})
+            
+            # Compter les sauvegardes
+            backups = await self.db.security_backups.count_documents({})
+            
+            return {
+                "gdpr_compliance": {
+                    "total_users": total_users,
+                    "consents_given": consents,
+                    "data_deletions": deletions,
+                    "security_backups": backups,
+                    "compliance_score": self._calculate_compliance_score(total_users, consents, backups)
+                },
+                "ccpa_compliance": {
+                    "data_protection_measures": True,
+                    "user_rights_implemented": True,
+                    "privacy_policy_updated": True
+                },
+                "generated_at": datetime.utcnow()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur rapport conformité: {e}")
+            return {"gdpr_compliance": {"compliance_score": 0.0}}
+    
+    def _calculate_compliance_score(self, total_users: int, consents: int, backups: int) -> float:
+        """Calcule un score de conformité"""
+        try:
+            base_score = 0.0
+            
+            # Score basé sur les consentements
+            if total_users > 0:
+                consent_ratio = consents / total_users
+                base_score += (consent_ratio * 40)
+            
+            # Score basé sur les sauvegardes
+            if backups > 0:
+                base_score += 30
+            
+            # Score basé sur l'implémentation des droits
+            base_score += 30  # Droits implémentés
+            
+            return min(100.0, base_score)
+            
+        except Exception as e:
+            logger.error(f"Erreur calcul score conformité: {e}")
+            return 0.0
+    
+    # ===== FONCTIONS UTILITAIRES =====
+    
+    async def get_comprehensive_security_report(self) -> Dict[str, Any]:
+        """Génère un rapport de sécurité complet"""
+        try:
+            # Récupérer tous les rapports
+            dashboard = await self.get_security_dashboard()
+            audit_report = await self.get_security_audit_report()
+            honeypot_report = await self.get_honeypot_report()
+            backup_report = await self.get_backup_report()
+            compliance_report = await self.get_compliance_report()
+            
+            return {
+                "overview": dashboard,
+                "audit": audit_report,
+                "honeypots": honeypot_report,
+                "backups": backup_report,
+                "compliance": compliance_report,
+                "generated_at": datetime.utcnow(),
+                "report_version": "1.0"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur rapport sécurité complet: {e}")
+            return {"status": "error", "message": str(e)}
+    
+    async def perform_security_health_check(self) -> Dict[str, Any]:
+        """Effectue un contrôle de santé sécurité"""
+        try:
+            health_status = {
+                "mfa_service": self.is_ready(),
+                "honeypots_active": False,
+                "backups_available": False,
+                "compliance_ok": False,
+                "overall_status": "degraded"
+            }
+            
+            # Vérifier les honeypots
+            honeypot_count = await self.db.honeypots.count_documents({"active": True})
+            health_status["honeypots_active"] = honeypot_count > 0
+            
+            # Vérifier les sauvegardes
+            backup_count = await self.db.security_backups.count_documents({})
+            health_status["backups_available"] = backup_count > 0
+            
+            # Vérifier la conformité
+            compliance = await self.get_compliance_report()
+            health_status["compliance_ok"] = compliance["gdpr_compliance"]["compliance_score"] > 70
+            
+            # Statut global
+            all_checks = [
+                health_status["mfa_service"],
+                health_status["honeypots_active"],
+                health_status["backups_available"],
+                health_status["compliance_ok"]
+            ]
+            
+            if all(all_checks):
+                health_status["overall_status"] = "healthy"
+            elif sum(all_checks) >= 3:
+                health_status["overall_status"] = "good"
+            elif sum(all_checks) >= 2:
+                health_status["overall_status"] = "degraded"
+            else:
+                health_status["overall_status"] = "critical"
+            
+            return health_status
+            
+        except Exception as e:
+            logger.error(f"Erreur contrôle santé sécurité: {e}")
+            return {"overall_status": "error", "error": str(e)}

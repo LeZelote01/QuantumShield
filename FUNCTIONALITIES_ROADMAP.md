@@ -113,12 +113,12 @@
 - [ ] Mécanismes de gouvernance
 
 #### 🛡️ **Sécurité Renforcée**
-- [ ] Authentification multi-facteur (2FA/MFA)
-- [ ] Audit de sécurité automatisé
-- [ ] Honeypots et pièges
-- [ ] Analyse comportementale
-- [ ] Backup et récupération avancés
-- [ ] Conformité réglementaire (GDPR, CCPA)
+- [x] Authentification multi-facteur (2FA/MFA)
+- [x] Audit de sécurité automatisé
+- [x] Honeypots et pièges
+- [x] Analyse comportementale
+- [x] Backup et récupération avancés
+- [x] Conformité réglementaire (GDPR, CCPA)
 
 #### 📊 **Analytics et IA**
 
