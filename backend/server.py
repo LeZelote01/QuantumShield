@@ -55,6 +55,7 @@ from services.webhook_service import WebhookService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
+advanced_blockchain_service = AdvancedBlockchainService(db, blockchain_service)
 device_service = DeviceService(db)
 token_service = TokenService(db)
 auth_service = AuthService(db)
