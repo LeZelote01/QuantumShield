@@ -473,12 +473,21 @@ class AdvancedCryptoService:
             message_bytes = message.encode('utf-8')
             
             # Signer avec Dilithium
-            if algorithm == CryptoAlgorithm.DILITHIUM_2.value and PQ_AVAILABLE:
-                signature = dilithium2.sign(message_bytes, private_key)
-            elif algorithm == CryptoAlgorithm.DILITHIUM_3.value and PQ_AVAILABLE:
-                signature = dilithium3.sign(message_bytes, private_key)
-            elif algorithm == CryptoAlgorithm.DILITHIUM_5.value and PQ_AVAILABLE:
-                signature = dilithium5.sign(message_bytes, private_key)
+            if algorithm == CryptoAlgorithm.DILITHIUM_2.value:
+                if DILITHIUM_AVAILABLE:
+                    signature = dilithium2.sign(message_bytes, private_key)
+                else:
+                    signature = self._fallback_sign(message_bytes, private_key, algorithm)
+            elif algorithm == CryptoAlgorithm.DILITHIUM_3.value:
+                if DILITHIUM_AVAILABLE:
+                    signature = dilithium3.sign(message_bytes, private_key)
+                else:
+                    signature = self._fallback_sign(message_bytes, private_key, algorithm)
+            elif algorithm == CryptoAlgorithm.DILITHIUM_5.value:
+                if DILITHIUM_AVAILABLE:
+                    signature = dilithium5.sign(message_bytes, private_key)
+                else:
+                    signature = self._fallback_sign(message_bytes, private_key, algorithm)
             else:
                 raise ValueError(f"Algorithme non supporté: {algorithm}")
             
