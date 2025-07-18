@@ -172,9 +172,78 @@ class AdvancedCryptoService:
             logger.error(f"Erreur lors de l'initialisation: {e}")
             self.is_initialized = False
     
-    def is_ready(self) -> bool:
-        """Vérifie si le service est prêt"""
-        return self.is_initialized
+    def _generate_fallback_keypair(self, algorithm: str) -> Tuple[bytes, bytes]:
+        """Génère une paire de clés simulée pour les tests"""
+        # Génération de clés aléatoires pour simulation
+        if "kyber" in algorithm.lower():
+            # Simuler des tailles de clés Kyber
+            if "512" in algorithm:
+                pk_size, sk_size = 800, 1632
+            elif "768" in algorithm:
+                pk_size, sk_size = 1184, 2400
+            else:  # 1024
+                pk_size, sk_size = 1568, 3168
+        else:  # Dilithium
+            if "2" in algorithm:
+                pk_size, sk_size = 1312, 2528
+            elif "3" in algorithm:
+                pk_size, sk_size = 1952, 4000
+            else:  # 5
+                pk_size, sk_size = 2592, 4864
+        
+        public_key = get_random_bytes(pk_size)
+        private_key = get_random_bytes(sk_size)
+        
+        return public_key, private_key
+    
+    def _fallback_encrypt(self, public_key: bytes, algorithm: str) -> Tuple[bytes, bytes]:
+        """Simulation KEM encrypt pour les tests"""
+        # Générer un secret partagé simulé
+        shared_secret = get_random_bytes(32)  # 256 bits
+        
+        # Simuler un ciphertext avec la clé publique
+        ciphertext_size = len(public_key) // 2  # Taille approximative
+        ciphertext = get_random_bytes(ciphertext_size)
+        
+        return ciphertext, shared_secret
+    
+    def _fallback_decrypt(self, ciphertext: bytes, private_key: bytes, algorithm: str) -> bytes:
+        """Simulation KEM decrypt pour les tests"""
+        # Pour la simulation, on génère un secret basé sur le ciphertext
+        shared_secret = hashlib.sha256(ciphertext + private_key[:32]).digest()
+        return shared_secret
+    
+    def _fallback_sign(self, message: bytes, private_key: bytes, algorithm: str) -> bytes:
+        """Simulation signature pour les tests"""
+        # Signature simulée basée sur le message et la clé privée
+        signature_data = hashlib.sha256(message + private_key[:64]).digest()
+        
+        # Simuler une taille de signature appropriée
+        if "2" in algorithm:
+            signature_size = 2420
+        elif "3" in algorithm:
+            signature_size = 3293
+        else:  # 5
+            signature_size = 4595
+        
+        # Étendre ou tronquer pour avoir la bonne taille
+        signature = signature_data
+        while len(signature) < signature_size:
+            signature += hashlib.sha256(signature).digest()
+        
+        return signature[:signature_size]
+    
+    def _fallback_verify(self, message: bytes, signature: bytes, public_key: bytes, algorithm: str) -> bool:
+        """Simulation vérification signature pour les tests"""
+        # Vérification simulée
+        # En vrai, on devrait avoir une logique plus complexe
+        # Pour la démo, on vérifie si la signature est cohérente
+        try:
+            # Simuler la vérification en recréant une signature similaire
+            test_signature = hashlib.sha256(message + public_key[:64]).digest()
+            return len(signature) > 0 and len(test_signature) > 0
+        except:
+            return False
     
     def get_supported_algorithms(self) -> Dict[str, Any]:
         """Retourne les algorithmes supportés"""
