@@ -580,6 +580,7 @@ async def get_user_voting_power(
             status_code=500,
             detail=f"Erreur calcul pouvoir vote: {str(e)}"
         )
+
 # ===== ROUTES DASHBOARD =====
 
 @router.get("/dashboard")
