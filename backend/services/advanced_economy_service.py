@@ -70,6 +70,27 @@ class AssetType(str, Enum):
     CARBON_CREDITS = "carbon_credits"
     COMMODITY = "commodity"
 
+class ProposalType(str, Enum):
+    PARAMETER_CHANGE = "parameter_change"
+    FEATURE_REQUEST = "feature_request"
+    TOKENOMICS = "tokenomics"
+    GOVERNANCE = "governance"
+    EMERGENCY = "emergency"
+    GENERAL = "general"
+
+class ProposalStatus(str, Enum):
+    DRAFT = "draft"
+    ACTIVE = "active"
+    PASSED = "passed"
+    REJECTED = "rejected"
+    EXECUTED = "executed"
+    EXPIRED = "expired"
+
+class VoteOption(str, Enum):
+    YES = "yes"
+    NO = "no"
+    ABSTAIN = "abstain"
+
 class AdvancedEconomyService:
     """Service d'économie avancée"""
     
