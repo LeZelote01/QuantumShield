@@ -1891,7 +1891,16 @@ class QuantumShieldTester:
             # IoT Protocol Service Tests
             self.test_iot_protocol_health,
             self.test_iot_protocol_status,
-            self.test_iot_protocol_statistics
+            self.test_iot_protocol_statistics,
+            # New Advanced Crypto Features Tests
+            self.test_advanced_crypto_generate_zk_proof,
+            self.test_advanced_crypto_verify_zk_proof,
+            self.test_advanced_crypto_setup_threshold_signature,
+            self.test_advanced_crypto_threshold_sign,
+            self.test_advanced_crypto_verify_threshold_signature,
+            self.test_advanced_crypto_audit_trail,
+            self.test_advanced_crypto_verify_audit_integrity,
+            self.test_advanced_crypto_crypto_statistics
         ]
         
         for test_func in test_functions:
