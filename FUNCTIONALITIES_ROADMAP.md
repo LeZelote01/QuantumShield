@@ -95,33 +95,34 @@
 - [x] Système de rollback automatique
 - [x] Vérification d'intégrité et signatures
 - [x] Mises à jour en masse (bulk updates)
-- [x] Monitoring prédictif avec ML
-- [x] Géolocalisation des dispositifs
-- [x] Gestion des certificats X.509
+- [ ] Monitoring prédictif avec ML
+- [ ] Géolocalisation des dispositifs
+- [ ] Gestion des certificats X.509
 
 #### 💰 **Économie Avancée**
-- [x] Marketplace de services
-- [x] Staking et DeFi basique
-- [x] Prêts/emprunts de tokens
+- [ ] Marketplace de services
+- [ ] Staking et DeFi basique
+- [ ] Prêts/emprunts de tokens
 - [ ] Assurance décentralisée
 - [ ] Tokenisation d'actifs physiques
 - [ ] Mécanismes de gouvernance
 
 #### 🛡️ **Sécurité Renforcée**
-- [x] Authentification multi-facteur (2FA/MFA)
-- [x] Audit de sécurité automatisé
+- [ ] Authentification multi-facteur (2FA/MFA)
+- [ ] Audit de sécurité automatisé
 - [ ] Honeypots et pièges
-- [x] Analyse comportementale
+- [ ] Analyse comportementale
 - [ ] Backup et récupération avancés
 - [ ] Conformité réglementaire (GDPR, CCPA)
 
 #### 📊 **Analytics et IA**
-- [x] Machine Learning pour détection d'anomalies
-- [x] Prédiction de pannes
-- [x] Optimisation énergétique
-- [x] Analyse de patterns réseau
-- [x] Recommandations personnalisées
-- [x] Tableaux de bord personnalisables
+
+- [ ] Machine Learning pour détection d'anomalies
+- [ ] Prédiction de pannes
+- [ ] Optimisation énergétique
+- [ ] Analyse de patterns réseau
+- [ ] Recommandations personnalisées
+- [ ] Tableaux de bord personnalisables
 
 #### 🌐 **Intégrations et APIs**
 - [ ] API REST complète avec documentation
