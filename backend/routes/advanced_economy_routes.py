@@ -424,6 +424,77 @@ async def buy_asset_tokens(
             detail=f"Erreur achat tokens: {str(e)}"
         )
 
+@router.get("/tokenization/assets")
+async def get_tokenized_assets():
+    """Récupère tous les actifs tokenisés"""
+    from server import advanced_economy_service
+    
+    try:
+        assets = await advanced_economy_service.db.tokenized_assets.find({"active": True}).to_list(None)
+        
+        total_value = sum(asset["total_value"] for asset in assets)
+        available_tokens = sum(asset["total_tokens"] - asset["tokens_sold"] for asset in assets)
+        
+        return {
+            "tokenized_assets": assets,
+            "total_value": total_value,
+            "available_tokens": available_tokens,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur récupération actifs: {str(e)}"
+        )
+
+@router.get("/tokenization/ownerships/{user_id}")
+async def get_asset_ownerships(
+    user_id: str,
+    current_user = Depends(get_current_user)
+):
+    """Récupère les propriétés d'actifs d'un utilisateur"""
+    from server import advanced_economy_service
+    
+    try:
+        # Vérifier que l'utilisateur peut voir ces propriétés
+        if current_user["id"] != user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès non autorisé"
+            )
+        
+        ownerships = await advanced_economy_service.db.asset_ownerships.find({"buyer_id": user_id}).to_list(None)
+        
+        # Enrichir avec les informations des actifs
+        enriched_ownerships = []
+        for ownership in ownerships:
+            asset = await advanced_economy_service.db.tokenized_assets.find_one({"id": ownership["asset_id"]})
+            if asset:
+                enriched_ownership = {
+                    "id": ownership["id"],
+                    "asset_id": ownership["asset_id"],
+                    "asset_name": asset["name"],
+                    "token_count": ownership["token_count"],
+                    "purchase_price": ownership["purchase_price"],
+                    "current_price": asset["token_price"],
+                    "ownership_percentage": (ownership["token_count"] / asset["total_tokens"]) * 100,
+                    "dividends_received": ownership.get("dividends_received", 0),
+                    "purchase_date": ownership["purchase_date"]
+                }
+                enriched_ownerships.append(enriched_ownership)
+        
+        return {
+            "ownerships": enriched_ownerships,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur récupération propriétés: {str(e)}"
+        )
+
 # ===== ROUTES DASHBOARD =====
 
 @router.get("/dashboard")
