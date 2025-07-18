@@ -154,7 +154,7 @@ const SecurityDashboard = () => {
               { key: 'overview', label: 'Vue d\'ensemble', icon: ShieldCheckIcon },
               { key: 'mfa', label: 'MFA', icon: KeyIcon },
               { key: 'alerts', label: 'Alertes', icon: ExclamationTriangleIcon },
-              { key: 'compliance', label: 'Conformité', icon: DocumentReportIcon }
+              { key: 'compliance', label: 'Conformité', icon: CogIcon }
             ].map((tab) => (
               <button
                 key={tab.key}
