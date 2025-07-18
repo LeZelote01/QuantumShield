@@ -74,6 +74,7 @@ function App() {
                   <Route path="advanced-cryptography" element={<AdvancedCryptography />} />
                   <Route path="advanced-key-management" element={<AdvancedKeyManagement />} />
                   <Route path="blockchain" element={<Blockchain />} />
+                  <Route path="advanced-blockchain" element={<AdvancedBlockchain />} />
                   <Route path="mining" element={<Mining />} />
                   <Route path="tokens" element={<Tokens />} />
                   <Route path="geolocation" element={<Geolocation />} />
