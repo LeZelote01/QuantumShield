@@ -28,3 +28,4 @@ joblib>=1.5.1
 pillow>=11.3.0
 graphene==3.3.0
 starlette-graphene3==0.6.0
+brotli>=1.1.0
