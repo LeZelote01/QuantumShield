@@ -103,7 +103,7 @@ class SecurityService:
             
             # Créer l'URI TOTP
             totp_uri = pyotp.totp.TOTP(secret).provisioning_uri(
-                name=user["email"],
+                name=user.email,
                 issuer_name=service_name
             )
             
