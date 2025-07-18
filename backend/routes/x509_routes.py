@@ -214,8 +214,8 @@ async def verify_certificate(verify_request: CertificateVerify):
 
 @router.get("/list")
 async def list_certificates(
-    certificate_type: Optional[str] = Query(None, regex="^(root_ca|intermediate_ca|device|user|server|end_entity)$"),
-    status: Optional[str] = Query(None, regex="^(active|expired|revoked|pending|suspended)$"),
+    certificate_type: Optional[str] = Query(None, pattern="^(root_ca|intermediate_ca|device|user|server|end_entity)$"),
+    status: Optional[str] = Query(None, pattern="^(active|expired|revoked|pending|suspended)$"),
     device_id: Optional[str] = Query(None),
     user_id: Optional[str] = Query(None)
 ):
