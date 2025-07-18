@@ -49,6 +49,8 @@ from services.geolocation_service import GeolocationService
 from services.x509_service import X509Service
 from services.marketplace_service import MarketplaceService
 from services.hsm_service import HSMService
+from services.graphql_service import GraphQLService
+from services.webhook_service import WebhookService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -66,6 +68,19 @@ geolocation_service = GeolocationService(db)
 x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
+
+# Initialiser les nouveaux services
+services_dict = {
+    'device_service': device_service,
+    'blockchain_service': blockchain_service,
+    'marketplace_service': marketplace_service,
+    'advanced_economy_service': advanced_economy_service,
+    'ai_analytics_service': ai_analytics_service,
+    'x509_service': x509_service,
+    'auth_service': auth_service
+}
+
+webhook_service = WebhookService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
@@ -85,6 +100,8 @@ from routes.x509_routes import router as x509_router
 from routes.marketplace_routes import router as marketplace_router
 from routes.dashboard_routes import router as dashboard_router
 from routes.hsm_routes import router as hsm_router
+from routes.graphql_routes import router as graphql_router
+from routes.webhook_routes import router as webhook_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
@@ -92,11 +109,15 @@ import routes.ota_routes
 import routes.geolocation_routes
 import routes.x509_routes
 import routes.marketplace_routes
+import routes.graphql_routes
+import routes.webhook_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
 routes.geolocation_routes.geolocation_service = geolocation_service
 routes.x509_routes.x509_service = x509_service
 routes.marketplace_routes.marketplace_service = marketplace_service
+routes.graphql_routes.init_graphql_service(db, services_dict)
+routes.webhook_routes.init_webhook_service(db)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
@@ -115,6 +136,8 @@ api_router.include_router(x509_router, prefix="/x509", tags=["x509-certificates"
 api_router.include_router(marketplace_router, prefix="/marketplace", tags=["marketplace"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 api_router.include_router(hsm_router, prefix="/hsm", tags=["hsm"])
+api_router.include_router(graphql_router, tags=["graphql"])
+api_router.include_router(webhook_router, tags=["webhooks"])
 
 # Health check endpoint
 @api_router.get("/health")
@@ -135,6 +158,7 @@ async def health_check():
             "x509": x509_service.is_ready(),
             "marketplace": marketplace_service.is_ready(),
             "hsm": hsm_service.is_ready(),
+            "webhook": webhook_service.is_ready(),
             "database": True
         }
     }

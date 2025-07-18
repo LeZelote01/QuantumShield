@@ -566,8 +566,12 @@ await client.sendHeartbeat({
 - [x] Mises à jour OTA sécurisées
 - [x] Sécurité renforcée (2FA/MFA, analyse comportementale, audit)
 - [x] AI Analytics avec ML (détection anomalies, prédictions)
-- [x] Architecture backend complète (16 services)
-- [x] APIs REST complètes (13 routers)
+- [x] Économie avancée (marketplace, staking, DeFi, assurance)
+- [x] Certificats X.509 et PKI complète
+- [x] Architecture backend complète (18 services)
+- [x] APIs REST complètes (15 routers)
+- [x] GraphQL pour queries complexes
+- [x] Webhooks pour notifications temps réel
 - [x] Dashboard temps réel avec métriques
 - [x] Authentification JWT sécurisée
 - [x] Système de récompenses économique
