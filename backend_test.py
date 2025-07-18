@@ -9,7 +9,7 @@ import aiohttp
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 
 # Configuration des tests
