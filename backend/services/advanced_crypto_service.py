@@ -1263,7 +1263,7 @@ class AdvancedCryptoService:
                 "keypairs_count": keypairs_count,
                 "zk_proofs_count": zk_proofs_count,
                 "threshold_schemes_count": threshold_schemes_count,
-                "generated_at": datetime.utcnow()
+                "generated_at": datetime.utcnow().isoformat()
             }
             
         except Exception as e:
