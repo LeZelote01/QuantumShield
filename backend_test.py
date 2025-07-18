@@ -51,7 +51,26 @@ class QuantumShieldTester:
             "advanced_crypto_rotate_keys": False,
             "advanced_crypto_key_rotation_status": False,
             "advanced_crypto_performance_comparison": False,
-            "advanced_crypto_algorithm_recommendations": False
+            "advanced_crypto_algorithm_recommendations": False,
+            # Security Service Tests
+            "security_mfa_setup": False,
+            "security_mfa_status": False,
+            "security_behavior_analysis": False,
+            "security_dashboard": False,
+            "security_recommendations": False,
+            "security_health": False,
+            # AI Analytics Service Tests
+            "ai_analytics_device_anomalies": False,
+            "ai_analytics_network_anomalies": False,
+            "ai_analytics_energy_anomalies": False,
+            "ai_analytics_device_failure_prediction": False,
+            "ai_analytics_energy_prediction": False,
+            "ai_analytics_energy_optimization": False,
+            "ai_analytics_dashboard": False,
+            "ai_analytics_models_status": False,
+            "ai_analytics_summary": False,
+            "ai_analytics_recommendations": False,
+            "ai_analytics_health": False
         }
         self.test_data = {}
 
