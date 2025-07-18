@@ -68,6 +68,23 @@ class KeyRotationPolicy(str, Enum):
     TIME_BASED = "time_based"
     USAGE_BASED = "usage_based"
 
+class AuditEventType(str, Enum):
+    KEY_GENERATION = "key_generation"
+    KEY_ROTATION = "key_rotation"
+    ENCRYPTION = "encryption"
+    DECRYPTION = "decryption"
+    SIGNATURE = "signature"
+    SIGNATURE_VERIFICATION = "signature_verification"
+    ZK_PROOF_GENERATION = "zk_proof_generation"
+    ZK_PROOF_VERIFICATION = "zk_proof_verification"
+    THRESHOLD_SIGNATURE = "threshold_signature"
+
+class ZKProofType(str, Enum):
+    IDENTITY = "identity"
+    KNOWLEDGE = "knowledge"
+    MEMBERSHIP = "membership"
+    RANGE = "range"
+
 class AdvancedCryptoService:
     """Service de cryptographie post-quantique avancée"""
     
