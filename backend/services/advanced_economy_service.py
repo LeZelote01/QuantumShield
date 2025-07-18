@@ -1375,5 +1375,6 @@ class AdvancedEconomyService:
                 "staking": {"total_staked": 0, "available_pools": 0},
                 "lending": {"active_loans": 0},
                 "insurance": {"active_policies": 0},
-                "tokenization": {"tokenized_assets": 0}
+                "tokenization": {"tokenized_assets": 0},
+                "governance": {"active_proposals": 0, "total_proposals": 0}
             }
