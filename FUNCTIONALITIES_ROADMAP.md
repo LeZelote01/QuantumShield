@@ -65,7 +65,11 @@
 ### 🔧 **FONCTIONNALITÉS À AJOUTER AU MVP**
 
 #### 🔐 **Cryptographie Avancée**
-- [ ] Support algorithmes post-quantiques multiples (Kyber, Dilithium)
+- [x] Support algorithmes post-quantiques multiples (Kyber, Dilithium)
+- [x] Génération de clés hybrides (chiffrement + signature)
+- [x] Simulation d'algorithmes pour tests et développement
+- [x] Comparaison de performances entre algorithmes
+- [x] Recommandations d'algorithmes selon contexte
 - [ ] Gestion avancée des clés (rotation, expiration)
 - [ ] Chiffrement par lots pour gros volumes
 - [ ] Signature à seuil (threshold signatures)
