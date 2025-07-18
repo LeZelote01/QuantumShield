@@ -113,7 +113,115 @@ async def list_webhooks(user_id: Optional[str] = Query(None)):
         logger.error(f"Erreur liste webhooks: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/{webhook_id}")
+@router.get("/health")
+async def webhook_health_check():
+    """Vérifie la santé du service webhooks"""
+    try:
+        if _webhook_service is None:
+            return {
+                "status": "unhealthy",
+                "error": "Service webhooks non initialisé"
+            }
+        
+        if not _webhook_service.is_ready():
+            return {
+                "status": "unhealthy",
+                "error": "Service webhooks non prêt"
+            }
+        
+        return {
+            "status": "healthy",
+            "message": "Service webhooks opérationnel",
+            "timestamp": datetime.utcnow()
+        }
+        
+    except Exception as e:
+        logger.error(f"Erreur health check webhooks: {e}")
+        return {
+            "status": "unhealthy",
+            "error": str(e)
+        }
+
+@router.get("/events/supported")
+async def get_supported_events():
+    """Récupère la liste des événements supportés"""
+    try:
+        events = [
+            {
+                "event": event.value,
+                "description": get_event_description(event)
+            }
+            for event in WebhookEvent
+        ]
+        
+        return {
+            "supported_events": events,
+            "total_events": len(events)
+        }
+        
+    except Exception as e:
+        logger.error(f"Erreur récupération événements supportés: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/examples")
+async def get_webhook_examples():
+    """Récupère des exemples de configuration de webhooks"""
+    try:
+        examples = {
+            "device_monitoring": {
+                "description": "Webhook pour monitoring des devices",
+                "url": "https://your-server.com/webhooks/device-monitoring",
+                "events": [
+                    WebhookEvent.DEVICE_REGISTERED.value,
+                    WebhookEvent.DEVICE_OFFLINE.value,
+                    WebhookEvent.DEVICE_ANOMALY.value
+                ],
+                "headers": {
+                    "Authorization": "Bearer YOUR_API_TOKEN",
+                    "X-Custom-Header": "value"
+                }
+            },
+            "security_alerts": {
+                "description": "Webhook pour alertes de sécurité",
+                "url": "https://your-server.com/webhooks/security-alerts",
+                "events": [
+                    WebhookEvent.DEVICE_ANOMALY.value,
+                    WebhookEvent.SECURITY_ALERT.value,
+                    WebhookEvent.CERTIFICATE_EXPIRING.value
+                ]
+            },
+            "business_events": {
+                "description": "Webhook pour événements business",
+                "url": "https://your-server.com/webhooks/business",
+                "events": [
+                    WebhookEvent.SERVICE_PURCHASED.value,
+                    WebhookEvent.TOKEN_TRANSFER.value,
+                    WebhookEvent.STAKING_REWARD.value
+                ]
+            },
+            "blockchain_events": {
+                "description": "Webhook pour événements blockchain",
+                "url": "https://your-server.com/webhooks/blockchain",
+                "events": [
+                    WebhookEvent.BLOCK_MINED.value,
+                    WebhookEvent.TRANSACTION_CONFIRMED.value
+                ]
+            }
+        }
+        
+        return {
+            "examples": examples,
+            "webhook_signature": {
+                "description": "Les webhooks incluent une signature HMAC-SHA256",
+                "header": "X-Webhook-Signature",
+                "format": "sha256=<hash>",
+                "verification": "Utilisez votre secret webhook pour vérifier la signature"
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Erreur récupération exemples: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 async def get_webhook(webhook_id: str):
     """Récupère un webhook spécifique"""
     try:
