@@ -9,3 +9,10 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+// Hide loading screen once React app is mounted
+setTimeout(() => {
+  if (window.hideLoadingScreen) {
+    window.hideLoadingScreen();
+  }
+}, 1000);
