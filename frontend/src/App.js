@@ -31,13 +31,10 @@ import Geolocation from './pages/Geolocation';
 import SecurityDashboard from './pages/Security/SecurityDashboard';
 import AdvancedSecurity from './pages/Security/AdvancedSecurity';
 
-<<<<<<< HEAD
 // New Pages
 import Governance from './pages/Governance';
 import SecurityAdvanced from './pages/SecurityAdvanced';
 
-=======
->>>>>>> main
 import './App.css';
 
 // Create a client
