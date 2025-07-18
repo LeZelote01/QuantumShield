@@ -31,6 +31,9 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 - **Résistance quantique** : Sécurité contre les attaques d'ordinateurs quantiques
 - **Performance** : 70% plus rapide que les solutions logicielles classiques
 - **Faible consommation** : Optimisé pour les dispositifs à faible puissance
+- **Algorithmes multiples** : Support pour Kyber-512/768/1024 et Dilithium-2/3/5
+- **Clés hybrides** : Génération de clés combinant chiffrement et signature
+- **Comparaison automatique** : Recommandations d'algorithmes selon le contexte
 
 ### 2. 🔗 Blockchain privée pour la confiance matérielle
 
