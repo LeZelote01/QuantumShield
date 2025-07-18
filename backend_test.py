@@ -2925,7 +2925,41 @@ contract TestToken {
             self.test_advanced_crypto_verify_threshold_signature,
             self.test_advanced_crypto_audit_trail,
             self.test_advanced_crypto_verify_audit_integrity,
-            self.test_advanced_crypto_crypto_statistics
+            self.test_advanced_crypto_crypto_statistics,
+            # Advanced Blockchain Features Tests
+            self.test_advanced_blockchain_health,
+            self.test_advanced_blockchain_overview,
+            self.test_advanced_blockchain_metrics,
+            self.test_advanced_blockchain_network_health,
+            # Smart Contracts Tests
+            self.test_smart_contracts_templates,
+            self.test_smart_contracts_deploy,
+            self.test_smart_contracts_list,
+            self.test_smart_contracts_get,
+            self.test_smart_contracts_execute,
+            self.test_smart_contracts_executions,
+            # Governance Tests
+            self.test_governance_proposals_list,
+            self.test_governance_proposal_create,
+            self.test_governance_proposal_get,
+            self.test_governance_proposal_vote,
+            self.test_governance_proposal_votes,
+            self.test_governance_voting_power,
+            self.test_governance_proposal_execute,
+            # Consensus Tests
+            self.test_consensus_validators,
+            self.test_consensus_stake,
+            self.test_consensus_stake_pools,
+            self.test_consensus_status,
+            # Interoperability Tests
+            self.test_interop_bridges,
+            self.test_interop_bridge_transfer,
+            self.test_interop_transactions,
+            # Compression/Archiving Tests
+            self.test_management_compress_blocks,
+            self.test_management_archive_blocks,
+            self.test_management_compressed_blocks,
+            self.test_management_archive_periods
         ]
         
         for test_func in test_functions:
