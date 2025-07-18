@@ -532,7 +532,7 @@ class AdvancedCryptoService:
                 "signature": signature.hex(),
                 "algorithm": algorithm,
                 "keypair_id": keypair_id,
-                "timestamp": datetime.utcnow()
+                "timestamp": datetime.utcnow().isoformat()
             }
             
         except Exception as e:
