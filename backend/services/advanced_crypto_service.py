@@ -690,7 +690,7 @@ class AdvancedCryptoService:
             return {
                 "old_keypair_id": keypair_id,
                 "new_keypair_id": new_keypair["keypair_id"],
-                "rotation_time": datetime.utcnow(),
+                "rotation_time": datetime.utcnow().isoformat(),
                 "status": "completed"
             }
             
