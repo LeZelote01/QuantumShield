@@ -71,6 +71,10 @@ from routes.advanced_economy_routes import router as advanced_economy_router
 from routes.iot_protocol_routes import router as iot_protocol_router
 from routes.dashboard_routes import router as dashboard_router
 
+# Inject services into routes
+import routes.iot_protocol_routes
+routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
+
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
 api_router.include_router(advanced_crypto_router, prefix="/advanced-crypto", tags=["advanced-cryptography"])
