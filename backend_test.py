@@ -1997,10 +1997,13 @@ class QuantumShieldTester:
             self.test_advanced_crypto_algorithm_recommendations,
             # Security Service Tests
             self.test_security_mfa_setup,
+            self.test_security_mfa_verify_totp_setup,
+            self.test_security_mfa_verify_totp,
             self.test_security_mfa_status,
             self.test_security_behavior_analysis,
             self.test_security_dashboard,
             self.test_security_recommendations,
+            self.test_security_mfa_disable,
             self.test_security_health,
             # AI Analytics Service Tests
             self.test_ai_analytics_device_anomalies,
