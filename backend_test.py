@@ -51,7 +51,26 @@ class QuantumShieldTester:
             "advanced_crypto_rotate_keys": False,
             "advanced_crypto_key_rotation_status": False,
             "advanced_crypto_performance_comparison": False,
-            "advanced_crypto_algorithm_recommendations": False
+            "advanced_crypto_algorithm_recommendations": False,
+            # Security Service Tests
+            "security_mfa_setup": False,
+            "security_mfa_status": False,
+            "security_behavior_analysis": False,
+            "security_dashboard": False,
+            "security_recommendations": False,
+            "security_health": False,
+            # AI Analytics Service Tests
+            "ai_analytics_device_anomalies": False,
+            "ai_analytics_network_anomalies": False,
+            "ai_analytics_energy_anomalies": False,
+            "ai_analytics_device_failure_prediction": False,
+            "ai_analytics_energy_prediction": False,
+            "ai_analytics_energy_optimization": False,
+            "ai_analytics_dashboard": False,
+            "ai_analytics_models_status": False,
+            "ai_analytics_summary": False,
+            "ai_analytics_recommendations": False,
+            "ai_analytics_health": False
         }
         self.test_data = {}
 
@@ -895,6 +914,530 @@ class QuantumShieldTester:
         
         return False
 
+    # ===== SECURITY SERVICE TESTS =====
+    
+    async def test_security_mfa_setup(self):
+        """Test de configuration MFA TOTP"""
+        print("\n🔐 Test Security MFA Setup...")
+        
+        try:
+            setup_request = {
+                "service_name": "QuantumShield"
+            }
+            response = await self.make_request("POST", "/security/mfa/setup-totp", 
+                                             setup_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("setup_data") and data.get("status") == "success":
+                    setup_data = data["setup_data"]
+                    print("✅ MFA TOTP setup successful")
+                    print(f"   Status: {setup_data.get('status')}")
+                    print(f"   QR Code: {'Present' if setup_data.get('qr_code') else 'Missing'}")
+                    print(f"   Backup Codes: {len(setup_data.get('backup_codes', []))}")
+                    
+                    # Store setup data for verification test
+                    self.test_data["mfa_secret"] = setup_data.get("secret")
+                    self.test_results["security_mfa_setup"] = True
+                    return True
+                else:
+                    print(f"❌ MFA setup failed: {data}")
+            else:
+                print(f"❌ MFA setup HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ MFA setup exception: {e}")
+        
+        return False
+    
+    async def test_security_mfa_status(self):
+        """Test de récupération du statut MFA"""
+        print("\n📊 Test Security MFA Status...")
+        
+        try:
+            response = await self.make_request("GET", "/security/mfa/status", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("mfa_status") and data.get("status") == "success":
+                    mfa_status = data["mfa_status"]
+                    print("✅ MFA status retrieved")
+                    print(f"   User ID: {mfa_status.get('user_id')}")
+                    print(f"   MFA Enabled: {mfa_status.get('mfa_enabled')}")
+                    print(f"   Methods: {len(mfa_status.get('methods', []))}")
+                    self.test_results["security_mfa_status"] = True
+                    return True
+                else:
+                    print(f"❌ MFA status failed: {data}")
+            else:
+                print(f"❌ MFA status HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ MFA status exception: {e}")
+        
+        return False
+    
+    async def test_security_behavior_analysis(self):
+        """Test d'analyse comportementale"""
+        print("\n🧠 Test Security Behavior Analysis...")
+        
+        try:
+            analysis_request = {
+                "action": "login",
+                "context": {
+                    "ip_address": "192.168.1.100",
+                    "user_agent": "QuantumShield-Test/1.0",
+                    "timestamp": datetime.utcnow().isoformat()
+                }
+            }
+            response = await self.make_request("POST", "/security/behavior/analyze", 
+                                             analysis_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("analysis") and data.get("status") == "success":
+                    analysis = data["analysis"]
+                    print("✅ Behavior analysis successful")
+                    print(f"   Risk Score: {analysis.get('risk_score')}")
+                    print(f"   Security Level: {analysis.get('security_level')}")
+                    print(f"   Anomalies: {len(analysis.get('anomalies', []))}")
+                    print(f"   Recommendations: {len(analysis.get('recommendations', []))}")
+                    self.test_results["security_behavior_analysis"] = True
+                    return True
+                else:
+                    print(f"❌ Behavior analysis failed: {data}")
+            else:
+                print(f"❌ Behavior analysis HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Behavior analysis exception: {e}")
+        
+        return False
+    
+    async def test_security_dashboard(self):
+        """Test du tableau de bord sécurité"""
+        print("\n📊 Test Security Dashboard...")
+        
+        try:
+            response = await self.make_request("GET", "/security/dashboard", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("dashboard") and data.get("status") == "success":
+                    dashboard = data["dashboard"]
+                    print("✅ Security dashboard retrieved")
+                    overview = dashboard.get("overview", {})
+                    print(f"   Events (24h): {overview.get('events_last_24h', 0)}")
+                    print(f"   Active Alerts: {overview.get('active_alerts', 0)}")
+                    print(f"   MFA Users: {overview.get('mfa_enabled_users', 0)}")
+                    print(f"   Security Score: {dashboard.get('security_score', 0)}")
+                    self.test_results["security_dashboard"] = True
+                    return True
+                else:
+                    print(f"❌ Security dashboard failed: {data}")
+            else:
+                print(f"❌ Security dashboard HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Security dashboard exception: {e}")
+        
+        return False
+    
+    async def test_security_recommendations(self):
+        """Test des recommandations de sécurité"""
+        print("\n💡 Test Security Recommendations...")
+        
+        try:
+            response = await self.make_request("GET", "/security/recommendations", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("recommendations") and data.get("status") == "success":
+                    recommendations = data["recommendations"]
+                    print("✅ Security recommendations retrieved")
+                    print(f"   Total Recommendations: {len(recommendations)}")
+                    for rec in recommendations[:3]:  # Show first 3
+                        print(f"   - {rec.get('title')} (Priority: {rec.get('priority')})")
+                    self.test_results["security_recommendations"] = True
+                    return True
+                else:
+                    print(f"❌ Security recommendations failed: {data}")
+            else:
+                print(f"❌ Security recommendations HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Security recommendations exception: {e}")
+        
+        return False
+    
+    async def test_security_health(self):
+        """Test de santé du service de sécurité"""
+        print("\n🏥 Test Security Health Check...")
+        
+        try:
+            response = await self.make_request("GET", "/security/health")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "service_ready" in data:
+                    print("✅ Security health check successful")
+                    print(f"   Service Ready: {data.get('service_ready')}")
+                    print(f"   Status: {data.get('status')}")
+                    self.test_results["security_health"] = True
+                    return True
+                else:
+                    print(f"❌ Security health check failed: {data}")
+            else:
+                print(f"❌ Security health check HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Security health check exception: {e}")
+        
+        return False
+
+    # ===== AI ANALYTICS SERVICE TESTS =====
+    
+    async def test_ai_analytics_device_anomalies(self):
+        """Test de détection d'anomalies de dispositifs"""
+        print("\n🤖 Test AI Analytics Device Anomalies...")
+        
+        if not self.test_data.get("device_id"):
+            print("❌ No device ID available for anomaly detection test")
+            return False
+        
+        try:
+            anomaly_request = {
+                "device_id": self.test_data["device_id"],
+                "time_window_hours": 24
+            }
+            response = await self.make_request("POST", "/ai-analytics/anomalies/device", 
+                                             anomaly_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("anomaly_detection") and data.get("status") == "success":
+                    detection = data["anomaly_detection"]
+                    print("✅ Device anomaly detection successful")
+                    print(f"   Device ID: {detection.get('device_id')}")
+                    print(f"   Anomalies Detected: {detection.get('anomalies_detected')}")
+                    print(f"   Anomaly Count: {detection.get('anomaly_count', 0)}")
+                    print(f"   Data Points: {detection.get('total_data_points', 0)}")
+                    self.test_results["ai_analytics_device_anomalies"] = True
+                    return True
+                else:
+                    print(f"❌ Device anomaly detection failed: {data}")
+            else:
+                print(f"❌ Device anomaly detection HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Device anomaly detection exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_network_anomalies(self):
+        """Test de détection d'anomalies réseau"""
+        print("\n🌐 Test AI Analytics Network Anomalies...")
+        
+        try:
+            anomaly_request = {
+                "time_window_hours": 6
+            }
+            response = await self.make_request("POST", "/ai-analytics/anomalies/network", 
+                                             anomaly_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("anomaly_detection") and data.get("status") == "success":
+                    detection = data["anomaly_detection"]
+                    print("✅ Network anomaly detection successful")
+                    print(f"   Anomalies Detected: {detection.get('anomalies_detected')}")
+                    print(f"   Anomaly Count: {detection.get('anomaly_count', 0)}")
+                    if detection.get('reason'):
+                        print(f"   Reason: {detection.get('reason')}")
+                    self.test_results["ai_analytics_network_anomalies"] = True
+                    return True
+                else:
+                    print(f"❌ Network anomaly detection failed: {data}")
+            else:
+                print(f"❌ Network anomaly detection HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Network anomaly detection exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_energy_anomalies(self):
+        """Test de détection d'anomalies énergétiques"""
+        print("\n⚡ Test AI Analytics Energy Anomalies...")
+        
+        try:
+            anomaly_request = {
+                "time_window_hours": 12
+            }
+            response = await self.make_request("POST", "/ai-analytics/anomalies/energy", 
+                                             anomaly_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("anomaly_detection") and data.get("status") == "success":
+                    detection = data["anomaly_detection"]
+                    print("✅ Energy anomaly detection successful")
+                    print(f"   Anomalies Detected: {detection.get('anomalies_detected')}")
+                    print(f"   Anomaly Count: {detection.get('anomaly_count', 0)}")
+                    if detection.get('reason'):
+                        print(f"   Reason: {detection.get('reason')}")
+                    self.test_results["ai_analytics_energy_anomalies"] = True
+                    return True
+                else:
+                    print(f"❌ Energy anomaly detection failed: {data}")
+            else:
+                print(f"❌ Energy anomaly detection HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Energy anomaly detection exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_device_failure_prediction(self):
+        """Test de prédiction de panne de dispositif"""
+        print("\n🔮 Test AI Analytics Device Failure Prediction...")
+        
+        if not self.test_data.get("device_id"):
+            print("❌ No device ID available for failure prediction test")
+            return False
+        
+        try:
+            prediction_request = {
+                "device_id": self.test_data["device_id"],
+                "prediction_horizon_days": 7
+            }
+            response = await self.make_request("POST", "/ai-analytics/predictions/device-failure", 
+                                             prediction_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("failure_prediction") and data.get("status") == "success":
+                    prediction = data["failure_prediction"]
+                    print("✅ Device failure prediction successful")
+                    print(f"   Device ID: {prediction.get('device_id')}")
+                    print(f"   Prediction Available: {prediction.get('prediction_available')}")
+                    if prediction.get('prediction_available'):
+                        print(f"   Failure Probability: {prediction.get('failure_probability', 0):.2f}")
+                        print(f"   Risk Level: {prediction.get('risk_level')}")
+                        print(f"   Confidence: {prediction.get('confidence', 0):.2f}")
+                    else:
+                        print(f"   Reason: {prediction.get('reason')}")
+                    self.test_results["ai_analytics_device_failure_prediction"] = True
+                    return True
+                else:
+                    print(f"❌ Device failure prediction failed: {data}")
+            else:
+                print(f"❌ Device failure prediction HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Device failure prediction exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_energy_prediction(self):
+        """Test de prédiction énergétique"""
+        print("\n⚡ Test AI Analytics Energy Prediction...")
+        
+        try:
+            prediction_request = {
+                "prediction_horizon_days": 1
+            }
+            response = await self.make_request("POST", "/ai-analytics/predictions/energy-usage", 
+                                             prediction_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("energy_prediction") and data.get("status") == "success":
+                    prediction = data["energy_prediction"]
+                    print("✅ Energy prediction successful")
+                    print(f"   Prediction Available: {prediction.get('prediction_available')}")
+                    if prediction.get('prediction_available'):
+                        summary = prediction.get('summary', {})
+                        print(f"   Total Predicted: {summary.get('total_predicted_consumption', 0):.2f}")
+                        print(f"   Average Hourly: {summary.get('average_hourly_consumption', 0):.2f}")
+                        print(f"   Peak: {summary.get('peak_consumption', 0):.2f}")
+                    else:
+                        print(f"   Reason: {prediction.get('reason')}")
+                    self.test_results["ai_analytics_energy_prediction"] = True
+                    return True
+                else:
+                    print(f"❌ Energy prediction failed: {data}")
+            else:
+                print(f"❌ Energy prediction HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Energy prediction exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_energy_optimization(self):
+        """Test d'optimisation énergétique"""
+        print("\n🔧 Test AI Analytics Energy Optimization...")
+        
+        try:
+            optimization_request = {
+                "target_reduction": 0.15
+            }
+            response = await self.make_request("POST", "/ai-analytics/optimization/energy", 
+                                             optimization_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("optimization") and data.get("status") == "success":
+                    optimization = data["optimization"]
+                    print("✅ Energy optimization successful")
+                    print(f"   Optimization Available: {optimization.get('optimization_available')}")
+                    if optimization.get('optimization_available'):
+                        print(f"   Current Consumption: {optimization.get('current_consumption', 0):.2f}")
+                        print(f"   Potential Savings: {optimization.get('potential_savings', 0):.2f}")
+                        print(f"   Savings Percentage: {optimization.get('savings_percentage', 0):.1f}%")
+                        print(f"   Meets Target: {optimization.get('meets_target')}")
+                    else:
+                        print(f"   Reason: {optimization.get('reason')}")
+                    self.test_results["ai_analytics_energy_optimization"] = True
+                    return True
+                else:
+                    print(f"❌ Energy optimization failed: {data}")
+            else:
+                print(f"❌ Energy optimization HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Energy optimization exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_dashboard(self):
+        """Test du tableau de bord AI Analytics"""
+        print("\n📊 Test AI Analytics Dashboard...")
+        
+        try:
+            response = await self.make_request("GET", "/ai-analytics/dashboard", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("dashboard") and data.get("status") == "success":
+                    dashboard = data["dashboard"]
+                    print("✅ AI Analytics dashboard retrieved")
+                    overview = dashboard.get("overview", {})
+                    print(f"   Active Anomalies: {overview.get('active_anomalies', 0)}")
+                    print(f"   Total Predictions: {overview.get('total_predictions', 0)}")
+                    print(f"   Models Active: {overview.get('models_active', 0)}")
+                    print(f"   Service Health: {overview.get('service_health')}")
+                    self.test_results["ai_analytics_dashboard"] = True
+                    return True
+                else:
+                    print(f"❌ AI Analytics dashboard failed: {data}")
+            else:
+                print(f"❌ AI Analytics dashboard HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ AI Analytics dashboard exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_models_status(self):
+        """Test du statut des modèles ML"""
+        print("\n🧠 Test AI Analytics Models Status...")
+        
+        try:
+            response = await self.make_request("GET", "/ai-analytics/models/status", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("models_info") and data.get("status") == "success":
+                    models_info = data["models_info"]
+                    print("✅ AI Analytics models status retrieved")
+                    print(f"   Models Available: {len(models_info.get('models_available', []))}")
+                    print(f"   Scalers Available: {len(models_info.get('scalers_available', []))}")
+                    print(f"   Service Initialized: {models_info.get('service_initialized')}")
+                    model_types = models_info.get('model_types', {})
+                    print(f"   Anomaly Detection Models: {len(model_types.get('anomaly_detection', []))}")
+                    print(f"   Prediction Models: {len(model_types.get('prediction', []))}")
+                    self.test_results["ai_analytics_models_status"] = True
+                    return True
+                else:
+                    print(f"❌ AI Analytics models status failed: {data}")
+            else:
+                print(f"❌ AI Analytics models status HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ AI Analytics models status exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_summary(self):
+        """Test du résumé des analyses"""
+        print("\n📈 Test AI Analytics Summary...")
+        
+        try:
+            response = await self.make_request("GET", "/ai-analytics/analytics/summary", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("summary") and data.get("status") == "success":
+                    summary = data["summary"]
+                    print("✅ AI Analytics summary retrieved")
+                    print(f"   Analysis Period: {summary.get('analysis_period', {}).get('duration_days')} days")
+                    print(f"   Total Anomalies: {summary.get('total_anomalies', 0)}")
+                    print(f"   Total Predictions: {summary.get('total_predictions', 0)}")
+                    print(f"   Service Health: {summary.get('service_health')}")
+                    anomaly_stats = summary.get('anomaly_statistics', {})
+                    if anomaly_stats:
+                        print(f"   Anomaly Types: {list(anomaly_stats.keys())}")
+                    self.test_results["ai_analytics_summary"] = True
+                    return True
+                else:
+                    print(f"❌ AI Analytics summary failed: {data}")
+            else:
+                print(f"❌ AI Analytics summary HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ AI Analytics summary exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_recommendations(self):
+        """Test des recommandations IA"""
+        print("\n💡 Test AI Analytics Recommendations...")
+        
+        try:
+            response = await self.make_request("GET", "/ai-analytics/recommendations", auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("recommendations") and data.get("status") == "success":
+                    recommendations = data["recommendations"]
+                    print("✅ AI Analytics recommendations retrieved")
+                    print(f"   Total Recommendations: {len(recommendations)}")
+                    print(f"   Based on Anomalies: {data.get('based_on_anomalies', 0)}")
+                    for rec in recommendations[:3]:  # Show first 3
+                        print(f"   - {rec.get('title')} (Priority: {rec.get('priority')})")
+                    self.test_results["ai_analytics_recommendations"] = True
+                    return True
+                else:
+                    print(f"❌ AI Analytics recommendations failed: {data}")
+            else:
+                print(f"❌ AI Analytics recommendations HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ AI Analytics recommendations exception: {e}")
+        
+        return False
+    
+    async def test_ai_analytics_health(self):
+        """Test de santé du service AI Analytics"""
+        print("\n🏥 Test AI Analytics Health Check...")
+        
+        try:
+            response = await self.make_request("GET", "/ai-analytics/health")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "service_ready" in data:
+                    print("✅ AI Analytics health check successful")
+                    print(f"   Service Ready: {data.get('service_ready')}")
+                    print(f"   Models Loaded: {data.get('models_loaded', 0)}")
+                    print(f"   Status: {data.get('status')}")
+                    self.test_results["ai_analytics_health"] = True
+                    return True
+                else:
+                    print(f"❌ AI Analytics health check failed: {data}")
+            else:
+                print(f"❌ AI Analytics health check HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ AI Analytics health check exception: {e}")
+        
+        return False
+
     async def run_all_tests(self):
         """Exécute tous les tests dans l'ordre"""
         print("🚀 Démarrage des tests QuantumShield Backend")
@@ -929,7 +1472,26 @@ class QuantumShieldTester:
             self.test_advanced_crypto_rotate_keys,
             self.test_advanced_crypto_key_rotation_status,
             self.test_advanced_crypto_performance_comparison,
-            self.test_advanced_crypto_algorithm_recommendations
+            self.test_advanced_crypto_algorithm_recommendations,
+            # Security Service Tests
+            self.test_security_mfa_setup,
+            self.test_security_mfa_status,
+            self.test_security_behavior_analysis,
+            self.test_security_dashboard,
+            self.test_security_recommendations,
+            self.test_security_health,
+            # AI Analytics Service Tests
+            self.test_ai_analytics_device_anomalies,
+            self.test_ai_analytics_network_anomalies,
+            self.test_ai_analytics_energy_anomalies,
+            self.test_ai_analytics_device_failure_prediction,
+            self.test_ai_analytics_energy_prediction,
+            self.test_ai_analytics_energy_optimization,
+            self.test_ai_analytics_dashboard,
+            self.test_ai_analytics_models_status,
+            self.test_ai_analytics_summary,
+            self.test_ai_analytics_recommendations,
+            self.test_ai_analytics_health
         ]
         
         for test_func in test_functions:

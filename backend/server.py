@@ -40,6 +40,9 @@ from services.token_service import TokenService
 from services.auth_service import AuthService
 from services.mining_service import MiningService
 from services.advanced_crypto_service import AdvancedCryptoService
+from services.security_service import SecurityService
+from services.ai_analytics_service import AIAnalyticsService
+from services.advanced_economy_service import AdvancedEconomyService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -48,6 +51,9 @@ token_service = TokenService(db)
 auth_service = AuthService(db)
 mining_service = MiningService(db, blockchain_service)
 advanced_crypto_service = AdvancedCryptoService(db)
+security_service = SecurityService(db)
+ai_analytics_service = AIAnalyticsService(db)
+advanced_economy_service = AdvancedEconomyService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
@@ -57,6 +63,9 @@ from routes.blockchain_routes import router as blockchain_router
 from routes.device_routes import router as device_router
 from routes.token_routes import router as token_router
 from routes.mining_routes import router as mining_router
+from routes.security_routes import router as security_router
+from routes.ai_analytics_routes import router as ai_analytics_router
+from routes.advanced_economy_routes import router as advanced_economy_router
 from routes.dashboard_routes import router as dashboard_router
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
@@ -66,6 +75,9 @@ api_router.include_router(blockchain_router, prefix="/blockchain", tags=["blockc
 api_router.include_router(device_router, prefix="/devices", tags=["devices"])
 api_router.include_router(token_router, prefix="/tokens", tags=["tokens"])
 api_router.include_router(mining_router, prefix="/mining", tags=["mining"])
+api_router.include_router(security_router, prefix="/security", tags=["security"])
+api_router.include_router(ai_analytics_router, prefix="/ai-analytics", tags=["ai-analytics"])
+api_router.include_router(advanced_economy_router, prefix="/advanced-economy", tags=["advanced-economy"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 
 # Health check endpoint
@@ -78,6 +90,9 @@ async def health_check():
             "ntru": ntru_service.is_ready(),
             "blockchain": await blockchain_service.is_ready(),
             "advanced_crypto": advanced_crypto_service.is_ready(),
+            "security": security_service.is_ready(),
+            "ai_analytics": ai_analytics_service.is_ready(),
+            "advanced_economy": advanced_economy_service.is_ready(),
             "database": True
         }
     }
