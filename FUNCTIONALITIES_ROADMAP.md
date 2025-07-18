@@ -111,6 +111,10 @@
 - [x] Assurance décentralisée ✅ **IMPLÉMENTÉ**
 - [x] Tokenisation d'actifs physiques ✅ **IMPLÉMENTÉ**
 - [x] Mécanismes de gouvernance décentralisée ✅ **IMPLÉMENTÉ**
+- [x] Tokenisation d'actifs physiques ✅ **IMPLÉMENTÉ**
+- [x] Mécanismes de gouvernance décentralisée ✅ **IMPLÉMENTÉ**
+- [ ] Tokenisation d'actifs physiques
+- [ ] Mécanismes de gouvernance
 
 #### 🛡️ **Sécurité Renforcée**
 - [x] Authentification multi-facteur (2FA/MFA) ✅ **IMPLÉMENTÉ**
@@ -119,6 +123,10 @@
 - [x] Analyse comportementale ✅ **IMPLÉMENTÉ**
 - [x] Backup et récupération avancés ✅ **IMPLÉMENTÉ**
 - [x] Conformité réglementaire (GDPR, CCPA) ✅ **IMPLÉMENTÉ**
+- [x] Honeypots et pièges ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
+- [x] Analyse comportementale ✅ **IMPLÉMENTÉ**
+- [x] Backup et récupération avancés ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
+- [x] Conformité réglementaire (GDPR, CCPA) ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
 
 #### 📊 **Analytics et IA**
 
@@ -133,7 +141,7 @@
 - [x] API REST complète avec documentation ✅ **IMPLÉMENTÉ**
 - [x] GraphQL pour queries complexes ✅ **IMPLÉMENTÉ**
 - [x] Webhooks pour notifications ✅ **IMPLÉMENTÉ**
-- [x] Intégrations cloud (AWS, Azure, GCP) ✅ **IMPLÉMENTÉ**
+- [ ] Intégrations cloud (AWS, Azure, GCP)
 - [ ] Connecteurs ERP/CRM
 - [ ] API Gateway avec rate limiting
 

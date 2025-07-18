@@ -172,6 +172,7 @@ class QuantumShieldTester:
             "security_compliance_report": False,
             "security_comprehensive_report": False,
             "security_health_check": False
+            "management_archive_periods": False
         }
         self.test_data = {}
 
