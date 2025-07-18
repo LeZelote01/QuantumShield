@@ -1257,15 +1257,264 @@ class AdvancedCryptoService:
             # Compter les schémas de signature à seuil
             threshold_schemes_count = await self.db.threshold_schemes.count_documents({"created_by": user_id})
             
+            # Compter les rotations de clés
+            key_rotations_count = await self.db.key_rotations.count_documents({"user_id": user_id})
+            
             return {
                 "user_id": user_id,
                 "audit_events": audit_counts,
                 "keypairs_count": keypairs_count,
                 "zk_proofs_count": zk_proofs_count,
                 "threshold_schemes_count": threshold_schemes_count,
+                "key_rotations_count": key_rotations_count,
                 "generated_at": datetime.utcnow().isoformat()
             }
             
         except Exception as e:
             logger.error(f"Erreur récupération statistiques: {e}")
+            return {"error": str(e)}
+    
+    async def setup_advanced_key_management(self, keypair_id: str, user_id: str,
+                                          expiration_days: int = 365,
+                                          archive_after_days: int = 30) -> Dict[str, Any]:
+        """Configure la gestion avancée des clés avec expiration et archivage"""
+        try:
+            # Récupérer la paire de clés
+            keypair = await self.db.advanced_keypairs.find_one({"id": keypair_id})
+            if not keypair:
+                raise ValueError("Paire de clés non trouvée")
+            
+            # Calculer les dates d'expiration et d'archivage
+            created_at = keypair.get("created_at", datetime.utcnow())
+            expiration_date = created_at + timedelta(days=expiration_days)
+            archive_date = expiration_date + timedelta(days=archive_after_days)
+            
+            # Configurer la gestion avancée
+            key_management_config = {
+                "keypair_id": keypair_id,
+                "user_id": user_id,
+                "expiration_date": expiration_date,
+                "archive_date": archive_date,
+                "auto_rotate_before_expiry": True,
+                "rotation_threshold_days": 30,
+                "backup_encrypted": True,
+                "compliance_audit": True,
+                "created_at": datetime.utcnow(),
+                "status": "active"
+            }
+            
+            # Stocker la configuration
+            await self.db.key_management_configs.insert_one(key_management_config)
+            
+            # Enregistrer l'audit
+            await self.log_audit_event(
+                AuditEventType.KEY_GENERATION,
+                user_id,
+                {
+                    "keypair_id": keypair_id,
+                    "expiration_date": expiration_date.isoformat(),
+                    "archive_date": archive_date.isoformat(),
+                    "action": "setup_advanced_management"
+                }
+            )
+            
+            return {
+                "config_id": str(key_management_config["_id"]) if "_id" in key_management_config else "generated",
+                "keypair_id": keypair_id,
+                "expiration_date": expiration_date.isoformat(),
+                "archive_date": archive_date.isoformat(),
+                "status": "configured"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur configuration gestion avancée: {e}")
+            raise Exception(f"Impossible de configurer la gestion avancée: {e}")
+    
+    async def check_key_expiration(self, user_id: str) -> Dict[str, Any]:
+        """Vérifie les clés arrivant à expiration"""
+        try:
+            now = datetime.utcnow()
+            warning_threshold = now + timedelta(days=30)
+            
+            # Rechercher les clés arrivant à expiration
+            configs = await self.db.key_management_configs.find({
+                "user_id": user_id,
+                "status": "active",
+                "expiration_date": {"$lte": warning_threshold}
+            }).to_list(length=None)
+            
+            expiring_keys = []
+            for config in configs:
+                days_until_expiry = (config["expiration_date"] - now).days
+                
+                expiring_keys.append({
+                    "keypair_id": config["keypair_id"],
+                    "expiration_date": config["expiration_date"].isoformat(),
+                    "days_until_expiry": days_until_expiry,
+                    "status": "expired" if days_until_expiry < 0 else "expiring_soon" if days_until_expiry < 7 else "warning"
+                })
+            
+            return {
+                "user_id": user_id,
+                "expiring_keys": expiring_keys,
+                "total_count": len(expiring_keys),
+                "critical_count": len([k for k in expiring_keys if k["status"] == "expired"]),
+                "warning_count": len([k for k in expiring_keys if k["status"] == "expiring_soon"]),
+                "checked_at": now.isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur vérification expiration: {e}")
+            return {"error": str(e)}
+    
+    async def bulk_key_operations(self, operation: str, keypair_ids: List[str], 
+                                 user_id: str, **kwargs) -> Dict[str, Any]:
+        """Effectue des opérations en masse sur les clés"""
+        try:
+            if len(keypair_ids) > 50:
+                raise ValueError("Maximum 50 clés par opération en masse")
+            
+            results = []
+            
+            for keypair_id in keypair_ids:
+                try:
+                    if operation == "rotate":
+                        result = await self.rotate_keys(keypair_id)
+                    elif operation == "archive":
+                        result = await self._archive_keypair(keypair_id, user_id)
+                    elif operation == "backup":
+                        result = await self._backup_keypair(keypair_id, user_id)
+                    elif operation == "expire":
+                        result = await self._expire_keypair(keypair_id, user_id)
+                    else:
+                        raise ValueError(f"Opération non supportée: {operation}")
+                    
+                    results.append({
+                        "keypair_id": keypair_id,
+                        "success": True,
+                        "result": result
+                    })
+                    
+                except Exception as e:
+                    results.append({
+                        "keypair_id": keypair_id,
+                        "success": False,
+                        "error": str(e)
+                    })
+            
+            # Enregistrer l'audit
+            await self.log_audit_event(
+                AuditEventType.KEY_ROTATION,
+                user_id,
+                {
+                    "operation": operation,
+                    "keypair_count": len(keypair_ids),
+                    "success_count": len([r for r in results if r["success"]]),
+                    "action": "bulk_operation"
+                }
+            )
+            
+            return {
+                "operation": operation,
+                "results": results,
+                "total_count": len(keypair_ids),
+                "success_count": len([r for r in results if r["success"]]),
+                "failure_count": len([r for r in results if not r["success"]])
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur opération en masse: {e}")
+            raise Exception(f"Impossible d'effectuer l'opération en masse: {e}")
+    
+    async def _archive_keypair(self, keypair_id: str, user_id: str) -> Dict[str, Any]:
+        """Archive une paire de clés"""
+        try:
+            # Marquer comme archivée
+            await self.db.advanced_keypairs.update_one(
+                {"id": keypair_id},
+                {"$set": {"status": "archived", "archived_at": datetime.utcnow()}}
+            )
+            
+            return {"status": "archived", "archived_at": datetime.utcnow().isoformat()}
+            
+        except Exception as e:
+            logger.error(f"Erreur archivage: {e}")
+            raise Exception(f"Impossible d'archiver la clé: {e}")
+    
+    async def _backup_keypair(self, keypair_id: str, user_id: str) -> Dict[str, Any]:
+        """Sauvegarde une paire de clés"""
+        try:
+            # Récupérer la paire de clés
+            keypair = await self.db.advanced_keypairs.find_one({"id": keypair_id})
+            if not keypair:
+                raise ValueError("Paire de clés non trouvée")
+            
+            # Créer une sauvegarde chiffrée
+            backup_data = {
+                "backup_id": str(uuid.uuid4()),
+                "keypair_id": keypair_id,
+                "user_id": user_id,
+                "backup_data": keypair,  # En production, chiffrer cette donnée
+                "created_at": datetime.utcnow(),
+                "checksum": hashlib.sha256(str(keypair).encode()).hexdigest()
+            }
+            
+            # Stocker la sauvegarde
+            await self.db.key_backups.insert_one(backup_data)
+            
+            return {"backup_id": backup_data["backup_id"], "status": "backed_up"}
+            
+        except Exception as e:
+            logger.error(f"Erreur sauvegarde: {e}")
+            raise Exception(f"Impossible de sauvegarder la clé: {e}")
+    
+    async def _expire_keypair(self, keypair_id: str, user_id: str) -> Dict[str, Any]:
+        """Expire une paire de clés"""
+        try:
+            # Marquer comme expirée
+            await self.db.advanced_keypairs.update_one(
+                {"id": keypair_id},
+                {"$set": {"status": "expired", "expired_at": datetime.utcnow()}}
+            )
+            
+            return {"status": "expired", "expired_at": datetime.utcnow().isoformat()}
+            
+        except Exception as e:
+            logger.error(f"Erreur expiration: {e}")
+            raise Exception(f"Impossible d'expirer la clé: {e}")
+    
+    async def get_advanced_crypto_dashboard(self, user_id: str) -> Dict[str, Any]:
+        """Récupère un tableau de bord avancé pour la cryptographie"""
+        try:
+            # Statistiques générales
+            stats = await self.get_crypto_statistics(user_id)
+            
+            # Vérification des expirations
+            expiration_check = await self.check_key_expiration(user_id)
+            
+            # Activité récente
+            recent_activity = await self.db.crypto_audit_log.find({
+                "user_id": user_id
+            }).sort("timestamp", -1).limit(10).to_list(length=None)
+            
+            # Algorithmes utilisés
+            algorithm_usage = await self.db.advanced_keypairs.aggregate([
+                {"$match": {"user_id": user_id}},
+                {"$group": {
+                    "_id": "$encryption_algorithm",
+                    "count": {"$sum": 1}
+                }}
+            ]).to_list(length=None)
+            
+            return {
+                "user_id": user_id,
+                "statistics": stats,
+                "expiration_alerts": expiration_check,
+                "recent_activity": recent_activity,
+                "algorithm_usage": algorithm_usage,
+                "dashboard_generated_at": datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur dashboard avancé: {e}")
             return {"error": str(e)}

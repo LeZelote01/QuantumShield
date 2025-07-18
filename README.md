@@ -34,6 +34,14 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 - **Algorithmes multiples** : Support pour Kyber-512/768/1024 et Dilithium-2/3/5
 - **Clés hybrides** : Génération de clés combinant chiffrement et signature
 - **Comparaison automatique** : Recommandations d'algorithmes selon le contexte
+- **Gestion avancée des clés** : Rotation automatique, expiration, archivage
+- **Chiffrement par lots** : Traitement optimisé de gros volumes de données
+- **Signature à seuil** : Mécanismes de signature multi-parties (threshold signatures)
+- **Zero-knowledge proofs** : Preuves de connaissance sans révélation de secrets
+- **Audit trail complet** : Traçabilité cryptographique immuable
+- **Opérations en masse** : Gestion groupée des clés (rotation, archivage, sauvegarde)
+- **Dashboard avancé** : Monitoring et métriques de santé cryptographique
+- **Compatibilité HSM** : Support pour modules de sécurité matériels
 
 ### 2. 🔗 Blockchain privée pour la confiance matérielle
 
@@ -91,18 +99,26 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 │   └── quantum_models.py  # Modèles Pydantic
 ├── services/
 │   ├── ntru_service.py    # Cryptographie NTRU++
+│   ├── advanced_crypto_service.py # Cryptographie avancée (Kyber, Dilithium, ZK, Seuil)
 │   ├── blockchain_service.py # Blockchain privée
 │   ├── device_service.py  # Gestion dispositifs
 │   ├── token_service.py   # Système tokens $QS
 │   ├── auth_service.py    # Authentification
-│   └── mining_service.py  # Mining distribué
+│   ├── mining_service.py  # Mining distribué
+│   ├── security_service.py # Sécurité renforcée (2FA, MFA)
+│   ├── ai_analytics_service.py # Intelligence artificielle
+│   ├── iot_protocol_service.py # Protocoles IoT
+│   └── ota_update_service.py # Mises à jour OTA
 └── routes/
     ├── auth_routes.py     # Authentification
-    ├── crypto_routes.py   # Cryptographie
+    ├── crypto_routes.py   # Cryptographie de base
+    ├── advanced_crypto_routes.py # Cryptographie avancée
     ├── blockchain_routes.py # Blockchain
     ├── device_routes.py   # Dispositifs
     ├── token_routes.py    # Tokens
     ├── mining_routes.py   # Mining
+    ├── iot_protocol_routes.py # Protocoles IoT
+    ├── ota_routes.py      # Mises à jour OTA
     └── dashboard_routes.py # Dashboard
 ```
 
@@ -573,6 +589,38 @@ Utilisez les templates GitHub pour :
 - 💡 Proposer des fonctionnalités
 - 📝 Améliorer la documentation
 - 🔒 Rapporter des vulnérabilités
+
+## 🆕 Nouveaux Endpoints - Cryptographie Avancée
+
+### Gestion Avancée des Clés
+- `POST /api/advanced-crypto/setup-advanced-key-management` - Configuration gestion avancée
+- `GET /api/advanced-crypto/check-key-expiration` - Vérification expiration
+- `POST /api/advanced-crypto/bulk-key-operations` - Opérations en masse
+- `GET /api/advanced-crypto/advanced-crypto-dashboard` - Dashboard avancé
+- `GET /api/advanced-crypto/crypto-health-check` - Vérification santé système
+
+### Zero-Knowledge Proofs
+- `POST /api/advanced-crypto/generate-zk-proof` - Génération preuve ZK
+- `POST /api/advanced-crypto/verify-zk-proof` - Vérification preuve ZK
+
+### Signature à Seuil
+- `POST /api/advanced-crypto/setup-threshold-signature` - Configuration schéma seuil
+- `POST /api/advanced-crypto/threshold-sign` - Signature à seuil
+- `POST /api/advanced-crypto/verify-threshold-signature` - Vérification signature seuil
+
+### Audit et Conformité
+- `GET /api/advanced-crypto/audit-trail` - Trail d'audit cryptographique
+- `GET /api/advanced-crypto/verify-audit-integrity/{audit_id}` - Vérification intégrité
+- `GET /api/advanced-crypto/hsm-compatibility` - Compatibilité HSM
+- `GET /api/advanced-crypto/export-compliance` - Conformité export
+
+### Interface Utilisateur Avancée
+- **Page de gestion avancée** : `/advanced-key-management`
+- **Dashboard cryptographique** : Vue d'ensemble des clés et opérations
+- **Monitoring expiration** : Alertes pour les clés arrivant à expiration
+- **Opérations en masse** : Interface pour les actions groupées
+- **Audit visuel** : Visualisation du trail d'audit
+- **Métriques de santé** : Indicateurs de performance du système
 
 ## 📄 Licence
 

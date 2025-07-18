@@ -9,7 +9,8 @@ import {
   WrenchScrewdriverIcon,
   UserCircleIcon,
   Cog6ToothIcon,
-  XMarkIcon
+  XMarkIcon,
+  KeyIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -22,6 +23,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Devices IoT', href: '/devices', icon: CpuChipIcon },
     { name: 'Cryptographie', href: '/cryptography', icon: ShieldCheckIcon },
     { name: 'Crypto Avancée', href: '/advanced-cryptography', icon: ShieldCheckIcon },
+    { name: 'Gestion Clés', href: '/advanced-key-management', icon: KeyIcon },
     { name: 'Blockchain', href: '/blockchain', icon: CubeIcon },
     { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
     { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },

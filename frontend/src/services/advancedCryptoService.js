@@ -174,6 +174,199 @@ export const advancedCryptoService = {
       console.error('Erreur lors de la récupération des recommandations:', error);
       throw error;
     }
+  },
+
+  // ==================== NOUVELLES MÉTHODES GESTION AVANCÉE ====================
+
+  // Configurer la gestion avancée des clés
+  async setupAdvancedKeyManagement(keypairId, expirationDays = 365, archiveAfterDays = 30) {
+    try {
+      const response = await api.post('/advanced-crypto/setup-advanced-key-management', {
+        keypair_id: keypairId,
+        expiration_days: expirationDays,
+        archive_after_days: archiveAfterDays
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la configuration de la gestion avancée:', error);
+      throw error;
+    }
+  },
+
+  // Vérifier l'expiration des clés
+  async checkKeyExpiration() {
+    try {
+      const response = await api.get('/advanced-crypto/check-key-expiration');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la vérification d\'expiration:', error);
+      throw error;
+    }
+  },
+
+  // Opérations en masse sur les clés
+  async bulkKeyOperations(operation, keypairIds) {
+    try {
+      const response = await api.post('/advanced-crypto/bulk-key-operations', {
+        operation,
+        keypair_ids: keypairIds
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de l\'opération en masse:', error);
+      throw error;
+    }
+  },
+
+  // Obtenir le dashboard avancé
+  async getAdvancedCryptoDashboard() {
+    try {
+      const response = await api.get('/advanced-crypto/advanced-crypto-dashboard');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération du dashboard:', error);
+      throw error;
+    }
+  },
+
+  // Obtenir le trail d'audit
+  async getAuditTrail(limit = 100) {
+    try {
+      const response = await api.get(`/advanced-crypto/audit-trail?limit=${limit}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l\'audit:', error);
+      throw error;
+    }
+  },
+
+  // Vérifier l'intégrité d'un événement d'audit
+  async verifyAuditIntegrity(auditId) {
+    try {
+      const response = await api.get(`/advanced-crypto/verify-audit-integrity/${auditId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la vérification d\'intégrité:', error);
+      throw error;
+    }
+  },
+
+  // Obtenir les statistiques cryptographiques
+  async getCryptoStatistics() {
+    try {
+      const response = await api.get('/advanced-crypto/crypto-statistics');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des statistiques:', error);
+      throw error;
+    }
+  },
+
+  // Obtenir le check de santé cryptographique
+  async getCryptoHealthCheck() {
+    try {
+      const response = await api.get('/advanced-crypto/crypto-health-check');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors du check de santé:', error);
+      throw error;
+    }
+  },
+
+  // Obtenir les informations de compatibilité HSM
+  async getHSMCompatibility() {
+    try {
+      const response = await api.get('/advanced-crypto/hsm-compatibility');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des infos HSM:', error);
+      throw error;
+    }
+  },
+
+  // Obtenir les informations de conformité export
+  async getExportCompliance() {
+    try {
+      const response = await api.get('/advanced-crypto/export-compliance');
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des infos de conformité:', error);
+      throw error;
+    }
+  },
+
+  // ==================== ZERO-KNOWLEDGE PROOFS ====================
+
+  // Générer une preuve zero-knowledge
+  async generateZKProof(proofType, secretValue, publicParameters) {
+    try {
+      const response = await api.post('/advanced-crypto/generate-zk-proof', {
+        proof_type: proofType,
+        secret_value: secretValue,
+        public_parameters: publicParameters
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la génération de la preuve ZK:', error);
+      throw error;
+    }
+  },
+
+  // Vérifier une preuve zero-knowledge
+  async verifyZKProof(proofId) {
+    try {
+      const response = await api.post('/advanced-crypto/verify-zk-proof', {
+        proof_id: proofId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la vérification de la preuve ZK:', error);
+      throw error;
+    }
+  },
+
+  // ==================== SIGNATURE À SEUIL ====================
+
+  // Configurer un schéma de signature à seuil
+  async setupThresholdSignature(threshold, totalParties) {
+    try {
+      const response = await api.post('/advanced-crypto/setup-threshold-signature', {
+        threshold,
+        total_parties: totalParties
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la configuration du schéma à seuil:', error);
+      throw error;
+    }
+  },
+
+  // Effectuer une signature à seuil
+  async thresholdSign(schemeId, message, signingParties) {
+    try {
+      const response = await api.post('/advanced-crypto/threshold-sign', {
+        scheme_id: schemeId,
+        message,
+        signing_parties: signingParties
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la signature à seuil:', error);
+      throw error;
+    }
+  },
+
+  // Vérifier une signature à seuil
+  async verifyThresholdSignature(signatureId) {
+    try {
+      const response = await api.post('/advanced-crypto/verify-threshold-signature', {
+        signature_id: signatureId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la vérification de la signature à seuil:', error);
+      throw error;
+    }
   }
 };
 
