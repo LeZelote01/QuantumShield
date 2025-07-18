@@ -194,6 +194,8 @@ async def startup_event():
     await token_service.initialize_token_system()
     # Initialize blockchain if needed
     await blockchain_service.initialize_genesis_block()
+    # Initialize advanced blockchain service
+    await advanced_blockchain_service.initialize()
     # Start mining process
     asyncio.create_task(mining_service.start_mining())
 
