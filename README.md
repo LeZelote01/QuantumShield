@@ -590,6 +590,38 @@ Utilisez les templates GitHub pour :
 - 📝 Améliorer la documentation
 - 🔒 Rapporter des vulnérabilités
 
+## 🆕 Nouveaux Endpoints - Cryptographie Avancée
+
+### Gestion Avancée des Clés
+- `POST /api/advanced-crypto/setup-advanced-key-management` - Configuration gestion avancée
+- `GET /api/advanced-crypto/check-key-expiration` - Vérification expiration
+- `POST /api/advanced-crypto/bulk-key-operations` - Opérations en masse
+- `GET /api/advanced-crypto/advanced-crypto-dashboard` - Dashboard avancé
+- `GET /api/advanced-crypto/crypto-health-check` - Vérification santé système
+
+### Zero-Knowledge Proofs
+- `POST /api/advanced-crypto/generate-zk-proof` - Génération preuve ZK
+- `POST /api/advanced-crypto/verify-zk-proof` - Vérification preuve ZK
+
+### Signature à Seuil
+- `POST /api/advanced-crypto/setup-threshold-signature` - Configuration schéma seuil
+- `POST /api/advanced-crypto/threshold-sign` - Signature à seuil
+- `POST /api/advanced-crypto/verify-threshold-signature` - Vérification signature seuil
+
+### Audit et Conformité
+- `GET /api/advanced-crypto/audit-trail` - Trail d'audit cryptographique
+- `GET /api/advanced-crypto/verify-audit-integrity/{audit_id}` - Vérification intégrité
+- `GET /api/advanced-crypto/hsm-compatibility` - Compatibilité HSM
+- `GET /api/advanced-crypto/export-compliance` - Conformité export
+
+### Interface Utilisateur Avancée
+- **Page de gestion avancée** : `/advanced-key-management`
+- **Dashboard cryptographique** : Vue d'ensemble des clés et opérations
+- **Monitoring expiration** : Alertes pour les clés arrivant à expiration
+- **Opérations en masse** : Interface pour les actions groupées
+- **Audit visuel** : Visualisation du trail d'audit
+- **Métriques de santé** : Indicateurs de performance du système
+
 ## 📄 Licence
 
 Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
