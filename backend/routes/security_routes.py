@@ -332,3 +332,353 @@ async def get_security_recommendations(current_user = Depends(get_current_user))
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Erreur génération recommandations: {str(e)}"
         )
+
+# ===== NOUVELLES ROUTES - SÉCURITÉ RENFORCÉE =====
+
+# Modèles de requête supplémentaires
+class HoneypotCreateRequest(BaseModel):
+    honeypot_type: str
+    config: Dict[str, Any]
+
+class HoneypotTriggerRequest(BaseModel):
+    honeypot_id: str
+    interaction_data: Dict[str, Any]
+
+class BackupCreateRequest(BaseModel):
+    backup_type: str
+    data: Dict[str, Any]
+
+class BackupRestoreRequest(BaseModel):
+    backup_id: str
+
+class GDPRRequest(BaseModel):
+    user_id: str
+
+class DataDeletionRequest(BaseModel):
+    user_id: str
+    verification_code: str
+
+# Routes Honeypots
+@router.post("/honeypots/create")
+async def create_honeypot(
+    request: HoneypotCreateRequest,
+    current_user = Depends(get_current_user)
+):
+    """Crée un honeypot"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        honeypot = await security_service.create_honeypot(
+            honeypot_type=request.honeypot_type,
+            config=request.config
+        )
+        
+        return {
+            "honeypot": honeypot,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur création honeypot: {str(e)}"
+        )
+
+@router.post("/honeypots/trigger")
+async def trigger_honeypot(
+    request: HoneypotTriggerRequest,
+    current_user = Depends(get_current_user)
+):
+    """Déclenche un honeypot (pour tests)"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        await security_service.trigger_honeypot(
+            honeypot_id=request.honeypot_id,
+            interaction_data=request.interaction_data
+        )
+        
+        return {
+            "triggered": True,
+            "timestamp": datetime.utcnow(),
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur déclenchement honeypot: {str(e)}"
+        )
+
+@router.get("/honeypots/report")
+async def get_honeypot_report(current_user = Depends(get_current_user)):
+    """Récupère le rapport des honeypots"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        report = await security_service.get_honeypot_report()
+        
+        return {
+            "report": report,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur rapport honeypots: {str(e)}"
+        )
+
+# Routes Backup et Récupération
+@router.post("/backup/create")
+async def create_security_backup(
+    request: BackupCreateRequest,
+    current_user = Depends(get_current_user)
+):
+    """Crée une sauvegarde sécurisée"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        backup = await security_service.create_security_backup(
+            backup_type=request.backup_type,
+            data=request.data
+        )
+        
+        return {
+            "backup": backup,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur création sauvegarde: {str(e)}"
+        )
+
+@router.post("/backup/restore")
+async def restore_security_backup(
+    request: BackupRestoreRequest,
+    current_user = Depends(get_current_user)
+):
+    """Restaure une sauvegarde sécurisée"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        restoration = await security_service.restore_security_backup(
+            backup_id=request.backup_id
+        )
+        
+        return {
+            "restoration": restoration,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur restauration sauvegarde: {str(e)}"
+        )
+
+@router.get("/backup/report")
+async def get_backup_report(current_user = Depends(get_current_user)):
+    """Récupère le rapport des sauvegardes"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        report = await security_service.get_backup_report()
+        
+        return {
+            "report": report,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur rapport sauvegardes: {str(e)}"
+        )
+
+# Routes Conformité GDPR/CCPA
+@router.post("/gdpr/report")
+async def generate_gdpr_report(
+    request: GDPRRequest,
+    current_user = Depends(get_current_user)
+):
+    """Génère un rapport GDPR pour un utilisateur"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions (admin ou utilisateur concerné)
+        if not current_user.get("is_admin", False) and current_user["id"] != request.user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès non autorisé"
+            )
+        
+        report = await security_service.generate_gdpr_report(
+            user_id=request.user_id
+        )
+        
+        return {
+            "gdpr_report": report,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur rapport GDPR: {str(e)}"
+        )
+
+@router.post("/gdpr/delete-user-data")
+async def delete_user_data(
+    request: DataDeletionRequest,
+    current_user = Depends(get_current_user)
+):
+    """Supprime toutes les données d'un utilisateur"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions (admin ou utilisateur concerné)
+        if not current_user.get("is_admin", False) and current_user["id"] != request.user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès non autorisé"
+            )
+        
+        deletion = await security_service.delete_user_data(
+            user_id=request.user_id,
+            verification_code=request.verification_code
+        )
+        
+        return {
+            "deletion": deletion,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur suppression données: {str(e)}"
+        )
+
+@router.get("/compliance/report")
+async def get_compliance_report(current_user = Depends(get_current_user)):
+    """Récupère le rapport de conformité"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        report = await security_service.get_compliance_report()
+        
+        return {
+            "compliance_report": report,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur rapport conformité: {str(e)}"
+        )
+
+# Routes rapports complets
+@router.get("/comprehensive-report")
+async def get_comprehensive_security_report(current_user = Depends(get_current_user)):
+    """Génère un rapport de sécurité complet"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        report = await security_service.get_comprehensive_security_report()
+        
+        return {
+            "comprehensive_report": report,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur rapport complet: {str(e)}"
+        )
+
+@router.get("/health-check")
+async def perform_security_health_check(current_user = Depends(get_current_user)):
+    """Effectue un contrôle de santé sécurité"""
+    from server import security_service
+    
+    try:
+        # Vérifier les permissions admin
+        if not current_user.get("is_admin", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Accès administrateur requis"
+            )
+        
+        health_check = await security_service.perform_security_health_check()
+        
+        return {
+            "health_check": health_check,
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur contrôle santé: {str(e)}"
+        )
