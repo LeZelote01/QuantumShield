@@ -150,7 +150,28 @@ class QuantumShieldTester:
             "management_compress_blocks": False,
             "management_archive_blocks": False,
             "management_compressed_blocks": False,
-            "management_archive_periods": False
+            "management_archive_periods": False,
+            # New Advanced Economy Features Tests
+            "advanced_economy_governance_proposals_create": False,
+            "advanced_economy_governance_proposals_vote": False,
+            "advanced_economy_governance_proposals_execute": False,
+            "advanced_economy_governance_proposals_list": False,
+            "advanced_economy_governance_dashboard": False,
+            "advanced_economy_governance_voting_power": False,
+            "advanced_economy_tokenization_assets_create": False,
+            "advanced_economy_tokenization_assets_buy": False,
+            # New Security Features Tests
+            "security_honeypots_create": False,
+            "security_honeypots_trigger": False,
+            "security_honeypots_report": False,
+            "security_backup_create": False,
+            "security_backup_restore": False,
+            "security_backup_report": False,
+            "security_gdpr_report": False,
+            "security_gdpr_delete_user_data": False,
+            "security_compliance_report": False,
+            "security_comprehensive_report": False,
+            "security_health_check": False
         }
         self.test_data = {}
 
