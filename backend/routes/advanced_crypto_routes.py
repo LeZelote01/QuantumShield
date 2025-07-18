@@ -580,7 +580,7 @@ async def get_audit_trail(
             limit = 1000
         
         audit_trail = await advanced_crypto_service.get_audit_trail(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             limit=limit
         )
         
