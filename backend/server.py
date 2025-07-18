@@ -114,6 +114,7 @@ api_router.include_router(geolocation_router, prefix="/geolocation", tags=["geol
 api_router.include_router(x509_router, prefix="/x509", tags=["x509-certificates"])
 api_router.include_router(marketplace_router, prefix="/marketplace", tags=["marketplace"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
+api_router.include_router(hsm_router, prefix="/hsm", tags=["hsm"])
 
 # Health check endpoint
 @api_router.get("/health")
