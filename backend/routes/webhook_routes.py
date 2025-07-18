@@ -142,7 +142,7 @@ async def webhook_health_check():
             "error": str(e)
         }
 
-@router.get("/events/supported")
+@router.get("/{webhook_id}")
 async def get_supported_events():
     """Récupère la liste des événements supportés"""
     try:
