@@ -20,6 +20,7 @@ import Cryptography from './pages/Cryptography/Cryptography';
 import AdvancedCryptography from './pages/Cryptography/AdvancedCryptography';
 import AdvancedKeyManagement from './pages/Cryptography/AdvancedKeyManagement';
 import Blockchain from './pages/Blockchain/Blockchain';
+import AdvancedBlockchain from './pages/Blockchain/AdvancedBlockchain';
 import Mining from './pages/Mining/Mining';
 import Tokens from './pages/Tokens/Tokens';
 import Profile from './pages/Profile/Profile';
