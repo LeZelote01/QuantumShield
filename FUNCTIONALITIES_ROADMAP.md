@@ -91,7 +91,10 @@
 - [x] Système de messages IoT unifié
 - [x] Gestion des heartbeats et données capteurs
 - [x] Infrastructure pour commandes et alertes
-- [ ] Gestion des mises à jour OTA sécurisées
+- [x] Gestion des mises à jour OTA sécurisées
+- [x] Système de rollback automatique
+- [x] Vérification d'intégrité et signatures
+- [x] Mises à jour en masse (bulk updates)
 - [ ] Monitoring prédictif avec ML
 - [ ] Géolocalisation des dispositifs
 - [ ] Gestion des certificats X.509
