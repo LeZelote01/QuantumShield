@@ -143,6 +143,25 @@ async def webhook_health_check():
         }
 
 @router.get("/{webhook_id}")
+async def get_webhook(webhook_id: str):
+    """Récupère un webhook spécifique"""
+    try:
+        if _webhook_service is None:
+            raise HTTPException(status_code=500, detail="Service webhooks non initialisé")
+        
+        webhooks = await _webhook_service.list_webhooks()
+        webhook = next((w for w in webhooks if w["webhook_id"] == webhook_id), None)
+        
+        if not webhook:
+            raise HTTPException(status_code=404, detail="Webhook non trouvé")
+        
+        return webhook
+        
+    except Exception as e:
+        logger.error(f"Erreur récupération webhook: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/events/supported")
 async def get_supported_events():
     """Récupère la liste des événements supportés"""
     try:
