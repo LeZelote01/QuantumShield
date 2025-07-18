@@ -28,7 +28,7 @@ class LocationUpdate(BaseModel):
 
 class GeofenceCreate(BaseModel):
     name: str
-    type: str = Field(..., regex="^(circular|polygon|rectangular)$")
+    type: str = Field(..., pattern="^(circular|polygon|rectangular)$")
     coordinates: List[Dict[str, float]]
     radius: Optional[float] = None
     device_ids: Optional[List[str]] = []
