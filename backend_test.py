@@ -37,7 +37,21 @@ class QuantumShieldTester:
             "blockchain_stats": False,
             "tokens_balance": False,
             "mining_stats": False,
-            "dashboard_overview": False
+            "dashboard_overview": False,
+            # Advanced Crypto Tests
+            "advanced_crypto_supported_algorithms": False,
+            "advanced_crypto_generate_keypair": False,
+            "advanced_crypto_hybrid_encrypt": False,
+            "advanced_crypto_hybrid_decrypt": False,
+            "advanced_crypto_batch_encrypt": False,
+            "advanced_crypto_batch_decrypt": False,
+            "advanced_crypto_sign_dilithium": False,
+            "advanced_crypto_verify_dilithium": False,
+            "advanced_crypto_setup_key_rotation": False,
+            "advanced_crypto_rotate_keys": False,
+            "advanced_crypto_key_rotation_status": False,
+            "advanced_crypto_performance_comparison": False,
+            "advanced_crypto_algorithm_recommendations": False
         }
         self.test_data = {}
 
