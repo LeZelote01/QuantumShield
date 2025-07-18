@@ -71,6 +71,7 @@ geolocation_service = GeolocationService(db)
 x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
+governance_service = GovernanceService(db)
 
 # Initialiser les nouveaux services
 services_dict = {
