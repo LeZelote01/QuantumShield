@@ -52,6 +52,8 @@ from services.marketplace_service import MarketplaceService
 from services.hsm_service import HSMService
 from services.graphql_service import GraphQLService
 from services.webhook_service import WebhookService
+from services.personalized_recommendations_service import PersonalizedRecommendationsService
+from services.personalizable_dashboard_service import PersonalizableDashboardService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -70,6 +72,8 @@ geolocation_service = GeolocationService(db)
 x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
+personalized_recommendations_service = PersonalizedRecommendationsService(db)
+personalizable_dashboard_service = PersonalizableDashboardService(db)
 
 # Initialiser les nouveaux services
 services_dict = {
