@@ -266,7 +266,7 @@ async def get_certificate_details(certificate_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{certificate_id}/download")
-async def download_certificate(certificate_id: str, format: str = Query("pem", regex="^(pem|der|p12)$")):
+async def download_certificate(certificate_id: str, format: str = Query("pem", pattern="^(pem|der|p12)$")):
     """Télécharge un certificat dans le format demandé"""
     try:
         if not x509_service:
