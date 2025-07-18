@@ -378,7 +378,7 @@ class AdvancedCryptoService:
                 "signature_public_key": keypair_data["keys"]["signature"]["public_key"],
                 "encryption_algorithm": encryption_alg.value,
                 "signature_algorithm": signature_alg.value,
-                "created_at": keypair_data["created_at"]
+                "created_at": keypair_data["created_at"].isoformat()
             }
             
         except Exception as e:
