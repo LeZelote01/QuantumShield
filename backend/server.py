@@ -35,6 +35,7 @@ security = HTTPBearer()
 # Initialize services
 from services.ntru_service import NTRUService
 from services.blockchain_service import BlockchainService
+from services.advanced_blockchain_service import AdvancedBlockchainService
 from services.device_service import DeviceService
 from services.token_service import TokenService
 from services.auth_service import AuthService
