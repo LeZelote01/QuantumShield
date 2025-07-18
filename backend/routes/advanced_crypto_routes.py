@@ -469,7 +469,7 @@ async def verify_zk_proof(
     try:
         verification_result = await advanced_crypto_service.verify_zk_proof(
             proof_id=request.proof_id,
-            verifier_id=current_user["id"]
+            verifier_id=current_user.id
         )
         
         return {
