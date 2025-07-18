@@ -8,11 +8,7 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime
 
 from routes.auth_routes import get_current_user
-<<<<<<< HEAD
 from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType, ProposalType, VoteOption
-=======
-from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType
->>>>>>> main
 
 router = APIRouter()
 
