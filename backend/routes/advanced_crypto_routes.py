@@ -501,7 +501,7 @@ async def setup_threshold_signature(
         scheme = await advanced_crypto_service.setup_threshold_signature(
             threshold=request.threshold,
             total_parties=request.total_parties,
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
