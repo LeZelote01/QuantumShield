@@ -152,6 +152,7 @@ async def health_check():
         "services": {
             "ntru": ntru_service.is_ready(),
             "blockchain": await blockchain_service.is_ready(),
+            "advanced_blockchain": await advanced_blockchain_service.is_ready(),
             "advanced_crypto": advanced_crypto_service.is_ready(),
             "security": security_service.is_ready(),
             "ai_analytics": ai_analytics_service.is_ready(),
