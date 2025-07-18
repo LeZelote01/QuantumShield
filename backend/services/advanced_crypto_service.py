@@ -88,39 +88,79 @@ class AdvancedCryptoService:
             if PQ_AVAILABLE:
                 self.supported_algorithms.update({
                     CryptoAlgorithm.KYBER_512: {
+                        "available": KYBER_AVAILABLE,
+                        "type": "encryption",
+                        "description": "Kyber-512 KEM (fallback implementation)" if not KYBER_AVAILABLE else "Kyber-512 KEM",
+                        "security_level": 1
+                    },
+                    CryptoAlgorithm.KYBER_768: {
+                        "available": KYBER_AVAILABLE,
+                        "type": "encryption",
+                        "description": "Kyber-768 KEM (fallback implementation)" if not KYBER_AVAILABLE else "Kyber-768 KEM",
+                        "security_level": 3
+                    },
+                    CryptoAlgorithm.KYBER_1024: {
+                        "available": KYBER_AVAILABLE,
+                        "type": "encryption",
+                        "description": "Kyber-1024 KEM (fallback implementation)" if not KYBER_AVAILABLE else "Kyber-1024 KEM",
+                        "security_level": 5
+                    },
+                    CryptoAlgorithm.DILITHIUM_2: {
+                        "available": DILITHIUM_AVAILABLE,
+                        "type": "signature",
+                        "description": "Dilithium-2 signature (fallback implementation)" if not DILITHIUM_AVAILABLE else "Dilithium-2 signature",
+                        "security_level": 2
+                    },
+                    CryptoAlgorithm.DILITHIUM_3: {
+                        "available": DILITHIUM_AVAILABLE,
+                        "type": "signature",
+                        "description": "Dilithium-3 signature (fallback implementation)" if not DILITHIUM_AVAILABLE else "Dilithium-3 signature",
+                        "security_level": 3
+                    },
+                    CryptoAlgorithm.DILITHIUM_5: {
+                        "available": DILITHIUM_AVAILABLE,
+                        "type": "signature",
+                        "description": "Dilithium-5 signature (fallback implementation)" if not DILITHIUM_AVAILABLE else "Dilithium-5 signature",
+                        "security_level": 5
+                    }
+                })
+            else:
+                # Algorithmes de fallback avec implémentations simulées
+                self.supported_algorithms.update({
+                    CryptoAlgorithm.KYBER_512: {
                         "available": True,
                         "type": "encryption",
-                        "description": "Kyber-512 KEM",
+                        "description": "Kyber-512 KEM (simulated fallback)",
                         "security_level": 1
                     },
                     CryptoAlgorithm.KYBER_768: {
                         "available": True,
                         "type": "encryption",
-                        "description": "Kyber-768 KEM",
+                        "description": "Kyber-768 KEM (simulated fallback)",
                         "security_level": 3
                     },
                     CryptoAlgorithm.KYBER_1024: {
                         "available": True,
                         "type": "encryption",
-                        "description": "Kyber-1024 KEM",
+                        "description": "Kyber-1024 KEM (simulated fallback)",
                         "security_level": 5
                     },
                     CryptoAlgorithm.DILITHIUM_2: {
                         "available": True,
                         "type": "signature",
-                        "description": "Dilithium-2 signature",
+                        "description": "Dilithium-2 signature (simulated fallback)",
                         "security_level": 2
                     },
                     CryptoAlgorithm.DILITHIUM_3: {
                         "available": True,
                         "type": "signature",
-                        "description": "Dilithium-3 signature",
+                        "description": "Dilithium-3 signature (simulated fallback)",
                         "security_level": 3
                     },
                     CryptoAlgorithm.DILITHIUM_5: {
                         "available": True,
                         "type": "signature",
-                        "description": "Dilithium-5 signature",
+                        "description": "Dilithium-5 signature (simulated fallback)",
                         "security_level": 5
                     }
                 })
