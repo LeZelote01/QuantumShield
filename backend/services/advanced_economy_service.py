@@ -814,8 +814,7 @@ class AdvancedEconomyService:
             logger.error(f"Erreur achat tokens actif: {e}")
             raise Exception(f"Impossible d'acheter les tokens: {e}")
     
-<<<<<<< HEAD
-    # ===== GOUVERNANCE DÉCENTRALISÉE =====
+    # ===== MÉTHODES UTILITAIRES =====
     
     async def create_proposal(self, proposer_id: str, proposal_data: Dict[str, Any]) -> Dict[str, Any]:
         """Crée une proposition de gouvernance"""
