@@ -273,16 +273,16 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
 - `POST /api/devices/heartbeat` - Heartbeat dispositif
 - `GET /api/devices/{device_id}/metrics` - Métriques dispositif
 
-#### Protocoles IoT
-- `POST /api/iot-protocol/mqtt/start` - Démarrage broker MQTT
-- `POST /api/iot-protocol/mqtt/publish` - Publication message MQTT
-- `GET /api/iot-protocol/mqtt/topics` - Topics MQTT configurés
-- `POST /api/iot-protocol/coap/start` - Démarrage serveur CoAP
-- `GET /api/iot-protocol/coap/resources` - Ressources CoAP
-- `POST /api/iot-protocol/lorawan/start` - Démarrage passerelle LoRaWAN
-- `POST /api/iot-protocol/lorawan/downlink` - Message downlink LoRaWAN
-- `GET /api/iot-protocol/protocols/status` - Statut tous protocoles
-- `GET /api/iot-protocol/protocols/statistics` - Statistiques messages
+#### Mises à jour OTA
+- `POST /api/ota/firmware/register` - Enregistrement nouveau firmware
+- `GET /api/ota/firmware/list` - Liste des firmwares disponibles
+- `GET /api/ota/firmware/{firmware_id}` - Informations firmware
+- `POST /api/ota/update/schedule` - Planification mise à jour
+- `POST /api/ota/update/bulk-schedule` - Mises à jour en masse
+- `POST /api/ota/update/{update_id}/start` - Démarrage mise à jour
+- `POST /api/ota/update/{update_id}/cancel` - Annulation mise à jour
+- `GET /api/ota/update/{update_id}/status` - Statut mise à jour
+- `POST /api/ota/device/{device_id}/rollback` - Rollback firmware
 
 #### Blockchain
 - `GET /api/blockchain/stats` - Statistiques blockchain
