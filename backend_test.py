@@ -1134,6 +1134,58 @@ class QuantumShieldTester:
             print(f"❌ IoT Protocol health check exception: {e}")
         
         return False
+    
+    async def test_iot_protocol_status(self):
+        """Test du statut des protocoles IoT"""
+        print("\n📡 Test IoT Protocol Status...")
+        
+        try:
+            response = await self.make_request("GET", "/iot-protocol/protocols/status")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("success") and "protocols" in data:
+                    protocols = data["protocols"]
+                    print("✅ IoT Protocol status retrieved")
+                    print(f"   Available protocols: {len(protocols)}")
+                    for protocol, status in protocols.items():
+                        print(f"   - {protocol}: enabled={status.get('enabled', False)}")
+                    self.test_results["iot_protocol_status"] = True
+                    return True
+                else:
+                    print(f"❌ IoT Protocol status failed: {data}")
+            else:
+                print(f"❌ IoT Protocol status HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ IoT Protocol status exception: {e}")
+        
+        return False
+    
+    async def test_iot_protocol_statistics(self):
+        """Test des statistiques des messages IoT"""
+        print("\n📊 Test IoT Protocol Statistics...")
+        
+        try:
+            response = await self.make_request("GET", "/iot-protocol/protocols/statistics")
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("success") and "statistics" in data:
+                    stats = data["statistics"]
+                    print("✅ IoT Protocol statistics retrieved")
+                    print(f"   Total messages: {stats.get('total_messages', 0)}")
+                    print(f"   Message types: {len(stats.get('by_type', {}))}")
+                    print(f"   Protocol breakdown: {len(stats.get('by_protocol', {}))}")
+                    self.test_results["iot_protocol_statistics"] = True
+                    return True
+                else:
+                    print(f"❌ IoT Protocol statistics failed: {data}")
+            else:
+                print(f"❌ IoT Protocol statistics HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ IoT Protocol statistics exception: {e}")
+        
+        return False
 
     # ===== AI ANALYTICS SERVICE TESTS =====
     
