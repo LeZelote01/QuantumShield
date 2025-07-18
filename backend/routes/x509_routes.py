@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 class CertificateRequest(BaseModel):
     subject_name: str = Field(..., min_length=1, max_length=64)
-    certificate_type: str = Field(..., regex="^(device|user|server|end_entity)$")
+    certificate_type: str = Field(..., pattern="^(device|user|server|end_entity)$")
     key_usage: List[str] = Field(default=["digital_signature", "key_encipherment"])
     subject_alt_names: Optional[List[str]] = []
     validity_days: Optional[int] = Field(default=365, ge=1, le=3650)
