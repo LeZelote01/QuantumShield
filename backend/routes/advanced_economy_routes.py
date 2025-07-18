@@ -2,17 +2,16 @@
 Routes pour l'économie avancée
 """
 
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, status, Query
 from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 from datetime import datetime
+import logging
 
 from routes.auth_routes import get_current_user
-<<<<<<< HEAD
 from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType, ProposalType, VoteOption
-=======
-from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType
->>>>>>> main
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -94,7 +93,6 @@ class BuyAssetTokensRequest(BaseModel):
     asset_id: str
     token_count: int
 
-<<<<<<< HEAD
 # Governance
 class ProposalRequest(BaseModel):
     proposal_type: ProposalType
@@ -113,8 +111,6 @@ class VoteRequest(BaseModel):
 class ExecuteProposalRequest(BaseModel):
     proposal_id: str
 
-=======
->>>>>>> main
 # ===== ROUTES MARKETPLACE =====
 
 @router.post("/marketplace/services/create")
@@ -449,7 +445,6 @@ async def buy_asset_tokens(
             detail=f"Erreur achat tokens: {str(e)}"
         )
 
-<<<<<<< HEAD
 # ===== ROUTES GOVERNANCE =====
 
 @router.post("/governance/proposals/create")
@@ -461,20 +456,15 @@ async def create_proposal(
     from server import advanced_economy_service
     
     try:
-        proposal_data = request.dict()
         result = await advanced_economy_service.create_proposal(
-            proposer_id=current_user["id"],
-            proposal_data=proposal_data
+            proposer_id=current_user["user_id"],
+            proposal_data=request.dict()
         )
-        
-        return {
-            "proposal": result,
-            "status": "success"
-        }
-        
+        return result
     except Exception as e:
+        logger.error(f"Erreur création proposition: {e}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=500,
             detail=f"Erreur création proposition: {str(e)}"
         )
 
@@ -488,21 +478,17 @@ async def vote_on_proposal(
     
     try:
         result = await advanced_economy_service.vote_on_proposal(
-            voter_id=current_user["id"],
+            voter_id=current_user["user_id"],
             proposal_id=request.proposal_id,
             vote_option=request.vote_option,
             voting_power=request.voting_power
         )
-        
-        return {
-            "vote": result,
-            "status": "success"
-        }
-        
+        return result
     except Exception as e:
+        logger.error(f"Erreur vote proposition: {e}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Erreur vote: {str(e)}"
+            status_code=500,
+            detail=f"Erreur vote proposition: {str(e)}"
         )
 
 @router.post("/governance/proposals/execute")
@@ -516,224 +502,85 @@ async def execute_proposal(
     try:
         result = await advanced_economy_service.execute_proposal(
             proposal_id=request.proposal_id,
-            executor_id=current_user["id"]
+            executor_id=current_user["user_id"]
         )
-        
-        return {
-            "execution": result,
-            "status": "success"
-        }
-        
+        return result
     except Exception as e:
+        logger.error(f"Erreur exécution proposition: {e}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=500,
             detail=f"Erreur exécution proposition: {str(e)}"
         )
 
 @router.get("/governance/proposals")
 async def get_proposals(
-    status_filter: Optional[str] = None,
-    limit: int = 20,
-    offset: int = 0
+    status: Optional[str] = Query(None, description="Statut des propositions"),
+    current_user = Depends(get_current_user)
 ):
-    """Récupère les propositions de gouvernance"""
+    """Liste les propositions de gouvernance"""
     from server import advanced_economy_service
     
     try:
-        # Construire le filtre
-        query = {}
-        if status_filter:
-            query["status"] = status_filter
-        
-        # Récupérer les propositions
-        proposals = await advanced_economy_service.db.governance_proposals.find(query).sort("created_at", -1).skip(offset).limit(limit).to_list(None)
-        
-        # Enrichir avec les informations des proposeurs
-        enriched_proposals = []
-        for proposal in proposals:
-            proposer = await advanced_economy_service.db.users.find_one({"id": proposal["proposer_id"]})
-            
-            # Calculer les statistiques de vote
-            total_votes = proposal["votes_yes"] + proposal["votes_no"] + proposal["votes_abstain"]
-            
-            enriched_proposal = {
-                "id": proposal["id"],
-                "title": proposal["title"],
-                "description": proposal["description"],
-                "proposal_type": proposal["proposal_type"],
-                "status": proposal["status"],
-                "created_at": proposal["created_at"],
-                "voting_ends": proposal["voting_ends"],
-                "execution_date": proposal.get("execution_date"),
-                "votes_yes": proposal["votes_yes"],
-                "votes_no": proposal["votes_no"],
-                "votes_abstain": proposal["votes_abstain"],
-                "total_votes": total_votes,
-                "voters_count": len(proposal["voters"]),
-                "voting_power_required": proposal["voting_power_required"],
-                "proposer": {
-                    "id": proposer["id"] if proposer else None,
-                    "username": proposer["username"] if proposer else "Unknown"
-                }
-            }
-            enriched_proposals.append(enriched_proposal)
-        
-        return {
-            "proposals": enriched_proposals,
-            "total": len(enriched_proposals),
-            "offset": offset,
-            "limit": limit,
-            "status": "success"
-        }
-        
+        proposals = await advanced_economy_service.get_proposals(status=status)
+        return {"proposals": proposals}
     except Exception as e:
+        logger.error(f"Erreur récupération propositions: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=500,
             detail=f"Erreur récupération propositions: {str(e)}"
         )
 
 @router.get("/governance/proposals/{proposal_id}")
-async def get_proposal_details(proposal_id: str):
-    """Récupère les détails d'une proposition"""
+async def get_proposal(
+    proposal_id: str,
+    current_user = Depends(get_current_user)
+):
+    """Récupère une proposition spécifique"""
     from server import advanced_economy_service
     
     try:
-        proposal = await advanced_economy_service.db.governance_proposals.find_one({"id": proposal_id})
-        if not proposal:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Proposition non trouvée"
-            )
-        
-        # Enrichir avec les informations du proposeur
-        proposer = await advanced_economy_service.db.users.find_one({"id": proposal["proposer_id"]})
-        
-        # Calculer les statistiques détaillées
-        total_votes = proposal["votes_yes"] + proposal["votes_no"] + proposal["votes_abstain"]
-        
-        # Enrichir les voteurs
-        enriched_voters = []
-        for voter in proposal["voters"]:
-            voter_user = await advanced_economy_service.db.users.find_one({"id": voter["voter_id"]})
-            enriched_voters.append({
-                "voter_id": voter["voter_id"],
-                "username": voter_user["username"] if voter_user else "Unknown",
-                "vote_option": voter["vote_option"],
-                "voting_power": voter["voting_power"],
-                "voted_at": voter["voted_at"]
-            })
-        
-        result = {
-            "id": proposal["id"],
-            "title": proposal["title"],
-            "description": proposal["description"],
-            "proposal_type": proposal["proposal_type"],
-            "status": proposal["status"],
-            "created_at": proposal["created_at"],
-            "voting_starts": proposal["voting_starts"],
-            "voting_ends": proposal["voting_ends"],
-            "execution_date": proposal.get("execution_date"),
-            "execution_delay_hours": proposal["execution_delay_hours"],
-            "voting_power_required": proposal["voting_power_required"],
-            "parameters": proposal.get("parameters", {}),
-            "votes_yes": proposal["votes_yes"],
-            "votes_no": proposal["votes_no"],
-            "votes_abstain": proposal["votes_abstain"],
-            "total_votes": total_votes,
-            "voters": enriched_voters,
-            "executed": proposal.get("executed", False),
-            "execution_result": proposal.get("execution_result"),
-            "proposer": {
-                "id": proposer["id"] if proposer else None,
-                "username": proposer["username"] if proposer else "Unknown"
-            }
-        }
-        
-        return {
-            "proposal": result,
-            "status": "success"
-        }
-        
-    except HTTPException:
-        raise
+        proposal = await advanced_economy_service.get_proposal(proposal_id=proposal_id)
+        return proposal
     except Exception as e:
+        logger.error(f"Erreur récupération proposition: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=500,
             detail=f"Erreur récupération proposition: {str(e)}"
         )
 
 @router.get("/governance/dashboard")
 async def get_governance_dashboard(current_user = Depends(get_current_user)):
-    """Tableau de bord de gouvernance"""
+    """Dashboard de gouvernance"""
     from server import advanced_economy_service
     
     try:
-        dashboard = await advanced_economy_service.get_governance_dashboard(current_user["id"])
-        
-        return {
-            "dashboard": dashboard,
-            "status": "success"
-        }
-        
+        dashboard = await advanced_economy_service.get_governance_dashboard()
+        return dashboard
     except Exception as e:
+        logger.error(f"Erreur dashboard gouvernance: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=500,
             detail=f"Erreur dashboard gouvernance: {str(e)}"
         )
 
 @router.get("/governance/user/{user_id}/voting-power")
-async def get_user_voting_power(user_id: str):
-    """Récupère le pouvoir de vote d'un utilisateur"""
+async def get_user_voting_power(
+    user_id: str,
+    current_user = Depends(get_current_user)
+):
+    """Calcule le pouvoir de vote d'un utilisateur"""
     from server import advanced_economy_service
     
     try:
-        # Récupérer l'utilisateur
-        user = await advanced_economy_service.db.users.find_one({"id": user_id})
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Utilisateur non trouvé"
-            )
-        
-        # Calculer le pouvoir de vote
-        voting_power = user.get("qs_balance", 0)
-        
-        # Ajouter les tokens stakés
-        staked_positions = await advanced_economy_service.db.staking_positions.find({"user_id": user_id, "active": True}).to_list(None)
-        staked_amount = sum(pos["amount"] for pos in staked_positions)
-        
-        # Ajouter les tokens d'actifs tokenisés
-        asset_ownerships = await advanced_economy_service.db.asset_ownerships.find({"buyer_id": user_id}).to_list(None)
-        asset_tokens = 0
-        for ownership in asset_ownerships:
-            asset = await advanced_economy_service.db.tokenized_assets.find_one({"id": ownership["asset_id"]})
-            if asset:
-                asset_tokens += (ownership["token_count"] / asset["total_tokens"]) * asset["total_value"]
-        
-        total_voting_power = voting_power + staked_amount + asset_tokens
-        
-        return {
-            "user_id": user_id,
-            "voting_power_breakdown": {
-                "token_balance": voting_power,
-                "staked_tokens": staked_amount,
-                "asset_tokens": asset_tokens,
-                "total": total_voting_power
-            },
-            "can_propose": total_voting_power >= 1000,
-            "status": "success"
-        }
-        
-    except HTTPException:
-        raise
+        voting_power = await advanced_economy_service.calculate_voting_power(user_id=user_id)
+        return {"user_id": user_id, "voting_power": voting_power}
     except Exception as e:
+        logger.error(f"Erreur calcul pouvoir vote: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=500,
             detail=f"Erreur calcul pouvoir vote: {str(e)}"
         )
 
-=======
->>>>>>> main
 # ===== ROUTES DASHBOARD =====
 
 @router.get("/dashboard")
