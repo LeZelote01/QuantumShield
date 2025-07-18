@@ -629,7 +629,7 @@ async def get_crypto_statistics(
     
     try:
         stats = await advanced_crypto_service.get_crypto_statistics(
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
