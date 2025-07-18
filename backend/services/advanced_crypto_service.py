@@ -249,6 +249,10 @@ class AdvancedCryptoService:
         """Vérifie si le service est prêt"""
         return self.is_initialized
     
+    def get_supported_algorithms(self) -> Dict[str, Any]:
+        """Retourne les algorithmes supportés"""
+        return self.supported_algorithms
+    
     async def generate_multi_algorithm_keypair(self, 
                                              encryption_alg: CryptoAlgorithm = CryptoAlgorithm.KYBER_768,
                                              signature_alg: CryptoAlgorithm = CryptoAlgorithm.DILITHIUM_3,
