@@ -64,6 +64,7 @@ function App() {
                   <Route path="devices" element={<Devices />} />
                   <Route path="devices/:deviceId" element={<DeviceDetails />} />
                   <Route path="cryptography" element={<Cryptography />} />
+                  <Route path="advanced-cryptography" element={<AdvancedCryptography />} />
                   <Route path="blockchain" element={<Blockchain />} />
                   <Route path="mining" element={<Mining />} />
                   <Route path="tokens" element={<Tokens />} />
