@@ -1228,7 +1228,7 @@ class AdvancedCryptoService:
                 "signature_id": signature_id,
                 "scheme_id": signature["scheme_id"],
                 "threshold_met": signature["threshold_met"],
-                "verified_at": datetime.utcnow(),
+                "verified_at": datetime.utcnow().isoformat(),
                 "verifier_id": verifier_id
             }
             
