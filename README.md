@@ -265,6 +265,12 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
 - `POST /api/crypto/sign` - Signature
 - `POST /api/crypto/verify` - Vérification signature
 
+#### Dispositifs
+- `POST /api/devices/register` - Enregistrement dispositif
+- `GET /api/devices/` - Liste des dispositifs
+- `POST /api/devices/heartbeat` - Heartbeat dispositif
+- `GET /api/devices/{device_id}/metrics` - Métriques dispositif
+
 #### Protocoles IoT
 - `POST /api/iot-protocol/mqtt/start` - Démarrage broker MQTT
 - `POST /api/iot-protocol/mqtt/publish` - Publication message MQTT
