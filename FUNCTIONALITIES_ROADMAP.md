@@ -90,19 +90,19 @@
 - [ ] Archivage automatique des anciens blocs
 
 #### 📱 **IoT Étendu**
-- [x] SDK pour différents langages (Python, C++, JavaScript, Rust)
-- [x] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN)
-- [x] Support pour Zigbee, Z-Wave, Thread, Matter
-- [x] Système de messages IoT unifié
-- [x] Gestion des heartbeats et données capteurs
-- [x] Infrastructure pour commandes et alertes
-- [x] Gestion des mises à jour OTA sécurisées
-- [x] Système de rollback automatique
-- [x] Vérification d'intégrité et signatures
-- [x] Mises à jour en masse (bulk updates)
-- [ ] Monitoring prédictif avec ML
-- [ ] Géolocalisation des dispositifs
-- [ ] Gestion des certificats X.509
+- [x] SDK pour différents langages (Python, C++, JavaScript, Rust) ✅ **IMPLÉMENTÉ**
+- [x] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN) ✅ **IMPLÉMENTÉ**
+- [x] Support pour Zigbee, Z-Wave, Thread, Matter ✅ **IMPLÉMENTÉ**
+- [x] Système de messages IoT unifié ✅ **IMPLÉMENTÉ**
+- [x] Gestion des heartbeats et données capteurs ✅ **IMPLÉMENTÉ**
+- [x] Infrastructure pour commandes et alertes ✅ **IMPLÉMENTÉ**
+- [x] Gestion des mises à jour OTA sécurisées ✅ **IMPLÉMENTÉ**
+- [x] Système de rollback automatique ✅ **IMPLÉMENTÉ**
+- [x] Vérification d'intégrité et signatures ✅ **IMPLÉMENTÉ**
+- [x] Mises à jour en masse (bulk updates) ✅ **IMPLÉMENTÉ**
+- [ ] Monitoring prédictif avec ML ❌ **À IMPLÉMENTER**
+- [ ] Géolocalisation des dispositifs ❌ **À IMPLÉMENTER**
+- [ ] Gestion des certificats X.509 ❌ **À IMPLÉMENTER**
 
 #### 💰 **Économie Avancée**
 - [ ] Marketplace de services
