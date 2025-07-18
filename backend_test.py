@@ -1554,7 +1554,7 @@ class QuantumShieldTester:
         try:
             # Test IDENTITY proof
             zk_request = {
-                "proof_type": "IDENTITY",
+                "proof_type": "identity",
                 "secret_value": "secret_identity_123",
                 "public_parameters": {"domain": "QuantumShield"}
             }
