@@ -70,6 +70,7 @@ class AssetType(str, Enum):
     CARBON_CREDITS = "carbon_credits"
     COMMODITY = "commodity"
 
+<<<<<<< HEAD
 class ProposalType(str, Enum):
     PARAMETER_CHANGE = "parameter_change"
     FEATURE_REQUEST = "feature_request"
@@ -91,6 +92,8 @@ class VoteOption(str, Enum):
     NO = "no"
     ABSTAIN = "abstain"
 
+=======
+>>>>>>> main
 class AdvancedEconomyService:
     """Service d'économie avancée"""
     
@@ -814,6 +817,7 @@ class AdvancedEconomyService:
             logger.error(f"Erreur achat tokens actif: {e}")
             raise Exception(f"Impossible d'acheter les tokens: {e}")
     
+<<<<<<< HEAD
     # ===== GOUVERNANCE DÉCENTRALISÉE =====
     
     async def create_proposal(self, proposer_id: str, proposal_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -1301,6 +1305,8 @@ class AdvancedEconomyService:
                 "error": str(e)
             }
     
+=======
+>>>>>>> main
     # ===== MÉTHODES UTILITAIRES =====
     
     def _get_lock_period(self, staking_type: str) -> int:
@@ -1361,10 +1367,13 @@ class AdvancedEconomyService:
                 },
                 "tokenization": {
                     "tokenized_assets": tokenized_assets
+<<<<<<< HEAD
                 },
                 "governance": {
                     "active_proposals": await self.db.governance_proposals.count_documents({"status": "active"}),
                     "total_proposals": await self.db.governance_proposals.count_documents({})
+=======
+>>>>>>> main
                 }
             }
             
@@ -1375,6 +1384,10 @@ class AdvancedEconomyService:
                 "staking": {"total_staked": 0, "available_pools": 0},
                 "lending": {"active_loans": 0},
                 "insurance": {"active_policies": 0},
+<<<<<<< HEAD
                 "tokenization": {"tokenized_assets": 0},
                 "governance": {"active_proposals": 0, "total_proposals": 0}
+=======
+                "tokenization": {"tokenized_assets": 0}
+>>>>>>> main
             }

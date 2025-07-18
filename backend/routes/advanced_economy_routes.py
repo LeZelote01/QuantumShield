@@ -8,7 +8,11 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime
 
 from routes.auth_routes import get_current_user
+<<<<<<< HEAD
 from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType, ProposalType, VoteOption
+=======
+from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType
+>>>>>>> main
 
 router = APIRouter()
 
@@ -90,6 +94,7 @@ class BuyAssetTokensRequest(BaseModel):
     asset_id: str
     token_count: int
 
+<<<<<<< HEAD
 # Governance
 class ProposalRequest(BaseModel):
     proposal_type: ProposalType
@@ -108,6 +113,8 @@ class VoteRequest(BaseModel):
 class ExecuteProposalRequest(BaseModel):
     proposal_id: str
 
+=======
+>>>>>>> main
 # ===== ROUTES MARKETPLACE =====
 
 @router.post("/marketplace/services/create")
@@ -442,6 +449,7 @@ async def buy_asset_tokens(
             detail=f"Erreur achat tokens: {str(e)}"
         )
 
+<<<<<<< HEAD
 # ===== ROUTES GOVERNANCE =====
 
 @router.post("/governance/proposals/create")
@@ -724,6 +732,8 @@ async def get_user_voting_power(user_id: str):
             detail=f"Erreur calcul pouvoir vote: {str(e)}"
         )
 
+=======
+>>>>>>> main
 # ===== ROUTES DASHBOARD =====
 
 @router.get("/dashboard")
