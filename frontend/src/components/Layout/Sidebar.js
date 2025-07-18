@@ -31,6 +31,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Blockchain', href: '/blockchain', icon: CubeIcon },
     { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
     { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },
+    { name: 'Économie Avancée', href: '/economy', icon: BuildingStorefrontIcon },
     { name: 'Sécurité', href: '/security', icon: LockClosedIcon },
     { name: 'Profil', href: '/profile', icon: UserCircleIcon },
     { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
