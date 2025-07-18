@@ -16,6 +16,9 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 security = HTTPBearer()
 
+# Instance du service IoT Protocol (sera injectée par le serveur principal)
+iot_protocol_service = None
+
 # Modèles Pydantic
 class MQTTConfigModel(BaseModel):
     host: str = "localhost"
