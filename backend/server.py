@@ -71,11 +71,14 @@ from routes.security_routes import router as security_router
 from routes.ai_analytics_routes import router as ai_analytics_router
 from routes.advanced_economy_routes import router as advanced_economy_router
 from routes.iot_protocol_routes import router as iot_protocol_router
+from routes.ota_routes import router as ota_router
 from routes.dashboard_routes import router as dashboard_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
+import routes.ota_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
+routes.ota_routes.ota_service = ota_update_service
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
@@ -88,6 +91,7 @@ api_router.include_router(security_router, prefix="/security", tags=["security"]
 api_router.include_router(ai_analytics_router, prefix="/ai-analytics", tags=["ai-analytics"])
 api_router.include_router(advanced_economy_router, prefix="/advanced-economy", tags=["advanced-economy"])
 api_router.include_router(iot_protocol_router, prefix="/iot-protocol", tags=["iot-protocol"])
+api_router.include_router(ota_router, prefix="/ota", tags=["ota-updates"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 
 # Health check endpoint
