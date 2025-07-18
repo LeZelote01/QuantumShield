@@ -176,6 +176,8 @@ async def health_check():
             "marketplace": marketplace_service.is_ready(),
             "hsm": hsm_service.is_ready(),
             "webhook": webhook_service.is_ready(),
+            "recommendations": personalized_recommendations_service.is_ready(),
+            "custom_dashboards": personalizable_dashboard_service.is_ready(),
             "database": True
         }
     }
