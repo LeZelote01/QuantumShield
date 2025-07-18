@@ -433,7 +433,7 @@ class AdvancedCryptoService:
                 "aes_iv": cipher.iv.hex(),
                 "encrypted_message": encrypted_message.hex(),
                 "algorithm": algorithm,
-                "timestamp": datetime.utcnow()
+                "timestamp": datetime.utcnow().isoformat()
             }
             
             return result
