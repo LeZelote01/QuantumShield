@@ -10,6 +10,7 @@ import gzip
 import zlib
 import lzma
 import brotli
+import uuid
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime, timedelta
 import logging
