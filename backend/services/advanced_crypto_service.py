@@ -253,36 +253,14 @@ class AdvancedCryptoService:
         """Retourne les algorithmes supportés"""
         return self.supported_algorithms
     
-    def generate_multi_algorithm_keypair(self, algorithms: List[str]) -> Dict[str, Any]:
-        """Génère des paires de clés pour plusieurs algorithmes"""
+    async def generate_multi_algorithm_keypair(self, 
+                                     encryption_alg: CryptoAlgorithm = CryptoAlgorithm.KYBER_768,
+                                     signature_alg: CryptoAlgorithm = CryptoAlgorithm.DILITHIUM_3,
+                                     user_id: str = None) -> Dict[str, Any]:
+        """Génère une paire de clés avec algorithmes multiples - version corrigée"""
         try:
-            keypairs = {}
-            
-            for algorithm in algorithms:
-                if algorithm not in [alg.value for alg in CryptoAlgorithm]:
-                    raise ValueError(f"Algorithme non supporté: {algorithm}")
-                
-                if algorithm not in self.supported_algorithms or not self.supported_algorithms[algorithm]["available"]:
-                    # Utiliser NTRU++ par défaut si algorithme non disponible
-                    algorithm = CryptoAlgorithm.NTRU_PLUS
-                
-                # Génération de la paire de clés
-                public_key, private_key = self._generate_fallback_keypair(algorithm)
-                
-                keypairs[algorithm] = {
-                    "public_key": public_key.hex(),
-                    "private_key": private_key.hex(),
-                    "algorithm": algorithm,
-                    "key_size": len(public_key),
-                    "generated_at": datetime.utcnow().isoformat()
-                }
-            
-            return {
-                "success": True,
-                "keypairs": keypairs,
-                "algorithms_count": len(algorithms)
-            }
-            
+            # Appeler la méthode hybride qui fonctionne correctement
+            return await self.generate_hybrid_keypair(encryption_alg, signature_alg, user_id)
         except Exception as e:
             logger.error(f"Erreur génération multi-algorithme: {str(e)}")
             return {
