@@ -94,7 +94,7 @@ async def search_services(
     pricing_model: Optional[str] = Query(None),
     max_price: Optional[float] = Query(None),
     tags: Optional[str] = Query(None),
-    sort_by: str = Query("relevance", regex="^(relevance|price_asc|price_desc|rating|newest|popular)$"),
+    sort_by: str = Query("relevance", pattern="^(relevance|price_asc|price_desc|rating|newest|popular)$"),
     limit: int = Query(20, ge=1, le=100)
 ):
     """Recherche des services dans la marketplace"""
