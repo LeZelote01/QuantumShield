@@ -1,0 +1,20 @@
+{
+  "short_name": "QuantumShield",
+  "name": "QuantumShield - IoT Security Platform",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0ea5e9",
+  "background_color": "#f8fafc",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMwRUE1RTkiLz4KPHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHg9IjMyIiB5PSIzMiI+CjxwYXRoIGQ9Ik02NCA4TDk2IDMyTDgwIDQ4TDY0IDMyTDQ4IDQ4TDMyIDMyTDY0IDhaTTY0IDEyMEw5NiA5NkwxMTIgMTEyTDk2IDEyOEwzMiAxMjhMMTYgMTEyTDMyIDk2TDY0IDEyMFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNiA2NEwzMiAzMkw0OCA0OEwzMiA2NEw0OCA4MEwzMiA5NkwxNiA2NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xMTIgNjRMMTI4IDk2TDExMiAxMTJMOTYgOTZMMTEyIDgwTDEyOCAzMkwxMTIgNjRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiMwRUE1RTkiLz4KPHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgdmlld0JveD0iMCAwIDMyMCAzMjAiIGZpbGw9Im5vbmUiIHg9Ijk2IiB5PSI5NiI+CjxwYXRoIGQ9Ik0xNjAgMjBMMjQwIDgwTDIwMCAxMjBMMTYwIDgwTDEyMCAxMjBMODAgODBMMTYwIDIwWk0xNjAgMzAwTDI0MCAyNDBMMjgwIDI4MEwyNDAgMzIwTDgwIDMyMEw0MCAyODBMODAgMjQwTDE2MCAzMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNDAgMTYwTDgwIDgwTDEyMCAxMjBMODAgMTYwTDEyMCAyMDBMODAgMjQwTDQwIDE2MFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yODAgMTYwTDMyMCAyNDBMMjgwIDI4MEwyNDAgMjQwTDI4MCAyMDBMMzIwIDgwTDI4MCAxNjBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
