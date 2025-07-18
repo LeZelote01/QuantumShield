@@ -78,6 +78,9 @@ from routes.ai_analytics_routes import router as ai_analytics_router
 from routes.advanced_economy_routes import router as advanced_economy_router
 from routes.iot_protocol_routes import router as iot_protocol_router
 from routes.ota_routes import router as ota_router
+from routes.geolocation_routes import router as geolocation_router
+from routes.x509_routes import router as x509_router
+from routes.marketplace_routes import router as marketplace_router
 from routes.dashboard_routes import router as dashboard_router
 
 # Inject services into routes
