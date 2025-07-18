@@ -528,7 +528,7 @@ async def threshold_sign(
             scheme_id=request.scheme_id,
             message=request.message,
             signing_parties=request.signing_parties,
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
