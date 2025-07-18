@@ -90,6 +90,7 @@ class VoteOption(str, Enum):
     YES = "yes"
     NO = "no"
     ABSTAIN = "abstain"
+
 class AdvancedEconomyService:
     """Service d'économie avancée"""
     
