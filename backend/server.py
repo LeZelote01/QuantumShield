@@ -61,6 +61,8 @@ from routes.blockchain_routes import router as blockchain_router
 from routes.device_routes import router as device_router
 from routes.token_routes import router as token_router
 from routes.mining_routes import router as mining_router
+from routes.security_routes import router as security_router
+from routes.ai_analytics_routes import router as ai_analytics_router
 from routes.dashboard_routes import router as dashboard_router
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
@@ -70,6 +72,8 @@ api_router.include_router(blockchain_router, prefix="/blockchain", tags=["blockc
 api_router.include_router(device_router, prefix="/devices", tags=["devices"])
 api_router.include_router(token_router, prefix="/tokens", tags=["tokens"])
 api_router.include_router(mining_router, prefix="/mining", tags=["mining"])
+api_router.include_router(security_router, prefix="/security", tags=["security"])
+api_router.include_router(ai_analytics_router, prefix="/ai-analytics", tags=["ai-analytics"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 
 # Health check endpoint
