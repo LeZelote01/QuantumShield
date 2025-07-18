@@ -444,7 +444,7 @@ async def generate_zk_proof(
             proof_type=request.proof_type,
             secret_value=request.secret_value,
             public_parameters=request.public_parameters,
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
