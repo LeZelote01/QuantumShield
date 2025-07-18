@@ -69,6 +69,19 @@ x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
 
+# Initialiser les nouveaux services
+services_dict = {
+    'device_service': device_service,
+    'blockchain_service': blockchain_service,
+    'marketplace_service': marketplace_service,
+    'advanced_economy_service': advanced_economy_service,
+    'ai_analytics_service': ai_analytics_service,
+    'x509_service': x509_service,
+    'auth_service': auth_service
+}
+
+webhook_service = WebhookService(db)
+
 # Include routers
 from routes.auth_routes import router as auth_router
 from routes.crypto_routes import router as crypto_router
