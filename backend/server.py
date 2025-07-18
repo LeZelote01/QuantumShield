@@ -52,6 +52,10 @@ from services.marketplace_service import MarketplaceService
 from services.hsm_service import HSMService
 from services.graphql_service import GraphQLService
 from services.webhook_service import WebhookService
+from services.personalized_recommendations_service import PersonalizedRecommendationsService
+from services.personalizable_dashboard_service import PersonalizableDashboardService
+from services.cloud_integrations_service import CloudIntegrationsService
+from services.erp_crm_connectors_service import ERPCRMConnectorsService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -70,6 +74,8 @@ geolocation_service = GeolocationService(db)
 x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
+personalized_recommendations_service = PersonalizedRecommendationsService(db)
+personalizable_dashboard_service = PersonalizableDashboardService(db)
 
 # Initialiser les nouveaux services
 services_dict = {
@@ -105,6 +111,8 @@ from routes.dashboard_routes import router as dashboard_router
 from routes.hsm_routes import router as hsm_router
 from routes.graphql_routes import router as graphql_router
 from routes.webhook_routes import router as webhook_router
+from routes.personalized_recommendations_routes import router as personalized_recommendations_router
+from routes.personalizable_dashboard_routes import router as personalizable_dashboard_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
@@ -114,6 +122,8 @@ import routes.x509_routes
 import routes.marketplace_routes
 import routes.graphql_routes
 import routes.webhook_routes
+import routes.personalized_recommendations_routes
+import routes.personalizable_dashboard_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
 routes.geolocation_routes.geolocation_service = geolocation_service
@@ -121,6 +131,8 @@ routes.x509_routes.x509_service = x509_service
 routes.marketplace_routes.marketplace_service = marketplace_service
 routes.graphql_routes.init_graphql_service(db, services_dict)
 routes.webhook_routes.init_webhook_service(db)
+routes.personalized_recommendations_routes.init_recommendations_service(personalized_recommendations_service)
+routes.personalizable_dashboard_routes.init_dashboard_service(personalizable_dashboard_service)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
@@ -142,6 +154,8 @@ api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboar
 api_router.include_router(hsm_router, prefix="/hsm", tags=["hsm"])
 api_router.include_router(graphql_router, tags=["graphql"])
 api_router.include_router(webhook_router, tags=["webhooks"])
+api_router.include_router(personalized_recommendations_router, prefix="/recommendations", tags=["recommendations"])
+api_router.include_router(personalizable_dashboard_router, prefix="/custom-dashboards", tags=["custom-dashboards"])
 
 # Health check endpoint
 @api_router.get("/health")
@@ -164,6 +178,8 @@ async def health_check():
             "marketplace": marketplace_service.is_ready(),
             "hsm": hsm_service.is_ready(),
             "webhook": webhook_service.is_ready(),
+            "recommendations": personalized_recommendations_service.is_ready(),
+            "custom_dashboards": personalizable_dashboard_service.is_ready(),
             "database": True
         }
     }

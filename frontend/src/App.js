@@ -31,13 +31,10 @@ import Geolocation from './pages/Geolocation';
 import SecurityDashboard from './pages/Security/SecurityDashboard';
 import AdvancedSecurity from './pages/Security/AdvancedSecurity';
 
-<<<<<<< HEAD
 // New Pages
 import Governance from './pages/Governance';
 import SecurityAdvanced from './pages/SecurityAdvanced';
 
-=======
->>>>>>> main
 import './App.css';
 
 // Create a client
@@ -87,11 +84,8 @@ function App() {
                   <Route path="geolocation" element={<Geolocation />} />
                   <Route path="security" element={<SecurityDashboard />} />
                   <Route path="security/advanced" element={<AdvancedSecurity />} />
-<<<<<<< HEAD
                   <Route path="security-advanced" element={<SecurityAdvanced />} />
                   <Route path="governance" element={<Governance />} />
-=======
->>>>>>> main
                   <Route path="profile" element={<Profile />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
