@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 class ServicePublish(BaseModel):
     name: str = Field(..., min_length=5, max_length=100)
     description: str = Field(..., min_length=50, max_length=1000)
-    category: str = Field(..., regex="^(iot_management|security|analytics|automation|monitoring|communication|storage|machine_learning|blockchain|energy)$")
-    service_type: str = Field(..., regex="^(application|api|widget|plugin|template|library)$")
-    pricing_model: str = Field(..., regex="^(free|freemium|subscription|pay_per_use|one_time)$")
+    category: str = Field(..., pattern="^(iot_management|security|analytics|automation|monitoring|communication|storage|machine_learning|blockchain|energy)$")
+    service_type: str = Field(..., pattern="^(application|api|widget|plugin|template|library)$")
+    pricing_model: str = Field(..., pattern="^(free|freemium|subscription|pay_per_use|one_time)$")
     price: float = Field(default=0.0, ge=0.0)
     features: List[str] = Field(..., min_items=1, max_items=10)
     provider_id: str
