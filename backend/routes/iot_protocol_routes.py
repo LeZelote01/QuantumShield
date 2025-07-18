@@ -61,7 +61,7 @@ class SensorDataModel(BaseModel):
 # Dépendance pour obtenir le service
 def get_iot_protocol_service():
     # Cette fonction sera injectée par le serveur principal
-    return None
+    return iot_protocol_service
 
 @router.get("/health")
 async def health_check():
