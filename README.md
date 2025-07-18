@@ -34,6 +34,14 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 - **Algorithmes multiples** : Support pour Kyber-512/768/1024 et Dilithium-2/3/5
 - **Clés hybrides** : Génération de clés combinant chiffrement et signature
 - **Comparaison automatique** : Recommandations d'algorithmes selon le contexte
+- **Gestion avancée des clés** : Rotation automatique, expiration, archivage
+- **Chiffrement par lots** : Traitement optimisé de gros volumes de données
+- **Signature à seuil** : Mécanismes de signature multi-parties (threshold signatures)
+- **Zero-knowledge proofs** : Preuves de connaissance sans révélation de secrets
+- **Audit trail complet** : Traçabilité cryptographique immuable
+- **Opérations en masse** : Gestion groupée des clés (rotation, archivage, sauvegarde)
+- **Dashboard avancé** : Monitoring et métriques de santé cryptographique
+- **Compatibilité HSM** : Support pour modules de sécurité matériels
 
 ### 2. 🔗 Blockchain privée pour la confiance matérielle
 
