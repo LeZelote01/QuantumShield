@@ -44,6 +44,7 @@ from services.security_service import SecurityService
 from services.ai_analytics_service import AIAnalyticsService
 from services.advanced_economy_service import AdvancedEconomyService
 from services.iot_protocol_service import IoTProtocolService
+from services.ota_update_service import OTAUpdateService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -56,6 +57,7 @@ security_service = SecurityService(db)
 ai_analytics_service = AIAnalyticsService(db)
 advanced_economy_service = AdvancedEconomyService(db)
 iot_protocol_service = IoTProtocolService(db)
+ota_update_service = OTAUpdateService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
