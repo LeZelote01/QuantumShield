@@ -92,14 +92,26 @@
     
     <!-- Hide loading screen once React loads -->
     <script>
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          const loadingScreen = document.getElementById('loading-screen');
-          if (loadingScreen) {
+      // Function to hide loading screen
+      function hideLoadingScreen() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.style.opacity = '0';
+          loadingScreen.style.transition = 'opacity 0.5s ease-out';
+          setTimeout(() => {
             loadingScreen.style.display = 'none';
-          }
-        }, 1000);
+          }, 500);
+        }
+      }
+      
+      // Hide loading screen when React app is ready
+      window.addEventListener('load', function() {
+        // Wait a bit more for React to fully load
+        setTimeout(hideLoadingScreen, 2000);
       });
+      
+      // Also hide loading screen if React sets a flag
+      window.hideLoadingScreen = hideLoadingScreen;
     </script>
   </body>
 </html>
