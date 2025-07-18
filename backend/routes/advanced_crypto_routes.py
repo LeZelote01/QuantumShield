@@ -9,7 +9,7 @@ from datetime import datetime
 from enum import Enum
 
 from routes.auth_routes import get_current_user
-from services.advanced_crypto_service import AdvancedCryptoService, CryptoAlgorithm, KeyRotationPolicy
+from services.advanced_crypto_service import AdvancedCryptoService, CryptoAlgorithm, KeyRotationPolicy, AuditEventType, ZKProofType
 
 router = APIRouter()
 
