@@ -90,7 +90,6 @@ class BuyAssetTokensRequest(BaseModel):
     asset_id: str
     token_count: int
 
-<<<<<<< HEAD
 # Governance
 class ProposalRequest(BaseModel):
     proposal_type: ProposalType
@@ -109,8 +108,6 @@ class VoteRequest(BaseModel):
 class ExecuteProposalRequest(BaseModel):
     proposal_id: str
 
-=======
->>>>>>> main
 # ===== ROUTES MARKETPLACE =====
 
 @router.post("/marketplace/services/create")
