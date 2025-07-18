@@ -65,6 +65,7 @@ from routes.token_routes import router as token_router
 from routes.mining_routes import router as mining_router
 from routes.security_routes import router as security_router
 from routes.ai_analytics_routes import router as ai_analytics_router
+from routes.advanced_economy_routes import router as advanced_economy_router
 from routes.dashboard_routes import router as dashboard_router
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
@@ -76,6 +77,7 @@ api_router.include_router(token_router, prefix="/tokens", tags=["tokens"])
 api_router.include_router(mining_router, prefix="/mining", tags=["mining"])
 api_router.include_router(security_router, prefix="/security", tags=["security"])
 api_router.include_router(ai_analytics_router, prefix="/ai-analytics", tags=["ai-analytics"])
+api_router.include_router(advanced_economy_router, prefix="/advanced-economy", tags=["advanced-economy"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 
 # Health check endpoint
