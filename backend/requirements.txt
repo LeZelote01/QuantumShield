@@ -20,3 +20,4 @@ bcrypt>=4.1.0
 web3>=6.15.0
 py-ecc>=7.0.0
 merklelib>=1.0.0
+pqcrypto>=0.7.0
