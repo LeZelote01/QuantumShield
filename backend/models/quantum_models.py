@@ -21,6 +21,26 @@ class BlockType(str, Enum):
     FIRMWARE = "firmware"
     DEVICE_REGISTRATION = "device_registration"
 
+class CryptoAlgorithm(str, Enum):
+    NTRU_PLUS = "NTRU++"
+    KYBER_512 = "Kyber-512"
+    KYBER_768 = "Kyber-768"
+    KYBER_1024 = "Kyber-1024"
+    DILITHIUM_2 = "Dilithium-2"
+    DILITHIUM_3 = "Dilithium-3"
+    DILITHIUM_5 = "Dilithium-5"
+
+class KeyType(str, Enum):
+    ENCRYPTION = "encryption"
+    SIGNATURE = "signature"
+    HYBRID = "hybrid"
+
+class KeyRotationPolicy(str, Enum):
+    MANUAL = "manual"
+    AUTOMATIC = "automatic"
+    TIME_BASED = "time_based"
+    USAGE_BASED = "usage_based"
+
 # User Models
 class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
