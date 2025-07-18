@@ -70,7 +70,6 @@ class AssetType(str, Enum):
     CARBON_CREDITS = "carbon_credits"
     COMMODITY = "commodity"
 
-<<<<<<< HEAD
 class ProposalType(str, Enum):
     PARAMETER_CHANGE = "parameter_change"
     FEATURE_REQUEST = "feature_request"
@@ -91,9 +90,6 @@ class VoteOption(str, Enum):
     YES = "yes"
     NO = "no"
     ABSTAIN = "abstain"
-
-=======
->>>>>>> main
 class AdvancedEconomyService:
     """Service d'économie avancée"""
     
