@@ -553,7 +553,7 @@ async def verify_threshold_signature(
     try:
         verification_result = await advanced_crypto_service.verify_threshold_signature(
             signature_id=request.signature_id,
-            verifier_id=current_user["id"]
+            verifier_id=current_user.id
         )
         
         return {
