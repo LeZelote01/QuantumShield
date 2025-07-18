@@ -978,6 +978,10 @@ class AdvancedCryptoService:
             if "secret_value" in public_proof:
                 del public_proof["secret_value"]
             
+            # Convert datetime to ISO format for JSON serialization
+            if "timestamp" in public_proof:
+                public_proof["timestamp"] = public_proof["timestamp"].isoformat()
+            
             return public_proof
             
         except Exception as e:
