@@ -91,18 +91,26 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 │   └── quantum_models.py  # Modèles Pydantic
 ├── services/
 │   ├── ntru_service.py    # Cryptographie NTRU++
+│   ├── advanced_crypto_service.py # Cryptographie avancée (Kyber, Dilithium, ZK, Seuil)
 │   ├── blockchain_service.py # Blockchain privée
 │   ├── device_service.py  # Gestion dispositifs
 │   ├── token_service.py   # Système tokens $QS
 │   ├── auth_service.py    # Authentification
-│   └── mining_service.py  # Mining distribué
+│   ├── mining_service.py  # Mining distribué
+│   ├── security_service.py # Sécurité renforcée (2FA, MFA)
+│   ├── ai_analytics_service.py # Intelligence artificielle
+│   ├── iot_protocol_service.py # Protocoles IoT
+│   └── ota_update_service.py # Mises à jour OTA
 └── routes/
     ├── auth_routes.py     # Authentification
-    ├── crypto_routes.py   # Cryptographie
+    ├── crypto_routes.py   # Cryptographie de base
+    ├── advanced_crypto_routes.py # Cryptographie avancée
     ├── blockchain_routes.py # Blockchain
     ├── device_routes.py   # Dispositifs
     ├── token_routes.py    # Tokens
     ├── mining_routes.py   # Mining
+    ├── iot_protocol_routes.py # Protocoles IoT
+    ├── ota_routes.py      # Mises à jour OTA
     └── dashboard_routes.py # Dashboard
 ```
 
