@@ -136,6 +136,8 @@ api_router.include_router(x509_router, prefix="/x509", tags=["x509-certificates"
 api_router.include_router(marketplace_router, prefix="/marketplace", tags=["marketplace"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 api_router.include_router(hsm_router, prefix="/hsm", tags=["hsm"])
+api_router.include_router(graphql_router, tags=["graphql"])
+api_router.include_router(webhook_router, tags=["webhooks"])
 
 # Health check endpoint
 @api_router.get("/health")
