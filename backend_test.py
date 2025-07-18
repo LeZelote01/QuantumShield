@@ -70,7 +70,26 @@ class QuantumShieldTester:
             "ai_analytics_models_status": False,
             "ai_analytics_summary": False,
             "ai_analytics_recommendations": False,
-            "ai_analytics_health": False
+            "ai_analytics_health": False,
+            # IoT Protocol Service Tests
+            "iot_protocol_health": False,
+            "iot_protocol_status": False,
+            "iot_protocol_statistics": False,
+            "iot_protocol_mqtt_start": False,
+            "iot_protocol_mqtt_publish": False,
+            "iot_protocol_coap_start": False,
+            "iot_protocol_lorawan_start": False,
+            "iot_protocol_device_command": False,
+            "iot_protocol_sensor_data": False,
+            "iot_protocol_config": False,
+            # OTA Update Service Tests
+            "ota_health": False,
+            "ota_statistics": False,
+            "ota_firmware_register": False,
+            "ota_firmware_list": False,
+            "ota_update_schedule": False,
+            "ota_update_queue": False,
+            "ota_config": False
         }
         self.test_data = {}
 
