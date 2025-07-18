@@ -101,7 +101,7 @@ async def generate_multi_algorithm_keypair(
         keypair = await advanced_crypto_service.generate_multi_algorithm_keypair(
             encryption_alg=request.encryption_algorithm,
             signature_alg=request.signature_algorithm,
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
