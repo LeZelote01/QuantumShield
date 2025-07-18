@@ -89,7 +89,16 @@ class QuantumShieldTester:
             "ota_firmware_list": False,
             "ota_update_schedule": False,
             "ota_update_queue": False,
-            "ota_config": False
+            "ota_config": False,
+            # New Advanced Crypto Features Tests
+            "advanced_crypto_generate_zk_proof": False,
+            "advanced_crypto_verify_zk_proof": False,
+            "advanced_crypto_setup_threshold_signature": False,
+            "advanced_crypto_threshold_sign": False,
+            "advanced_crypto_verify_threshold_signature": False,
+            "advanced_crypto_audit_trail": False,
+            "advanced_crypto_verify_audit_integrity": False,
+            "advanced_crypto_crypto_statistics": False
         }
         self.test_data = {}
 
@@ -1536,6 +1545,295 @@ class QuantumShieldTester:
         
         return False
 
+    # ===== NEW ADVANCED CRYPTO FEATURES TESTS =====
+    
+    async def test_advanced_crypto_generate_zk_proof(self):
+        """Test de génération de preuve zero-knowledge"""
+        print("\n🔐 Test Advanced Crypto Generate ZK Proof...")
+        
+        try:
+            # Test IDENTITY proof
+            zk_request = {
+                "proof_type": "identity",
+                "secret_value": "secret_identity_123",
+                "public_parameters": {"domain": "QuantumShield"}
+            }
+            response = await self.make_request("POST", "/advanced-crypto/generate-zk-proof", 
+                                             zk_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("proof") and data.get("status") == "success":
+                    proof = data["proof"]
+                    print("✅ ZK Proof generation successful")
+                    print(f"   Proof ID: {proof.get('proof_id')}")
+                    print(f"   Proof Type: {proof.get('proof_type')}")
+                    print(f"   Challenge: {proof.get('challenge', 'N/A')[:20]}...")
+                    
+                    # Store proof ID for verification test
+                    self.test_data["zk_proof_id"] = proof.get("proof_id")
+                    self.test_results["advanced_crypto_generate_zk_proof"] = True
+                    return True
+                else:
+                    print(f"❌ ZK Proof generation failed: {data}")
+            else:
+                print(f"❌ ZK Proof generation HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ ZK Proof generation exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_verify_zk_proof(self):
+        """Test de vérification de preuve zero-knowledge"""
+        print("\n🔍 Test Advanced Crypto Verify ZK Proof...")
+        
+        if not self.test_data.get("zk_proof_id"):
+            print("❌ No ZK proof ID available for verification test")
+            return False
+        
+        try:
+            verify_request = {
+                "proof_id": self.test_data["zk_proof_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/verify-zk-proof", 
+                                             verify_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("verification_result") and data.get("status") == "success":
+                    result = data["verification_result"]
+                    print("✅ ZK Proof verification successful")
+                    print(f"   Proof Valid: {result.get('valid')}")
+                    print(f"   Proof ID: {result.get('proof_id')}")
+                    print(f"   Proof Type: {result.get('proof_type')}")
+                    self.test_results["advanced_crypto_verify_zk_proof"] = True
+                    return True
+                else:
+                    print(f"❌ ZK Proof verification failed: {data}")
+            else:
+                print(f"❌ ZK Proof verification HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ ZK Proof verification exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_setup_threshold_signature(self):
+        """Test de configuration de signature à seuil"""
+        print("\n🔑 Test Advanced Crypto Setup Threshold Signature...")
+        
+        try:
+            threshold_request = {
+                "threshold": 2,
+                "total_parties": 3
+            }
+            response = await self.make_request("POST", "/advanced-crypto/setup-threshold-signature", 
+                                             threshold_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("scheme") and data.get("status") == "success":
+                    scheme = data["scheme"]
+                    print("✅ Threshold signature setup successful")
+                    print(f"   Scheme ID: {scheme.get('scheme_id')}")
+                    print(f"   Threshold: {scheme.get('threshold')}")
+                    print(f"   Total Parties: {scheme.get('total_parties')}")
+                    print(f"   Parties: {len(scheme.get('parties', []))}")
+                    
+                    # Store scheme data for signing test
+                    self.test_data["threshold_scheme_id"] = scheme.get("scheme_id")
+                    self.test_data["threshold_parties"] = scheme.get("parties", [])
+                    self.test_results["advanced_crypto_setup_threshold_signature"] = True
+                    return True
+                else:
+                    print(f"❌ Threshold signature setup failed: {data}")
+            else:
+                print(f"❌ Threshold signature setup HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Threshold signature setup exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_threshold_sign(self):
+        """Test de signature à seuil"""
+        print("\n✍️ Test Advanced Crypto Threshold Sign...")
+        
+        if not self.test_data.get("threshold_scheme_id") or not self.test_data.get("threshold_parties"):
+            print("❌ No threshold scheme data available for signing test")
+            return False
+        
+        try:
+            # Use first 2 parties (meets threshold of 2)
+            parties = self.test_data["threshold_parties"]
+            signing_parties = [p["party_id"] for p in parties[:2]]
+            
+            sign_request = {
+                "scheme_id": self.test_data["threshold_scheme_id"],
+                "message": "Test message for threshold signature verification",
+                "signing_parties": signing_parties
+            }
+            response = await self.make_request("POST", "/advanced-crypto/threshold-sign", 
+                                             sign_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("signature") and data.get("status") == "success":
+                    signature = data["signature"]
+                    print("✅ Threshold signing successful")
+                    print(f"   Signature ID: {signature.get('signature_id')}")
+                    print(f"   Combined Signature: {signature.get('combined_signature')[:20]}...")
+                    print(f"   Threshold Met: {signature.get('threshold_met')}")
+                    print(f"   Signing Parties: {signature.get('signing_parties_count')}")
+                    
+                    # Store signature ID for verification test
+                    self.test_data["threshold_signature_id"] = signature.get("signature_id")
+                    self.test_results["advanced_crypto_threshold_sign"] = True
+                    return True
+                else:
+                    print(f"❌ Threshold signing failed: {data}")
+            else:
+                print(f"❌ Threshold signing HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Threshold signing exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_verify_threshold_signature(self):
+        """Test de vérification de signature à seuil"""
+        print("\n✅ Test Advanced Crypto Verify Threshold Signature...")
+        
+        if not self.test_data.get("threshold_signature_id"):
+            print("❌ No threshold signature ID available for verification test")
+            return False
+        
+        try:
+            verify_request = {
+                "signature_id": self.test_data["threshold_signature_id"]
+            }
+            response = await self.make_request("POST", "/advanced-crypto/verify-threshold-signature", 
+                                             verify_request, auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("verification_result") and data.get("status") == "success":
+                    result = data["verification_result"]
+                    print("✅ Threshold signature verification successful")
+                    print(f"   Signature Valid: {result.get('valid')}")
+                    print(f"   Signature ID: {result.get('signature_id')}")
+                    print(f"   Scheme ID: {result.get('scheme_id')}")
+                    print(f"   Threshold Met: {result.get('threshold_met')}")
+                    self.test_results["advanced_crypto_verify_threshold_signature"] = True
+                    return True
+                else:
+                    print(f"❌ Threshold signature verification failed: {data}")
+            else:
+                print(f"❌ Threshold signature verification HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Threshold signature verification exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_audit_trail(self):
+        """Test de récupération du trail d'audit"""
+        print("\n📋 Test Advanced Crypto Audit Trail...")
+        
+        try:
+            response = await self.make_request("GET", "/advanced-crypto/audit-trail?limit=50", 
+                                             auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("audit_trail") and data.get("status") == "success":
+                    audit_trail = data["audit_trail"]
+                    print("✅ Audit trail retrieved successfully")
+                    print(f"   Total Events: {data.get('count', 0)}")
+                    print(f"   Events Retrieved: {len(audit_trail)}")
+                    
+                    # Show some event types
+                    event_types = set()
+                    for event in audit_trail[:5]:  # First 5 events
+                        event_types.add(event.get("event_type", "unknown"))
+                    print(f"   Event Types: {', '.join(event_types)}")
+                    
+                    # Store first audit ID for integrity test
+                    if audit_trail:
+                        self.test_data["audit_id"] = audit_trail[0].get("audit_id")
+                    
+                    self.test_results["advanced_crypto_audit_trail"] = True
+                    return True
+                else:
+                    print(f"❌ Audit trail retrieval failed: {data}")
+            else:
+                print(f"❌ Audit trail HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Audit trail exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_verify_audit_integrity(self):
+        """Test de vérification d'intégrité d'audit"""
+        print("\n🔍 Test Advanced Crypto Verify Audit Integrity...")
+        
+        if not self.test_data.get("audit_id"):
+            print("❌ No audit ID available for integrity verification test")
+            return False
+        
+        try:
+            audit_id = self.test_data["audit_id"]
+            response = await self.make_request("GET", f"/advanced-crypto/verify-audit-integrity/{audit_id}", 
+                                             auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if "integrity_valid" in data and data.get("status") == "success":
+                    print("✅ Audit integrity verification successful")
+                    print(f"   Audit ID: {data.get('audit_id')}")
+                    print(f"   Integrity Valid: {data.get('integrity_valid')}")
+                    print(f"   Verified At: {data.get('verified_at')}")
+                    self.test_results["advanced_crypto_verify_audit_integrity"] = True
+                    return True
+                else:
+                    print(f"❌ Audit integrity verification failed: {data}")
+            else:
+                print(f"❌ Audit integrity verification HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Audit integrity verification exception: {e}")
+        
+        return False
+    
+    async def test_advanced_crypto_crypto_statistics(self):
+        """Test de récupération des statistiques cryptographiques"""
+        print("\n📊 Test Advanced Crypto Statistics...")
+        
+        try:
+            response = await self.make_request("GET", "/advanced-crypto/crypto-statistics", 
+                                             auth_required=True)
+            
+            if response["status"] == 200:
+                data = response["data"]
+                if data.get("statistics") and data.get("status") == "success":
+                    stats = data["statistics"]
+                    print("✅ Crypto statistics retrieved successfully")
+                    print(f"   User ID: {stats.get('user_id')}")
+                    print(f"   Keypairs Count: {stats.get('keypairs_count', 0)}")
+                    print(f"   ZK Proofs Count: {stats.get('zk_proofs_count', 0)}")
+                    print(f"   Threshold Schemes Count: {stats.get('threshold_schemes_count', 0)}")
+                    
+                    # Show audit events summary
+                    audit_events = stats.get("audit_events", {})
+                    total_events = sum(audit_events.values())
+                    print(f"   Total Audit Events: {total_events}")
+                    
+                    self.test_results["advanced_crypto_crypto_statistics"] = True
+                    return True
+                else:
+                    print(f"❌ Crypto statistics retrieval failed: {data}")
+            else:
+                print(f"❌ Crypto statistics HTTP error: {response['status']}")
+        except Exception as e:
+            print(f"❌ Crypto statistics exception: {e}")
+        
+        return False
+
     async def run_all_tests(self):
         """Exécute tous les tests dans l'ordre"""
         print("🚀 Démarrage des tests QuantumShield Backend")
@@ -1593,7 +1891,16 @@ class QuantumShieldTester:
             # IoT Protocol Service Tests
             self.test_iot_protocol_health,
             self.test_iot_protocol_status,
-            self.test_iot_protocol_statistics
+            self.test_iot_protocol_statistics,
+            # New Advanced Crypto Features Tests
+            self.test_advanced_crypto_generate_zk_proof,
+            self.test_advanced_crypto_verify_zk_proof,
+            self.test_advanced_crypto_setup_threshold_signature,
+            self.test_advanced_crypto_threshold_sign,
+            self.test_advanced_crypto_verify_threshold_signature,
+            self.test_advanced_crypto_audit_trail,
+            self.test_advanced_crypto_verify_audit_integrity,
+            self.test_advanced_crypto_crypto_statistics
         ]
         
         for test_func in test_functions:
