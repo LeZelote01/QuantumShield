@@ -126,8 +126,8 @@
 - [x] Prédiction de pannes ✅ **IMPLÉMENTÉ**
 - [x] Optimisation énergétique ✅ **IMPLÉMENTÉ**
 - [x] Analyse de patterns réseau ✅ **IMPLÉMENTÉ**
-- [ ] Recommandations personnalisées
-- [ ] Tableaux de bord personnalisables
+- [x] Recommandations personnalisées ✅ **IMPLÉMENTÉ**
+- [x] Tableaux de bord personnalisables ✅ **IMPLÉMENTÉ**
 
 #### 🌐 **Intégrations et APIs**
 - [x] API REST complète avec documentation ✅ **IMPLÉMENTÉ**
