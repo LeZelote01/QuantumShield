@@ -622,6 +622,52 @@ Utilisez les templates GitHub pour :
 - **Audit visuel** : Visualisation du trail d'audit
 - **Métriques de santé** : Indicateurs de performance du système
 
+## 🛡️ Nouveaux Endpoints - Sécurité Renforcée
+
+### Authentification Multi-Facteur (2FA/MFA)
+- `POST /api/security/mfa/setup-totp` - Configuration TOTP
+- `POST /api/security/mfa/verify-setup` - Vérification configuration TOTP
+- `POST /api/security/mfa/verify-code` - Vérification code TOTP
+- `POST /api/security/mfa/disable` - Désactivation MFA
+- `GET /api/security/mfa/status` - Statut MFA utilisateur
+
+### Analyse Comportementale
+- `POST /api/security/behavior/analyze` - Analyse comportement utilisateur
+- `GET /api/security/recommendations` - Recommandations sécurité personnalisées
+
+### Audit de Sécurité
+- `POST /api/security/audit/report` - Génération rapport d'audit
+- `GET /api/security/dashboard` - Dashboard sécurité
+- `POST /api/security/events/log` - Enregistrement événement sécurité
+
+### Honeypots et Pièges
+- `POST /api/security/honeypots/create` - Création honeypot
+- `POST /api/security/honeypots/trigger` - Déclenchement honeypot
+- `GET /api/security/honeypots/report` - Rapport honeypots
+
+### Backup et Récupération
+- `POST /api/security/backup/create` - Création sauvegarde sécurisée
+- `POST /api/security/backup/restore` - Restauration sauvegarde
+- `GET /api/security/backup/report` - Rapport sauvegardes
+
+### Conformité Réglementaire
+- `POST /api/security/gdpr/report` - Rapport GDPR
+- `POST /api/security/gdpr/delete-user-data` - Suppression données utilisateur
+- `GET /api/security/compliance/report` - Rapport conformité
+
+### Santé et Monitoring
+- `GET /api/security/health` - Santé service sécurité
+- `GET /api/security/health-check` - Contrôle santé complet
+- `GET /api/security/comprehensive-report` - Rapport sécurité complet
+
+### Interface Utilisateur Sécurité
+- **Dashboard sécurité** : `/security`
+- **Sécurité avancée** : `/security/advanced`
+- **Configuration MFA** : Interface TOTP avec QR code
+- **Gestion honeypots** : Création et monitoring des pièges
+- **Rapports conformité** : Export GDPR et conformité CCPA
+- **Monitoring temps réel** : Alertes et événements sécurité
+
 ## 📄 Licence
 
 Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
