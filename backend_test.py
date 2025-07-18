@@ -150,7 +150,6 @@ class QuantumShieldTester:
             "management_compress_blocks": False,
             "management_archive_blocks": False,
             "management_compressed_blocks": False,
-<<<<<<< HEAD
             "management_archive_periods": False,
             # New Advanced Economy Features Tests
             "advanced_economy_governance_proposals_create": False,
@@ -173,9 +172,6 @@ class QuantumShieldTester:
             "security_compliance_report": False,
             "security_comprehensive_report": False,
             "security_health_check": False
-=======
-            "management_archive_periods": False
->>>>>>> main
         }
         self.test_data = {}
 
