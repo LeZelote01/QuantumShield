@@ -269,22 +269,31 @@ class AdvancedCryptoService:
             }
             
             # Générer les clés de chiffrement
-            if encryption_alg == CryptoAlgorithm.KYBER_512 and PQ_AVAILABLE:
-                enc_pk, enc_sk = kyber512.keypair()
+            if encryption_alg == CryptoAlgorithm.KYBER_512:
+                if KYBER_AVAILABLE:
+                    enc_pk, enc_sk = kyber512.keypair()
+                else:
+                    enc_pk, enc_sk = self._generate_fallback_keypair(encryption_alg.value)
                 keypair_data["keys"]["encryption"] = {
                     "public_key": enc_pk.hex(),
                     "private_key": enc_sk.hex(),
                     "algorithm": encryption_alg.value
                 }
-            elif encryption_alg == CryptoAlgorithm.KYBER_768 and PQ_AVAILABLE:
-                enc_pk, enc_sk = kyber768.keypair()
+            elif encryption_alg == CryptoAlgorithm.KYBER_768:
+                if KYBER_AVAILABLE:
+                    enc_pk, enc_sk = kyber768.keypair()
+                else:
+                    enc_pk, enc_sk = self._generate_fallback_keypair(encryption_alg.value)
                 keypair_data["keys"]["encryption"] = {
                     "public_key": enc_pk.hex(),
                     "private_key": enc_sk.hex(),
                     "algorithm": encryption_alg.value
                 }
-            elif encryption_alg == CryptoAlgorithm.KYBER_1024 and PQ_AVAILABLE:
-                enc_pk, enc_sk = kyber1024.keypair()
+            elif encryption_alg == CryptoAlgorithm.KYBER_1024:
+                if KYBER_AVAILABLE:
+                    enc_pk, enc_sk = kyber1024.keypair()
+                else:
+                    enc_pk, enc_sk = self._generate_fallback_keypair(encryption_alg.value)
                 keypair_data["keys"]["encryption"] = {
                     "public_key": enc_pk.hex(),
                     "private_key": enc_sk.hex(),
@@ -292,22 +301,31 @@ class AdvancedCryptoService:
                 }
             
             # Générer les clés de signature
-            if signature_alg == CryptoAlgorithm.DILITHIUM_2 and PQ_AVAILABLE:
-                sig_pk, sig_sk = dilithium2.keypair()
+            if signature_alg == CryptoAlgorithm.DILITHIUM_2:
+                if DILITHIUM_AVAILABLE:
+                    sig_pk, sig_sk = dilithium2.keypair()
+                else:
+                    sig_pk, sig_sk = self._generate_fallback_keypair(signature_alg.value)
                 keypair_data["keys"]["signature"] = {
                     "public_key": sig_pk.hex(),
                     "private_key": sig_sk.hex(),
                     "algorithm": signature_alg.value
                 }
-            elif signature_alg == CryptoAlgorithm.DILITHIUM_3 and PQ_AVAILABLE:
-                sig_pk, sig_sk = dilithium3.keypair()
+            elif signature_alg == CryptoAlgorithm.DILITHIUM_3:
+                if DILITHIUM_AVAILABLE:
+                    sig_pk, sig_sk = dilithium3.keypair()
+                else:
+                    sig_pk, sig_sk = self._generate_fallback_keypair(signature_alg.value)
                 keypair_data["keys"]["signature"] = {
                     "public_key": sig_pk.hex(),
                     "private_key": sig_sk.hex(),
                     "algorithm": signature_alg.value
                 }
-            elif signature_alg == CryptoAlgorithm.DILITHIUM_5 and PQ_AVAILABLE:
-                sig_pk, sig_sk = dilithium5.keypair()
+            elif signature_alg == CryptoAlgorithm.DILITHIUM_5:
+                if DILITHIUM_AVAILABLE:
+                    sig_pk, sig_sk = dilithium5.keypair()
+                else:
+                    sig_pk, sig_sk = self._generate_fallback_keypair(signature_alg.value)
                 keypair_data["keys"]["signature"] = {
                     "public_key": sig_pk.hex(),
                     "private_key": sig_sk.hex(),
