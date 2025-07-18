@@ -86,8 +86,14 @@ from routes.dashboard_routes import router as dashboard_router
 # Inject services into routes
 import routes.iot_protocol_routes
 import routes.ota_routes
+import routes.geolocation_routes
+import routes.x509_routes
+import routes.marketplace_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
+routes.geolocation_routes.geolocation_service = geolocation_service
+routes.x509_routes.x509_service = x509_service
+routes.marketplace_routes.marketplace_service = marketplace_service
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
