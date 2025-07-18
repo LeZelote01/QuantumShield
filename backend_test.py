@@ -98,7 +98,24 @@ class QuantumShieldTester:
             "advanced_crypto_verify_threshold_signature": False,
             "advanced_crypto_audit_trail": False,
             "advanced_crypto_verify_audit_integrity": False,
-            "advanced_crypto_crypto_statistics": False
+            "advanced_crypto_crypto_statistics": False,
+            # Enhanced Security Features Tests
+            "security_mfa_verify_totp_setup": False,
+            "security_mfa_verify_totp": False,
+            "security_mfa_disable": False,
+            "security_audit_report": False,
+            "security_log_event": False,
+            "security_honeypot_create": False,
+            "security_honeypot_trigger": False,
+            "security_honeypot_report": False,
+            "security_backup_create": False,
+            "security_backup_restore": False,
+            "security_backup_report": False,
+            "security_gdpr_report": False,
+            "security_gdpr_delete_data": False,
+            "security_compliance_report": False,
+            "security_comprehensive_report": False,
+            "security_health_check": False
         }
         self.test_data = {}
 
