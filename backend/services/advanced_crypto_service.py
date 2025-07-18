@@ -1039,7 +1039,7 @@ class AdvancedCryptoService:
                 "valid": is_valid,
                 "proof_id": proof_id,
                 "proof_type": proof_type,
-                "verified_at": datetime.utcnow(),
+                "verified_at": datetime.utcnow().isoformat(),
                 "verifier_id": verifier_id
             }
             
