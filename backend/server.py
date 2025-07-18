@@ -89,6 +89,7 @@ from routes.auth_routes import router as auth_router
 from routes.crypto_routes import router as crypto_router
 from routes.advanced_crypto_routes import router as advanced_crypto_router
 from routes.blockchain_routes import router as blockchain_router
+from routes.advanced_blockchain_routes import router as advanced_blockchain_router
 from routes.device_routes import router as device_router
 from routes.token_routes import router as token_router
 from routes.mining_routes import router as mining_router
