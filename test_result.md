@@ -281,6 +281,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Service de sécurité testé avec succès. Infrastructure fonctionnelle: Health check OK, Dashboard sécurité opérationnel (score: 100.0), Service initialisé et prêt. Quelques endpoints ont des erreurs mineures (MFA setup, behavior analysis) mais service core opérationnel."
+      - working: true
+        agent: "testing"
+        comment: "Tests complets des fonctionnalités de sécurité renforcée effectués. RÉSULTATS: ✅ Health check sécurité (service ready: true) ✅ Dashboard sécurité (score: 100.0, événements 24h: 0, alertes actives: 0) ✅ Infrastructure de base fonctionnelle. PROBLÈMES IDENTIFIÉS: ❌ MFA TOTP setup (erreur 'User' object not subscriptable - problème d'accès aux données utilisateur) ❌ MFA status (erreur HTTP 500) ❌ Analyse comportementale (erreur HTTP 500) ❌ Recommandations sécurité (erreur HTTP 500). Le service est opérationnel pour les fonctions de base mais nécessite corrections pour MFA et analyse comportementale."
 
   - task: "Service d'Analytics et IA (AIAnalyticsService)"
     implemented: true
