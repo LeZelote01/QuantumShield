@@ -84,6 +84,7 @@ from routes.geolocation_routes import router as geolocation_router
 from routes.x509_routes import router as x509_router
 from routes.marketplace_routes import router as marketplace_router
 from routes.dashboard_routes import router as dashboard_router
+from routes.hsm_routes import router as hsm_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
