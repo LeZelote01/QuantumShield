@@ -52,6 +52,7 @@ advanced_crypto_service = AdvancedCryptoService(db)
 # Include routers
 from routes.auth_routes import router as auth_router
 from routes.crypto_routes import router as crypto_router
+from routes.advanced_crypto_routes import router as advanced_crypto_router
 from routes.blockchain_routes import router as blockchain_router
 from routes.device_routes import router as device_router
 from routes.token_routes import router as token_router
@@ -60,6 +61,7 @@ from routes.dashboard_routes import router as dashboard_router
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
+api_router.include_router(advanced_crypto_router, prefix="/advanced-crypto", tags=["advanced-cryptography"])
 api_router.include_router(blockchain_router, prefix="/blockchain", tags=["blockchain"])
 api_router.include_router(device_router, prefix="/devices", tags=["devices"])
 api_router.include_router(token_router, prefix="/tokens", tags=["tokens"])
