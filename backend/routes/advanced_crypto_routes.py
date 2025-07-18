@@ -51,6 +51,26 @@ class KeyRotationSetupRequest(BaseModel):
 class KeyRotationRequest(BaseModel):
     keypair_id: str
 
+class ZKProofRequest(BaseModel):
+    proof_type: ZKProofType
+    secret_value: str
+    public_parameters: Dict[str, Any]
+
+class ZKProofVerificationRequest(BaseModel):
+    proof_id: str
+
+class ThresholdSetupRequest(BaseModel):
+    threshold: int
+    total_parties: int
+
+class ThresholdSignRequest(BaseModel):
+    scheme_id: str
+    message: str
+    signing_parties: List[str]
+
+class ThresholdVerifyRequest(BaseModel):
+    signature_id: str
+
 # Routes
 @router.get("/supported-algorithms")
 async def get_supported_algorithms():
