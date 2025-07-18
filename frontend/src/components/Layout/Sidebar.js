@@ -9,7 +9,8 @@ import {
   WrenchScrewdriverIcon,
   UserCircleIcon,
   Cog6ToothIcon,
-  XMarkIcon
+  XMarkIcon,
+  KeyIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
