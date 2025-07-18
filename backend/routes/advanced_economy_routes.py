@@ -2,13 +2,16 @@
 Routes pour l'économie avancée
 """
 
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, status, Query
 from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 from datetime import datetime
+import logging
 
 from routes.auth_routes import get_current_user
 from services.advanced_economy_service import AdvancedEconomyService, ServiceType, StakingType, InsuranceType, AssetType, ProposalType, VoteOption
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
