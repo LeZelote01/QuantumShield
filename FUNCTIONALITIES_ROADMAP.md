@@ -81,8 +81,12 @@
 - [ ] Archivage automatique des anciens blocs
 
 #### 📱 **IoT Étendu**
-- [ ] SDK pour différents langages (Python, C++, JavaScript, Rust)
-- [ ] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN)
+- [x] SDK pour différents langages (Python, C++, JavaScript, Rust)
+- [x] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN)
+- [x] Support pour Zigbee, Z-Wave, Thread, Matter
+- [x] Système de messages IoT unifié
+- [x] Gestion des heartbeats et données capteurs
+- [x] Infrastructure pour commandes et alertes
 - [ ] Gestion des mises à jour OTA sécurisées
 - [ ] Monitoring prédictif avec ML
 - [ ] Géolocalisation des dispositifs
