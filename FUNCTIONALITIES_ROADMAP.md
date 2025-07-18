@@ -65,21 +65,21 @@
 ### 🔧 **FONCTIONNALITÉS À AJOUTER AU MVP**
 
 #### 🔐 **Cryptographie Avancée**
-- [x] Support algorithmes post-quantiques multiples (Kyber, Dilithium)
-- [x] Génération de clés hybrides (chiffrement + signature)
-- [x] Simulation d'algorithmes pour tests et développement
-- [x] Comparaison de performances entre algorithmes
-- [x] Recommandations d'algorithmes selon contexte
-- [x] Gestion avancée des clés (rotation, expiration)
-- [x] Chiffrement par lots pour gros volumes
-- [x] Signature à seuil (threshold signatures)
-- [x] Zero-knowledge proofs pour confidentialité
-- [x] Audit trail cryptographique complet
-- [x] Opérations en masse sur les clés (rotation, archivage, sauvegarde)
-- [x] Dashboard avancé de cryptographie
-- [x] Monitoring des expirations de clés
-- [x] Compatibilité HSM (planifiée)
-- [x] Conformité export et certifications
+- [x] Support algorithmes post-quantiques multiples (Kyber, Dilithium) ✅ **IMPLÉMENTÉ**
+- [x] Génération de clés hybrides (chiffrement + signature) ✅ **IMPLÉMENTÉ**
+- [x] Simulation d'algorithmes pour tests et développement ✅ **IMPLÉMENTÉ**
+- [x] Comparaison de performances entre algorithmes ✅ **IMPLÉMENTÉ**
+- [x] Recommandations d'algorithmes selon contexte ✅ **IMPLÉMENTÉ**
+- [x] Gestion avancée des clés (rotation, expiration) ✅ **IMPLÉMENTÉ**
+- [x] Chiffrement par lots pour gros volumes ✅ **IMPLÉMENTÉ**
+- [x] Signature à seuil (threshold signatures) ✅ **IMPLÉMENTÉ**
+- [x] Zero-knowledge proofs pour confidentialité ✅ **IMPLÉMENTÉ**
+- [x] Audit trail cryptographique complet ✅ **IMPLÉMENTÉ**
+- [x] Opérations en masse sur les clés (rotation, archivage, sauvegarde) ✅ **IMPLÉMENTÉ**
+- [x] Dashboard avancé de cryptographie ✅ **IMPLÉMENTÉ**
+- [x] Monitoring des expirations de clés ✅ **IMPLÉMENTÉ**
+- [x] Compatibilité HSM ⚠️ **SIMULATION - RÉEL EN DÉVELOPPEMENT**
+- [x] Conformité export et certifications ⚠️ **SIMULATION - RÉEL EN DÉVELOPPEMENT**
 
 #### 🔗 **Blockchain Améliorée**
 - [ ] Consensus hybride (PoW + PoS)
@@ -90,19 +90,19 @@
 - [ ] Archivage automatique des anciens blocs
 
 #### 📱 **IoT Étendu**
-- [x] SDK pour différents langages (Python, C++, JavaScript, Rust)
-- [x] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN)
-- [x] Support pour Zigbee, Z-Wave, Thread, Matter
-- [x] Système de messages IoT unifié
-- [x] Gestion des heartbeats et données capteurs
-- [x] Infrastructure pour commandes et alertes
-- [x] Gestion des mises à jour OTA sécurisées
-- [x] Système de rollback automatique
-- [x] Vérification d'intégrité et signatures
-- [x] Mises à jour en masse (bulk updates)
-- [ ] Monitoring prédictif avec ML
-- [ ] Géolocalisation des dispositifs
-- [ ] Gestion des certificats X.509
+- [x] SDK pour différents langages (Python, C++, JavaScript, Rust) ✅ **IMPLÉMENTÉ**
+- [x] Intégration protocoles IoT (MQTT, CoAP, LoRaWAN) ✅ **IMPLÉMENTÉ**
+- [x] Support pour Zigbee, Z-Wave, Thread, Matter ✅ **IMPLÉMENTÉ**
+- [x] Système de messages IoT unifié ✅ **IMPLÉMENTÉ**
+- [x] Gestion des heartbeats et données capteurs ✅ **IMPLÉMENTÉ**
+- [x] Infrastructure pour commandes et alertes ✅ **IMPLÉMENTÉ**
+- [x] Gestion des mises à jour OTA sécurisées ✅ **IMPLÉMENTÉ**
+- [x] Système de rollback automatique ✅ **IMPLÉMENTÉ**
+- [x] Vérification d'intégrité et signatures ✅ **IMPLÉMENTÉ**
+- [x] Mises à jour en masse (bulk updates) ✅ **IMPLÉMENTÉ**
+- [ ] Monitoring prédictif avec ML ❌ **À IMPLÉMENTER**
+- [ ] Géolocalisation des dispositifs ❌ **À IMPLÉMENTER**
+- [ ] Gestion des certificats X.509 ❌ **À IMPLÉMENTER**
 
 #### 💰 **Économie Avancée**
 - [ ] Marketplace de services
@@ -113,12 +113,12 @@
 - [ ] Mécanismes de gouvernance
 
 #### 🛡️ **Sécurité Renforcée**
-- [x] Authentification multi-facteur (2FA/MFA)
-- [x] Audit de sécurité automatisé
-- [x] Honeypots et pièges
-- [x] Analyse comportementale
-- [x] Backup et récupération avancés
-- [x] Conformité réglementaire (GDPR, CCPA)
+- [x] Authentification multi-facteur (2FA/MFA) ✅ **IMPLÉMENTÉ**
+- [x] Audit de sécurité automatisé ✅ **IMPLÉMENTÉ**
+- [x] Honeypots et pièges ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
+- [x] Analyse comportementale ✅ **IMPLÉMENTÉ**
+- [x] Backup et récupération avancés ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
+- [x] Conformité réglementaire (GDPR, CCPA) ⚠️ **PARTIELLEMENT IMPLÉMENTÉ**
 
 #### 📊 **Analytics et IA**
 

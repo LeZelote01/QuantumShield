@@ -48,6 +48,7 @@ from services.ota_update_service import OTAUpdateService
 from services.geolocation_service import GeolocationService
 from services.x509_service import X509Service
 from services.marketplace_service import MarketplaceService
+from services.hsm_service import HSMService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -64,6 +65,7 @@ ota_update_service = OTAUpdateService(db)
 geolocation_service = GeolocationService(db)
 x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
+hsm_service = HSMService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
@@ -82,6 +84,7 @@ from routes.geolocation_routes import router as geolocation_router
 from routes.x509_routes import router as x509_router
 from routes.marketplace_routes import router as marketplace_router
 from routes.dashboard_routes import router as dashboard_router
+from routes.hsm_routes import router as hsm_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
@@ -111,6 +114,7 @@ api_router.include_router(geolocation_router, prefix="/geolocation", tags=["geol
 api_router.include_router(x509_router, prefix="/x509", tags=["x509-certificates"])
 api_router.include_router(marketplace_router, prefix="/marketplace", tags=["marketplace"])
 api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
+api_router.include_router(hsm_router, prefix="/hsm", tags=["hsm"])
 
 # Health check endpoint
 @api_router.get("/health")
@@ -130,6 +134,7 @@ async def health_check():
             "geolocation": geolocation_service.is_ready(),
             "x509": x509_service.is_ready(),
             "marketplace": marketplace_service.is_ready(),
+            "hsm": hsm_service.is_ready(),
             "database": True
         }
     }
