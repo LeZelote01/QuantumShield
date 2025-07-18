@@ -365,12 +365,21 @@ class AdvancedCryptoService:
             symmetric_key = get_random_bytes(32)  # AES-256
             
             # Chiffrer avec KEM
-            if algorithm == CryptoAlgorithm.KYBER_512.value and PQ_AVAILABLE:
-                ciphertext, shared_secret = kyber512.encrypt(public_key)
-            elif algorithm == CryptoAlgorithm.KYBER_768.value and PQ_AVAILABLE:
-                ciphertext, shared_secret = kyber768.encrypt(public_key)
-            elif algorithm == CryptoAlgorithm.KYBER_1024.value and PQ_AVAILABLE:
-                ciphertext, shared_secret = kyber1024.encrypt(public_key)
+            if algorithm == CryptoAlgorithm.KYBER_512.value:
+                if KYBER_AVAILABLE:
+                    ciphertext, shared_secret = kyber512.encrypt(public_key)
+                else:
+                    ciphertext, shared_secret = self._fallback_encrypt(public_key, algorithm)
+            elif algorithm == CryptoAlgorithm.KYBER_768.value:
+                if KYBER_AVAILABLE:
+                    ciphertext, shared_secret = kyber768.encrypt(public_key)
+                else:
+                    ciphertext, shared_secret = self._fallback_encrypt(public_key, algorithm)
+            elif algorithm == CryptoAlgorithm.KYBER_1024.value:
+                if KYBER_AVAILABLE:
+                    ciphertext, shared_secret = kyber1024.encrypt(public_key)
+                else:
+                    ciphertext, shared_secret = self._fallback_encrypt(public_key, algorithm)
             else:
                 raise ValueError(f"Algorithme non supporté: {algorithm}")
             
