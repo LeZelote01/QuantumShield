@@ -15,4 +15,4 @@ setTimeout(() => {
   if (window.hideLoadingScreen) {
     window.hideLoadingScreen();
   }
-}, 1000);
+}, 500);  // Plus rapide pour éviter le blocage
