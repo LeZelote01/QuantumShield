@@ -65,6 +65,7 @@ ota_update_service = OTAUpdateService(db)
 geolocation_service = GeolocationService(db)
 x509_service = X509Service(db)
 marketplace_service = MarketplaceService(db)
+hsm_service = HSMService(db)
 
 # Include routers
 from routes.auth_routes import router as auth_router
