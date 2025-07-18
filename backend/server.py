@@ -152,6 +152,8 @@ api_router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboar
 api_router.include_router(hsm_router, prefix="/hsm", tags=["hsm"])
 api_router.include_router(graphql_router, tags=["graphql"])
 api_router.include_router(webhook_router, tags=["webhooks"])
+api_router.include_router(personalized_recommendations_router, prefix="/recommendations", tags=["recommendations"])
+api_router.include_router(personalizable_dashboard_router, prefix="/custom-dashboards", tags=["custom-dashboards"])
 
 # Health check endpoint
 @api_router.get("/health")
