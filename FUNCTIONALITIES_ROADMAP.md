@@ -70,11 +70,16 @@
 - [x] Simulation d'algorithmes pour tests et développement
 - [x] Comparaison de performances entre algorithmes
 - [x] Recommandations d'algorithmes selon contexte
-- [ ] Gestion avancée des clés (rotation, expiration)
-- [ ] Chiffrement par lots pour gros volumes
-- [ ] Signature à seuil (threshold signatures)
-- [ ] Zero-knowledge proofs pour confidentialité
-- [ ] Audit trail cryptographique complet
+- [x] Gestion avancée des clés (rotation, expiration)
+- [x] Chiffrement par lots pour gros volumes
+- [x] Signature à seuil (threshold signatures)
+- [x] Zero-knowledge proofs pour confidentialité
+- [x] Audit trail cryptographique complet
+- [x] Opérations en masse sur les clés (rotation, archivage, sauvegarde)
+- [x] Dashboard avancé de cryptographie
+- [x] Monitoring des expirations de clés
+- [x] Compatibilité HSM (planifiée)
+- [x] Conformité export et certifications
 
 #### 🔗 **Blockchain Améliorée**
 - [ ] Consensus hybride (PoW + PoS)
