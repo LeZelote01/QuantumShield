@@ -27,6 +27,11 @@ import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import Geolocation from './pages/Geolocation';
 
+// Economy Pages
+import Economy from './pages/Economy/Economy';
+import AssetTokenization from './pages/Economy/AssetTokenization';
+import Governance from './pages/Economy/Governance';
+
 // Security Pages
 import SecurityDashboard from './pages/Security/SecurityDashboard';
 import AdvancedSecurity from './pages/Security/AdvancedSecurity';
