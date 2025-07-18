@@ -1472,7 +1472,26 @@ class QuantumShieldTester:
             self.test_advanced_crypto_rotate_keys,
             self.test_advanced_crypto_key_rotation_status,
             self.test_advanced_crypto_performance_comparison,
-            self.test_advanced_crypto_algorithm_recommendations
+            self.test_advanced_crypto_algorithm_recommendations,
+            # Security Service Tests
+            self.test_security_mfa_setup,
+            self.test_security_mfa_status,
+            self.test_security_behavior_analysis,
+            self.test_security_dashboard,
+            self.test_security_recommendations,
+            self.test_security_health,
+            # AI Analytics Service Tests
+            self.test_ai_analytics_device_anomalies,
+            self.test_ai_analytics_network_anomalies,
+            self.test_ai_analytics_energy_anomalies,
+            self.test_ai_analytics_device_failure_prediction,
+            self.test_ai_analytics_energy_prediction,
+            self.test_ai_analytics_energy_optimization,
+            self.test_ai_analytics_dashboard,
+            self.test_ai_analytics_models_status,
+            self.test_ai_analytics_summary,
+            self.test_ai_analytics_recommendations,
+            self.test_ai_analytics_health
         ]
         
         for test_func in test_functions:
