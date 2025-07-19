@@ -42,7 +42,7 @@ async def setup_totp_mfa(
     
     try:
         setup_data = await security_service.setup_totp_mfa(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             service_name=request.service_name
         )
         
