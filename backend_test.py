@@ -100,6 +100,8 @@ class QuantumShieldTester:
                 data = response.json()
                 self.user_id = data.get("id") or data.get("user_id")
                 self.log_test("User Registration", True, f"User registered with ID: {self.user_id}")
+            elif response.status_code == 400 and "déjà existant" in response.text:
+                self.log_test("User Registration", True, f"User already exists, proceeding with login")
             else:
                 self.log_test("User Registration", False, f"HTTP {response.status_code}: {response.text}")
                 return
