@@ -78,6 +78,9 @@ marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
 personalized_recommendations_service = PersonalizedRecommendationsService(db)
 personalizable_dashboard_service = PersonalizableDashboardService(db)
+cloud_integrations_service = CloudIntegrationsService(db)
+erp_crm_service = ERPCRMConnectorsService(db)
+compliance_service = ComplianceService(db)
 api_gateway_service = APIGatewayService(db)
 
 # Initialiser les nouveaux services
