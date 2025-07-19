@@ -1073,7 +1073,8 @@ db.users.aggregate([
 ### 🛡️ **Hardening Serveur**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/server-hardening.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/server-hardening.sh
+# sudo nano /opt/quantumshield/scripts/server-hardening.sh
 
 echo "🔒 Starting server hardening..."
 
