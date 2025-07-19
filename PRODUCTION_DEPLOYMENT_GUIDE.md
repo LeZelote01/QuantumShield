@@ -191,7 +191,9 @@ echo "0 12 * * * /usr/bin/certbot renew --quiet" | sudo crontab -
 
 ### 🛡️ **Configuration Sécurité Nginx**
 ```nginx
-# /etc/nginx/sites-available/quantumshield-security.conf
+# CRÉER LE FICHIER : /etc/nginx/snippets/quantumshield-security.conf
+# sudo nano /etc/nginx/snippets/quantumshield-security.conf
+
 # Headers de sécurité
 add_header X-Frame-Options DENY always;
 add_header X-Content-Type-Options nosniff always;
