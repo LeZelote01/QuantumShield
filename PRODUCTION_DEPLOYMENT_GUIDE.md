@@ -916,6 +916,9 @@ echo "✅ Restoration completed successfully!"
 ### ⚡ **Optimisations Backend**
 ```python
 # Ajouts dans backend/server.py pour production
+# MODIFIER LE FICHIER : /opt/quantumshield/backend/server.py
+# sudo nano /opt/quantumshield/backend/server.py
+# AJOUTER CES LIGNES AU DÉBUT DU FICHIER :
 
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
