@@ -803,8 +803,10 @@ groups:
 ### 📦 **Stratégie de Sauvegarde**
 ```bash
 # Script de sauvegarde automatisé
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/backup.sh
+# sudo mkdir -p /opt/quantumshield/scripts
+# sudo nano /opt/quantumshield/scripts/backup.sh
 #!/bin/bash
-# /opt/quantumshield/scripts/backup.sh
 
 BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="/opt/quantumshield/backups"
