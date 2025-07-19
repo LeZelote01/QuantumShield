@@ -456,10 +456,11 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Tests frontend complets"
     - "Fonctionnalités de sécurité renforcée avancées"
   stuck_tasks:
     - "Fonctionnalités de sécurité renforcée avancées"
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
