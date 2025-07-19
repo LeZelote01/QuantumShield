@@ -342,7 +342,9 @@ sudo -u quantumshield npm install --save-dev bundle-analyzer
 
 ### 🏗️ **Configuration Nginx Frontend**
 ```nginx
-# /etc/nginx/sites-available/quantumshield-frontend
+# CRÉER LE FICHIER : /etc/nginx/sites-available/quantumshield-frontend
+# sudo nano /etc/nginx/sites-available/quantumshield-frontend
+
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
