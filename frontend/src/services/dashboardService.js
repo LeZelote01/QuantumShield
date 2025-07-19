@@ -3,7 +3,7 @@ import api from './api';
 class DashboardService {
   async getDashboardOverview() {
     try {
-      const response = await api.get('/api/dashboard/overview');
+      const response = await api.get('/dashboard/overview');
       return response.data;
     } catch (error) {
       throw error;
@@ -12,7 +12,7 @@ class DashboardService {
 
   async getDashboardStats(timeframe = '24h') {
     try {
-      const response = await api.get(`/api/dashboard/stats?timeframe=${timeframe}`);
+      const response = await api.get(`/dashboard/stats?timeframe=${timeframe}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -21,7 +21,7 @@ class DashboardService {
 
   async getDevicesOverview() {
     try {
-      const response = await api.get('/api/dashboard/devices-overview');
+      const response = await api.get('/dashboard/devices-overview');
       return response.data;
     } catch (error) {
       throw error;
@@ -30,7 +30,7 @@ class DashboardService {
 
   async getNetworkStatus() {
     try {
-      const response = await api.get('/api/dashboard/network-status');
+      const response = await api.get('/dashboard/network-status');
       return response.data;
     } catch (error) {
       throw error;
@@ -39,7 +39,7 @@ class DashboardService {
 
   async getRecentActivity(limit = 20) {
     try {
-      const response = await api.get(`/api/dashboard/recent-activity?limit=${limit}`);
+      const response = await api.get(`/dashboard/recent-activity?limit=${limit}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -48,7 +48,7 @@ class DashboardService {
 
   async getPerformanceMetrics() {
     try {
-      const response = await api.get('/api/dashboard/performance');
+      const response = await api.get('/dashboard/performance');
       return response.data;
     } catch (error) {
       throw error;
@@ -57,7 +57,7 @@ class DashboardService {
 
   async getAlerts() {
     try {
-      const response = await api.get('/api/dashboard/alerts');
+      const response = await api.get('/dashboard/alerts');
       return response.data;
     } catch (error) {
       throw error;
