@@ -141,7 +141,9 @@ ALLOWED_ORIGINS=https://app.quantumshield.com,https://quantumshield.com
 
 ### 🖥️ **Variables d'Environnement Frontend**
 ```bash
-# /opt/quantumshield/frontend/.env.production
+# CRÉER LE FICHIER : /opt/quantumshield/frontend/.env.production
+# sudo nano /opt/quantumshield/frontend/.env.production
+
 REACT_APP_BACKEND_URL=https://api.quantumshield.com
 REACT_APP_WS_URL=wss://ws.quantumshield.com
 REACT_APP_CDN_URL=https://cdn.quantumshield.com
