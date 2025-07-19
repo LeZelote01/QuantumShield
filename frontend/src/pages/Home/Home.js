@@ -215,22 +215,22 @@ const Home = () => {
       </section>
 
       {/* Advanced Features */}
-      <section className="py-20 bg-white/5 backdrop-blur-sm">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Fonctionnalités Avancées
             </h2>
-            <p className="text-xl text-gray-200">
+            <p className="text-xl text-gray-600">
               Plus de 10 services additionnels pour une expérience complète
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {advancedFeatures.map((feature, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20 flex items-center space-x-3">
-                <CheckIcon className="h-5 w-5 text-green-400 flex-shrink-0" />
-                <span className="text-white font-medium">{feature}</span>
+              <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200 flex items-center space-x-3">
+                <CheckIcon className="h-5 w-5 text-gray-700 flex-shrink-0" />
+                <span className="text-gray-900 font-medium">{feature}</span>
               </div>
             ))}
           </div>
