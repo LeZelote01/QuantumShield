@@ -961,6 +961,9 @@ mongo_client = AsyncIOMotorClient(
 ### 🎯 **Optimisations Frontend**
 ```javascript
 // Webpack optimizations dans craco.config.js
+// MODIFIER LE FICHIER : /opt/quantumshield/frontend/craco.config.js  
+// sudo nano /opt/quantumshield/frontend/craco.config.js
+
 const path = require('path');
 const CompressionPlugin = require('compression-webpack-plugin');
 
