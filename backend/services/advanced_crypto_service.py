@@ -478,9 +478,8 @@ class AdvancedCryptoService:
             else:
                 raise ValueError(f"Algorithme non supporté: {algorithm}")
             
-            # Reconstruire la clé AES de la même façon que lors du chiffrement
-            # Note: Pour une implémentation complète, il faudrait stocker le symmetric_key
-            # Pour cette correction, on utilise directement le shared_secret
+            # Reconstruire la clé AES - Version simplifiée pour compatibilité
+            # On utilise seulement le shared_secret pour dériver la clé AES
             aes_key = hashlib.sha256(shared_secret).digest()
             
             # Déchiffrer le message
