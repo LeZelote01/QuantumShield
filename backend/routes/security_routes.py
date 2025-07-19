@@ -322,7 +322,7 @@ async def get_security_recommendations(current_user = Depends(get_current_user))
         
         return {
             "recommendations": recommendations,
-            "user_id": current_user["id"],
+            "user_id": current_user.id,
             "generated_at": datetime.utcnow(),
             "status": "success"
         }
