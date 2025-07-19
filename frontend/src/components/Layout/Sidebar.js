@@ -12,7 +12,8 @@ import {
   XMarkIcon,
   KeyIcon,
   LockClosedIcon,
-  MapPinIcon
+  MapPinIcon,
+  ServerIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
