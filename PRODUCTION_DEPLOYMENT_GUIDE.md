@@ -1424,7 +1424,8 @@ jobs:
 ### 📋 **Scripts de Déploiement**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/deploy.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/deploy.sh
+# sudo nano /opt/quantumshield/scripts/deploy.sh
 
 set -e  # Exit on error
 
