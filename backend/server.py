@@ -186,6 +186,7 @@ async def health_check():
             "webhook": webhook_service.is_ready(),
             "recommendations": personalized_recommendations_service.is_ready(),
             "custom_dashboards": personalizable_dashboard_service.is_ready(),
+            "api_gateway": api_gateway_service.is_ready(),
             "database": True
         }
     }
