@@ -491,7 +491,7 @@ class AdvancedCryptoService:
                 return decrypted_message.decode('utf-8')
             except (ValueError, UnicodeDecodeError) as padding_error:
                 # Si le dépadding échoue, retourner un message de démo
-                logger.warning(f"Erreur de padding, tentative alternative: {padding_error}")
+                logger.warning(f"Dépadding échoué, utilisation du mode démo: {padding_error}")
                 
                 # Utilisation d'une approche simplifiée pour la démo
                 # Retirer les octets nuls de la fin
