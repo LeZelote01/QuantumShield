@@ -56,6 +56,7 @@ from services.personalized_recommendations_service import PersonalizedRecommenda
 from services.personalizable_dashboard_service import PersonalizableDashboardService
 from services.cloud_integrations_service import CloudIntegrationsService
 from services.erp_crm_connectors_service import ERPCRMConnectorsService
+from services.compliance_service import ComplianceService
 from services.api_gateway_service import APIGatewayService
 
 ntru_service = NTRUService()
@@ -77,6 +78,9 @@ marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
 personalized_recommendations_service = PersonalizedRecommendationsService(db)
 personalizable_dashboard_service = PersonalizableDashboardService(db)
+cloud_integrations_service = CloudIntegrationsService(db)
+erp_crm_service = ERPCRMConnectorsService(db)
+compliance_service = ComplianceService(db)
 api_gateway_service = APIGatewayService(db)
 
 # Initialiser les nouveaux services
@@ -116,6 +120,9 @@ from routes.webhook_routes import router as webhook_router
 from routes.personalized_recommendations_routes import router as personalized_recommendations_router
 from routes.personalizable_dashboard_routes import router as personalizable_dashboard_router
 from routes.api_gateway_routes import router as api_gateway_router
+from routes.cloud_integrations_routes import router as cloud_integrations_router
+from routes.erp_crm_routes import router as erp_crm_router
+from routes.compliance_routes import router as compliance_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
@@ -127,6 +134,9 @@ import routes.graphql_routes
 import routes.webhook_routes
 import routes.personalized_recommendations_routes
 import routes.personalizable_dashboard_routes
+import routes.cloud_integrations_routes
+import routes.erp_crm_routes
+import routes.compliance_routes
 import routes.api_gateway_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
@@ -137,6 +147,8 @@ routes.graphql_routes.init_graphql_service(db, services_dict)
 routes.webhook_routes.init_webhook_service(db)
 routes.personalized_recommendations_routes.init_recommendations_service(personalized_recommendations_service)
 routes.personalizable_dashboard_routes.init_dashboard_service(personalizable_dashboard_service)
+routes.cloud_integrations_routes.init_cloud_integrations_service(cloud_integrations_service)
+routes.erp_crm_routes.init_erp_crm_service(erp_crm_service)
 routes.api_gateway_routes.init_api_gateway_service(api_gateway_service)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
@@ -161,6 +173,9 @@ api_router.include_router(graphql_router, tags=["graphql"])
 api_router.include_router(webhook_router, tags=["webhooks"])
 api_router.include_router(personalized_recommendations_router, prefix="/recommendations", tags=["recommendations"])
 api_router.include_router(personalizable_dashboard_router, prefix="/custom-dashboards", tags=["custom-dashboards"])
+api_router.include_router(cloud_integrations_router, prefix="/cloud-integrations", tags=["cloud-integrations"])
+api_router.include_router(erp_crm_router, prefix="/erp-crm", tags=["erp-crm"])
+api_router.include_router(compliance_router, prefix="/compliance", tags=["compliance"])
 api_router.include_router(api_gateway_router, prefix="/api-gateway", tags=["api-gateway"])
 
 # Health check endpoint
@@ -186,6 +201,9 @@ async def health_check():
             "webhook": webhook_service.is_ready(),
             "recommendations": personalized_recommendations_service.is_ready(),
             "custom_dashboards": personalizable_dashboard_service.is_ready(),
+            "cloud_integrations": cloud_integrations_service.is_ready(),
+            "erp_crm": erp_crm_service.is_ready(),
+            "compliance": compliance_service.is_ready(),
             "api_gateway": api_gateway_service.is_ready(),
             "database": True
         }
