@@ -66,13 +66,21 @@
 - [x] Redémarrage des services (backend, frontend, mongodb, code-server) - Tous RUNNING
 
 ### 🔄 Tâches en Cours
-- [ ] Correction des erreurs backend critiques (en cours)
-  - [ ] Erreurs HTTP 500 (crypto avancée, sécurité)
-  - [ ] Endpoints manquants HTTP 404
-  - [ ] Erreurs de validation HTTP 400
-  - [ ] Services non implémentés (OTA, économie avancée)
+- [x] Correction des erreurs backend critiques (complétées)
+  - [x] Erreurs HTTP 500 (crypto avancée, sécurité) - CORRIGÉES
+  - [x] Endpoints manquants HTTP 404 - CORRIGÉS 
+  - [x] Service OTA non fonctionnel - CORRIGÉ
+  - [ ] Erreurs de validation HTTP 400 (en cours)
+  - [ ] Services non implémentés (économie avancée)
 - [ ] Tests frontend complets
 - [ ] Validation finale end-to-end
+
+### ✅ Corrections Appliquées
+1. **Erreur HTTP 500 - Déchiffrement hybride**: Corrigé le problème de reconstruction de clé AES avec gestion d'erreurs de padding
+2. **Erreur HTTP 500 - Dashboard sécurité**: Remplacé l'agrégation MongoDB complexe par des requêtes simples
+3. **Erreur HTTP 500 - Génération ZK-proofs**: Ajouté l'implémentation complète des preuves zero-knowledge avec 4 types de preuves
+4. **Erreur HTTP 404 - Health check blockchain avancé**: Ajouté l'endpoint `/api/advanced-blockchain/health`
+5. **Service OTA non fonctionnel**: Corrigé l'injection du service dans les routes OTA
 
 ### ⏳ Tâches à Venir
 - [ ] Tests end-to-end
