@@ -860,7 +860,8 @@ echo "Backup completed: quantumshield_$BACKUP_DATE.tar.gz"
 ### 🔄 **Script de Restauration**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/restore.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/restore.sh
+# sudo nano /opt/quantumshield/scripts/restore.sh
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <backup-file>"
