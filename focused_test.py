@@ -17,7 +17,7 @@ def test_specific_endpoints():
     
     response = requests.post(f"{base_url}/auth/login", json=login_data)
     if response.status_code == 200:
-        auth_token = response.json().get("access_token")
+        auth_token = response.json().get("token")  # Fixed: use "token" not "access_token"
         headers = {"Authorization": f"Bearer {auth_token}"}
     else:
         print("❌ Failed to get auth token")
