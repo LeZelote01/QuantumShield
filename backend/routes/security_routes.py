@@ -246,7 +246,7 @@ async def log_security_event(
     
     try:
         await security_service.log_security_event(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             event_type=event_type,
             details=details
         )
