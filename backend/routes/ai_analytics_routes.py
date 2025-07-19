@@ -404,3 +404,74 @@ async def get_ai_recommendations(current_user = Depends(get_current_user)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Erreur recommandations IA: {str(e)}"
         )
+
+# Alias endpoints pour compatibilité avec les tests
+@router.get("/anomaly-detection")
+async def anomaly_detection_general(
+    device_id: Optional[str] = None,
+    time_window_hours: int = 24,
+    current_user = Depends(get_current_user)
+):
+    """Détection générale d'anomalies (alias)"""
+    from server import ai_analytics_service
+    
+    try:
+        time_window = timedelta(hours=time_window_hours)
+        
+        if device_id:
+            # Détection pour un dispositif spécifique
+            result = await ai_analytics_service.detect_device_anomalies(
+                device_id=device_id,
+                time_window=time_window
+            )
+        else:
+            # Détection générale réseau
+            result = await ai_analytics_service.detect_network_anomalies(
+                time_window=time_window
+            )
+        
+        return {
+            "anomaly_detection": result,
+            "status": "success",
+            "message": "Détection d'anomalies effectuée"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur détection anomalies: {str(e)}"
+        )
+
+@router.get("/predictions")
+async def predictions_general(
+    prediction_type: str = "device_failure",
+    device_id: Optional[str] = None,
+    prediction_horizon_days: int = 7,
+    current_user = Depends(get_current_user)
+):
+    """Prédictions générales (alias)"""
+    from server import ai_analytics_service
+    
+    try:
+        if prediction_type == "device_failure" and device_id:
+            result = await ai_analytics_service.predict_device_failure(
+                device_id=device_id,
+                prediction_horizon=timedelta(days=prediction_horizon_days)
+            )
+        else:
+            # Prédiction énergétique par défaut
+            result = await ai_analytics_service.predict_energy_usage(
+                prediction_horizon=timedelta(days=prediction_horizon_days)
+            )
+        
+        return {
+            "predictions": result,
+            "status": "success",
+            "message": "Prédictions générées avec succès"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur génération prédictions: {str(e)}"
+        )

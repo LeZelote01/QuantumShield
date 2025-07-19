@@ -282,6 +282,20 @@ class VoteRequest(BaseModel):
 class StakeRequest(BaseModel):
     validator_address: str
     amount: float
+    
+    @validator('amount')
+    def amount_must_be_positive(cls, v):
+        if v <= 0:
+            raise ValueError('Le montant doit être positif')
+        if v < 1.0:
+            raise ValueError('Le montant minimum de staking est de 1.0 QS')
+        return v
+    
+    @validator('validator_address')
+    def validator_address_must_be_valid(cls, v):
+        if not v or len(v) < 10:
+            raise ValueError('Adresse de validateur invalide')
+        return v
 
 class BridgeTransferRequest(BaseModel):
     target_network: BlockchainNetwork

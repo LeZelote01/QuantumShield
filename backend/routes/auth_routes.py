@@ -142,3 +142,27 @@ async def get_user_stats(current_user: User = Depends(get_current_user)):
 async def verify_token(current_user: User = Depends(get_current_user)):
     """Vérifie la validité du token"""
     return {"valid": True, "user": current_user}
+
+# Routes MFA
+@router.post("/mfa/setup")
+async def mfa_setup(current_user: User = Depends(get_current_user)):
+    """Configuration MFA - redirige vers la sécurité"""
+    from server import security_service
+    
+    try:
+        setup_data = await security_service.setup_totp_mfa(
+            user_id=current_user.id,
+            service_name="QuantumShield"
+        )
+        
+        return {
+            "setup_data": setup_data,
+            "status": "success",
+            "message": "Configuration MFA initiée avec succès"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Erreur configuration MFA: {str(e)}"
+        )

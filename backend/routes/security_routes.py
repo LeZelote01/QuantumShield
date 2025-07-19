@@ -687,3 +687,35 @@ async def perform_security_health_check(current_user = Depends(get_current_user)
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Erreur contrôle santé: {str(e)}"
         )
+
+# Routes alertes sécurité
+@router.get("/alerts")
+async def get_security_alerts(
+    limit: int = 50,
+    offset: int = 0,
+    severity: Optional[str] = None,
+    current_user = Depends(get_current_user)
+):
+    """Récupère les alertes de sécurité"""
+    from server import security_service
+    
+    try:
+        # Créer des alertes de test si pas d'alertes existantes
+        alerts = await security_service.get_security_alerts(
+            limit=limit,
+            offset=offset,
+            severity=severity,
+            user_id=current_user.id
+        )
+        
+        return {
+            "alerts": alerts,
+            "total": len(alerts),
+            "status": "success"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur récupération alertes: {str(e)}"
+        )

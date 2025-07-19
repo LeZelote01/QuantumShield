@@ -12,8 +12,8 @@ from typing import Dict, Any, Optional
 
 class QuantumShieldTester:
     def __init__(self):
-        # Use the production URL from frontend/.env
-        self.base_url = "https://fa71b110-641f-4998-92bb-6968bae54ec8.preview.emergentagent.com/api"
+        # Use the internal URL for testing since external URL is not accessible
+        self.base_url = "http://localhost:8001/api"
         self.session = requests.Session()
         self.auth_token = None
         self.user_id = None
@@ -121,7 +121,7 @@ class QuantumShieldTester:
             
             if response.status_code == 200:
                 data = response.json()
-                self.auth_token = data.get("access_token") or data.get("token")
+                self.auth_token = data.get("token")  # Fixed: use "token" not "access_token"
                 self.log_test("User Login", True, f"Login successful, token received")
             else:
                 self.log_test("User Login", False, f"HTTP {response.status_code}: {response.text}")
@@ -260,11 +260,11 @@ class QuantumShieldTester:
         except Exception as e:
             self.log_test("Validators List", False, f"Exception: {str(e)}")
 
-        # Test Staking (Known issue from test_result.md)
+        # Test Staking - PRIORITY ENDPOINT (was HTTP 400, validation corrected)
         try:
             stake_data = {
                 "validator_address": "0x1234567890abcdef1234567890abcdef12345678",
-                "amount": 100.0,
+                "amount": 10.0,  # Above minimum 1.0 QS
                 "duration": 30
             }
             
@@ -272,7 +272,7 @@ class QuantumShieldTester:
             
             if response.status_code == 200:
                 data = response.json()
-                self.log_test("Token Staking", True, f"Staking successful")
+                self.log_test("Token Staking", True, f"Staking successful with improved validation")
             else:
                 self.log_test("Token Staking", False, f"HTTP {response.status_code}: {response.text}")
                 
@@ -300,14 +300,14 @@ class QuantumShieldTester:
         except Exception as e:
             self.log_test("Security Dashboard", False, f"Exception: {str(e)}")
 
-        # Test Security Alerts
+        # Test Security Alerts - PRIORITY ENDPOINT (was HTTP 500, should now be HTTP 200)
         try:
             response = self.make_request("GET", "/security/alerts")
             
             if response.status_code == 200:
                 data = response.json()
                 alerts = data.get("alerts", [])
-                self.log_test("Security Alerts", True, f"Retrieved {len(alerts)} security alerts")
+                self.log_test("Security Alerts", True, f"Retrieved {len(alerts)} security alerts (method added to SecurityService)")
             else:
                 self.log_test("Security Alerts", False, f"HTTP {response.status_code}: {response.text}")
                 
@@ -370,7 +370,7 @@ class QuantumShieldTester:
             self.log_test("Smart Contracts & Governance", False, "No auth token available")
             return
 
-        # Test Smart Contract Templates
+        # Test Smart Contract Templates - PRIORITY ENDPOINT (was HTTP 404)
         try:
             response = self.make_request("GET", "/advanced-blockchain/smart-contracts/templates")
             
@@ -383,6 +383,20 @@ class QuantumShieldTester:
                 
         except Exception as e:
             self.log_test("Smart Contract Templates", False, f"Exception: {str(e)}")
+
+        # Test alternative endpoint for templates - NEW ALIAS ADDED
+        try:
+            response = self.make_request("GET", "/advanced-blockchain/templates")
+            
+            if response.status_code == 200:
+                data = response.json()
+                templates = data.get("templates", [])
+                self.log_test("Smart Contract Templates (Alias)", True, f"Retrieved {len(templates)} templates via alias")
+            else:
+                self.log_test("Smart Contract Templates (Alias)", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("Smart Contract Templates (Alias)", False, f"Exception: {str(e)}")
 
         # Test Governance Proposals
         try:

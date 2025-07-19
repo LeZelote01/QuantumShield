@@ -90,6 +90,33 @@ async def get_supported_algorithms():
             detail=f"Erreur lors de la récupération des algorithmes: {str(e)}"
         )
 
+@router.post("/generate-keypair")
+async def generate_keypair(
+    request: MultiAlgorithmKeyGenRequest,
+    current_user = Depends(get_current_user)
+):
+    """Génère une paire de clés (alias pour compatibilité)"""
+    from server import advanced_crypto_service
+    
+    try:
+        keypair = await advanced_crypto_service.generate_multi_algorithm_keypair(
+            encryption_alg=request.encryption_algorithm,
+            signature_alg=request.signature_algorithm,
+            user_id=current_user.id
+        )
+        
+        return {
+            "keypair": keypair,
+            "status": "success",
+            "message": "Paire de clés générée avec succès"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur lors de la génération des clés: {str(e)}"
+        )
+
 @router.post("/generate-multi-algorithm-keypair")
 async def generate_multi_algorithm_keypair(
     request: MultiAlgorithmKeyGenRequest,
