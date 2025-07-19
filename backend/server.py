@@ -194,6 +194,10 @@ async def health_check():
 # Include the router in the main app
 app.include_router(api_router)
 
+# Configure API Gateway middleware
+from middleware.api_gateway_middleware import setup_api_gateway_middleware
+setup_api_gateway_middleware(app, api_gateway_service)
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
