@@ -1785,7 +1785,8 @@ if __name__ == "__main__":
 
 ### 📅 **Planning de Maintenance**
 ```bash
-# /opt/quantumshield/scripts/maintenance-schedule.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/maintenance-schedule.sh
+# sudo nano /opt/quantumshield/scripts/maintenance-schedule.sh
 
 # Crontab pour maintenance automatique
 # sudo crontab -e
