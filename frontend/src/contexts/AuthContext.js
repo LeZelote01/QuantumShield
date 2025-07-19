@@ -71,9 +71,6 @@ export const AuthProvider = ({ children }) => {
   // Check for existing token on app load
   useEffect(() => {
     const checkAuth = async () => {
-      // Ne pas bloquer l'app - démarrer directement en mode non-loading
-      dispatch({ type: 'SET_LOADING', payload: false });
-      
       const token = localStorage.getItem('token');
       
       if (token) {
@@ -81,8 +78,13 @@ export const AuthProvider = ({ children }) => {
           // Set the token in API headers
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
-          // Verify token with backend en arrière-plan (ne bloque pas l'UI)
-          const response = await api.get('/auth/verify-token');
+          // Verify token with backend avec timeout
+          const response = await Promise.race([
+            api.get('/auth/verify-token'),
+            new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Token verification timeout')), 5000)
+            )
+          ]);
           
           dispatch({
             type: 'LOGIN_SUCCESS',
@@ -92,16 +94,18 @@ export const AuthProvider = ({ children }) => {
             },
           });
         } catch (error) {
-          // Token is invalid or network error, remove it silently
+          // Token is invalid, expired, or network error - remove it silently
           console.log('Token verification failed:', error.message);
           localStorage.removeItem('token');
           delete api.defaults.headers.common['Authorization'];
-          // L'utilisateur reste sur la page courante
         }
       }
+      
+      // Always set loading to false after token verification attempt (success or failure)
+      dispatch({ type: 'SET_LOADING', payload: false });
     };
 
-    // Démarrer la vérification sans bloquer l'UI
+    // Start auth check
     checkAuth();
   }, []);
 
