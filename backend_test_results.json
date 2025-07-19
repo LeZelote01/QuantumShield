@@ -4,14 +4,14 @@
     "passed_tests": 1,
     "failed_tests": 6,
     "success_rate": 14.285714285714285,
-    "timestamp": "2025-07-19T09:04:09.989581"
+    "timestamp": "2025-07-19T09:04:42.819277"
   },
   "detailed_results": [
     {
       "test": "Global Health Check",
       "success": true,
       "details": "Services: 21/21 healthy. Services: ['ntru', 'blockchain', 'advanced_blockchain', 'advanced_crypto', 'security', 'ai_analytics', 'advanced_economy', 'iot_protocol', 'ota_update', 'geolocation', 'x509', 'marketplace', 'hsm', 'webhook', 'recommendations', 'custom_dashboards', 'cloud_integrations', 'erp_crm', 'compliance', 'api_gateway', 'database']",
-      "timestamp": "2025-07-19T09:04:09.086454",
+      "timestamp": "2025-07-19T09:04:42.804842",
       "response_data": {
         "total": 21,
         "healthy": 21,
@@ -43,43 +43,43 @@
     {
       "test": "User Registration",
       "success": false,
-      "details": "HTTP 200: {\"id\":\"21b5e120-5a4d-433b-b7b8-295fbfedf9a2\",\"email\":\"quantum.test@quantumshield.com\",\"username\":\"quantum_user_2025\",\"wallet_address\":\"0x818e2318706841e9f01add3ef8467d35a1048337\",\"qs_balance\":0.0,\"reputation_score\":0,\"created_at\":\"2025-07-19T09:04:09.971592\",\"is_active\":true}",
-      "timestamp": "2025-07-19T09:04:09.989291",
+      "details": "HTTP 400: {\"detail\":\"Impossible d'enregistrer l'utilisateur: Utilisateur d\u00e9j\u00e0 existant\"}",
+      "timestamp": "2025-07-19T09:04:42.819028",
       "response_data": null
     },
     {
       "test": "Advanced Cryptography",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:09.989346",
+      "timestamp": "2025-07-19T09:04:42.819076",
       "response_data": null
     },
     {
       "test": "Advanced Blockchain",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:09.989355",
+      "timestamp": "2025-07-19T09:04:42.819084",
       "response_data": null
     },
     {
       "test": "Security Features",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:09.989361",
+      "timestamp": "2025-07-19T09:04:42.819090",
       "response_data": null
     },
     {
       "test": "AI Analytics",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:09.989367",
+      "timestamp": "2025-07-19T09:04:42.819097",
       "response_data": null
     },
     {
       "test": "Smart Contracts & Governance",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:09.989374",
+      "timestamp": "2025-07-19T09:04:42.819102",
       "response_data": null
     }
   ]
