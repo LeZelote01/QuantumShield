@@ -54,6 +54,7 @@ class KeyRotationRequest(BaseModel):
 class ZKProofRequest(BaseModel):
     proof_type: ZKProofType
     secret_value: str
+    secret: Optional[str] = None  # Alternative field name for compatibility
     public_parameters: Dict[str, Any]
 
 class ZKProofVerificationRequest(BaseModel):
@@ -440,9 +441,17 @@ async def generate_zk_proof(
     from server import advanced_crypto_service
     
     try:
+        # Support both field names for compatibility
+        secret_value = request.secret_value or request.secret
+        if not secret_value:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Le champ 'secret_value' ou 'secret' est requis"
+            )
+        
         proof = await advanced_crypto_service.generate_zk_proof(
             proof_type=request.proof_type,
-            secret_value=request.secret_value,
+            secret_value=secret_value,
             public_parameters=request.public_parameters,
             user_id=current_user.id
         )
