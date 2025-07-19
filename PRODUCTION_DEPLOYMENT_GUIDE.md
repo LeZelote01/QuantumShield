@@ -1514,6 +1514,10 @@ echo "  - Health: $(curl -s https://api.quantumshield.com/api/health | jq -r .st
 ### 🔄 **Tests d'Intégration Continue**
 ```python
 # tests/test_production_readiness.py
+# CRÉER LE FICHIER : /opt/quantumshield/tests/test_production_readiness.py
+# sudo mkdir -p /opt/quantumshield/tests
+# sudo nano /opt/quantumshield/tests/test_production_readiness.py
+
 import pytest
 import asyncio
 import aiohttp
