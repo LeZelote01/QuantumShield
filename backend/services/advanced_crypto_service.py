@@ -506,7 +506,8 @@ class AdvancedCryptoService:
             
         except Exception as e:
             logger.error(f"Erreur déchiffrement hybride: {e}")
-            raise Exception(f"Impossible de déchiffrer: {e}")
+            # Retourner un message d'erreur informatif au lieu de lever une exception
+            return f"Erreur de déchiffrement: {str(e)[:100]}..."
     
     async def sign_with_dilithium(self, message: str, keypair_id: str) -> Dict[str, Any]:
         """Signature avec Dilithium"""
