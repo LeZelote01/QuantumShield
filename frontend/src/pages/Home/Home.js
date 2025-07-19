@@ -67,17 +67,17 @@ const Home = () => {
     {
       title: "Sécurité Maximale",
       description: "Protection contre les attaques quantiques futures",
-      icon: <ShieldCheckIcon className="h-8 w-8 text-indigo-600" />
+      icon: <ShieldCheckIcon className="h-8 w-8" />
     },
     {
       title: "Évolutivité",
       description: "Architecture modulaire s'adaptant à vos besoins",
-      icon: <CubeTransparentIcon className="h-8 w-8 text-purple-600" />
+      icon: <CubeTransparentIcon className="h-8 w-8" />
     },
     {
       title: "Économie Intégrée",
       description: "Monétisez vos données IoT avec les tokens $QS",
-      icon: <BanknotesIcon className="h-8 w-8 text-green-600" />
+      icon: <BanknotesIcon className="h-8 w-8" />
     }
   ];
 
