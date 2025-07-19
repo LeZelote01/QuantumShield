@@ -56,6 +56,7 @@ from services.personalized_recommendations_service import PersonalizedRecommenda
 from services.personalizable_dashboard_service import PersonalizableDashboardService
 from services.cloud_integrations_service import CloudIntegrationsService
 from services.erp_crm_connectors_service import ERPCRMConnectorsService
+from services.compliance_service import ComplianceService
 from services.api_gateway_service import APIGatewayService
 
 ntru_service = NTRUService()
