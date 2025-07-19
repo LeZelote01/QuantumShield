@@ -28,7 +28,7 @@ def test_specific_endpoints():
     
     # Test the endpoints that were supposed to be fixed
     endpoints_to_test = [
-        ("GET", "/auth/mfa/setup", None),
+        ("POST", "/auth/mfa/setup", None),
         ("POST", "/advanced-crypto/generate-keypair", {"algorithm": "kyber-768", "key_size": 2048}),
         ("GET", "/advanced-blockchain/validators", None),
         ("POST", "/advanced-blockchain/stake", {"validator_address": "0x1234567890abcdef1234567890abcdef12345678", "amount": 1000.0, "duration": 30}),
