@@ -1210,7 +1210,8 @@ class MFAService:
 ### 🚫 **Protection DDoS et Rate Limiting**
 ```nginx
 # Configuration anti-DDoS dans Nginx
-# /etc/nginx/conf.d/ddos-protection.conf
+# CRÉER LE FICHIER : /etc/nginx/conf.d/ddos-protection.conf
+# sudo nano /etc/nginx/conf.d/ddos-protection.conf
 
 # Rate limiting zones
 limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
