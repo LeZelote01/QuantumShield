@@ -406,6 +406,117 @@ class QuantumShieldTester:
         except Exception as e:
             self.log_test("Governance Proposals", False, f"Exception: {str(e)}")
 
+    def test_working_crypto_endpoints(self):
+        """Test working crypto endpoints from previous test results"""
+        if not self.auth_token:
+            self.log_test("Working Crypto Endpoints", False, "No auth token available")
+            return
+
+        # Test basic NTRU key generation
+        try:
+            response = self.make_request("POST", "/crypto/generate-keys")
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("NTRU Key Generation", True, f"NTRU keys generated successfully")
+            else:
+                self.log_test("NTRU Key Generation", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("NTRU Key Generation", False, f"Exception: {str(e)}")
+
+        # Test basic encryption
+        try:
+            encrypt_data = {
+                "message": "Test quantum message for encryption"
+            }
+            
+            response = self.make_request("POST", "/crypto/encrypt", encrypt_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("NTRU Encryption", True, f"Message encrypted successfully")
+            else:
+                self.log_test("NTRU Encryption", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("NTRU Encryption", False, f"Exception: {str(e)}")
+
+    def test_token_and_mining(self):
+        """Test token balance and mining functionality"""
+        if not self.auth_token:
+            self.log_test("Token and Mining", False, "No auth token available")
+            return
+
+        # Test token balance
+        try:
+            response = self.make_request("GET", "/tokens/balance")
+            
+            if response.status_code == 200:
+                data = response.json()
+                balance = data.get("balance", 0)
+                self.log_test("Token Balance", True, f"Balance retrieved: {balance} QS")
+            else:
+                self.log_test("Token Balance", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("Token Balance", False, f"Exception: {str(e)}")
+
+        # Test mining stats
+        try:
+            response = self.make_request("GET", "/mining/stats")
+            
+            if response.status_code == 200:
+                data = response.json()
+                difficulty = data.get("difficulty", 0)
+                self.log_test("Mining Stats", True, f"Mining stats retrieved, difficulty: {difficulty}")
+            else:
+                self.log_test("Mining Stats", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("Mining Stats", False, f"Exception: {str(e)}")
+
+    def test_iot_devices(self):
+        """Test IoT device functionality"""
+        if not self.auth_token:
+            self.log_test("IoT Devices", False, "No auth token available")
+            return
+
+        # Test device registration
+        try:
+            device_data = {
+                "name": "Quantum Sensor 2025",
+                "device_type": "sensor",
+                "location": "Quantum Lab",
+                "protocol": "MQTT"
+            }
+            
+            response = self.make_request("POST", "/devices/register", device_data)
+            
+            if response.status_code in [200, 201]:
+                data = response.json()
+                device_id = data.get("id") or data.get("device_id")
+                self.log_test("Device Registration", True, f"Device registered with ID: {device_id}")
+            else:
+                self.log_test("Device Registration", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("Device Registration", False, f"Exception: {str(e)}")
+
+        # Test IoT protocol health
+        try:
+            response = self.make_request("GET", "/iot-protocol/health")
+            
+            if response.status_code == 200:
+                data = response.json()
+                protocols = data.get("protocols", [])
+                self.log_test("IoT Protocol Health", True, f"Protocol health checked: {len(protocols)} protocols")
+            else:
+                self.log_test("IoT Protocol Health", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("IoT Protocol Health", False, f"Exception: {str(e)}")
+
     def run_all_tests(self):
         """Run all critical backend tests"""
         print("🚀 Starting QuantumShield Backend Testing Suite")
@@ -419,7 +530,16 @@ class QuantumShieldTester:
         self.test_authentication_flow()
         print()
         
+        self.test_working_crypto_endpoints()
+        print()
+        
         self.test_advanced_cryptography()
+        print()
+        
+        self.test_token_and_mining()
+        print()
+        
+        self.test_iot_devices()
         print()
         
         self.test_advanced_blockchain()
