@@ -571,6 +571,9 @@ sudo systemctl start mongod
 sudo systemctl enable mongod
 
 # Configuration /etc/mongod.conf
+# MODIFIER LE FICHIER : /etc/mongod.conf  
+# sudo nano /etc/mongod.conf
+
 storage:
   dbPath: /var/lib/mongodb
   journal:
