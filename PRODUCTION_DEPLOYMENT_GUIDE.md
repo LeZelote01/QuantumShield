@@ -1849,7 +1849,8 @@ echo "✅ Log cleanup completed"
 ### 🔄 **Mise à Jour Zero-Downtime**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/zero-downtime-update.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/zero-downtime-update.sh
+# sudo nano /opt/quantumshield/scripts/zero-downtime-update.sh
 
 set -e
 
