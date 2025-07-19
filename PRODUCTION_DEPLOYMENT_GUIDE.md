@@ -1616,6 +1616,9 @@ class ProductionTests:
 ### 📊 **Tests de Charge**
 ```python
 # tests/load_tests.py
+# CRÉER LE FICHIER : /opt/quantumshield/tests/load_tests.py
+# sudo nano /opt/quantumshield/tests/load_tests.py
+
 import asyncio
 import aiohttp
 import time
