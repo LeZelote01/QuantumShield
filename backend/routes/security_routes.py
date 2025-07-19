@@ -92,7 +92,7 @@ async def verify_totp(
     
     try:
         is_valid = await security_service.verify_totp_code(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             totp_code=request.totp_code
         )
         
