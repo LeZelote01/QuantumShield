@@ -1,17 +1,17 @@
 {
   "summary": {
-    "total_tests": 7,
-    "passed_tests": 1,
+    "total_tests": 9,
+    "passed_tests": 3,
     "failed_tests": 6,
-    "success_rate": 14.285714285714285,
-    "timestamp": "2025-07-19T09:04:42.819277"
+    "success_rate": 33.33333333333333,
+    "timestamp": "2025-07-19T09:05:51.673892"
   },
   "detailed_results": [
     {
       "test": "Global Health Check",
       "success": true,
       "details": "Services: 21/21 healthy. Services: ['ntru', 'blockchain', 'advanced_blockchain', 'advanced_crypto', 'security', 'ai_analytics', 'advanced_economy', 'iot_protocol', 'ota_update', 'geolocation', 'x509', 'marketplace', 'hsm', 'webhook', 'recommendations', 'custom_dashboards', 'cloud_integrations', 'erp_crm', 'compliance', 'api_gateway', 'database']",
-      "timestamp": "2025-07-19T09:04:42.804842",
+      "timestamp": "2025-07-19T09:05:51.380993",
       "response_data": {
         "total": 21,
         "healthy": 21,
@@ -42,44 +42,58 @@
     },
     {
       "test": "User Registration",
+      "success": true,
+      "details": "User already exists, proceeding with login",
+      "timestamp": "2025-07-19T09:05:51.398209",
+      "response_data": null
+    },
+    {
+      "test": "User Login",
+      "success": true,
+      "details": "Login successful, token received",
+      "timestamp": "2025-07-19T09:05:51.661042",
+      "response_data": null
+    },
+    {
+      "test": "MFA Setup",
       "success": false,
-      "details": "HTTP 400: {\"detail\":\"Impossible d'enregistrer l'utilisateur: Utilisateur d\u00e9j\u00e0 existant\"}",
-      "timestamp": "2025-07-19T09:04:42.819028",
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:05:51.673577",
       "response_data": null
     },
     {
       "test": "Advanced Cryptography",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:42.819076",
+      "timestamp": "2025-07-19T09:05:51.673633",
       "response_data": null
     },
     {
       "test": "Advanced Blockchain",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:42.819084",
+      "timestamp": "2025-07-19T09:05:51.673642",
       "response_data": null
     },
     {
       "test": "Security Features",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:42.819090",
+      "timestamp": "2025-07-19T09:05:51.673648",
       "response_data": null
     },
     {
       "test": "AI Analytics",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:42.819097",
+      "timestamp": "2025-07-19T09:05:51.673655",
       "response_data": null
     },
     {
       "test": "Smart Contracts & Governance",
       "success": false,
       "details": "No auth token available",
-      "timestamp": "2025-07-19T09:04:42.819102",
+      "timestamp": "2025-07-19T09:05:51.673663",
       "response_data": null
     }
   ]
