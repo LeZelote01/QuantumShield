@@ -116,6 +116,9 @@ from routes.webhook_routes import router as webhook_router
 from routes.personalized_recommendations_routes import router as personalized_recommendations_router
 from routes.personalizable_dashboard_routes import router as personalizable_dashboard_router
 from routes.api_gateway_routes import router as api_gateway_router
+from routes.cloud_integrations_routes import router as cloud_integrations_router
+from routes.erp_crm_routes import router as erp_crm_router
+from routes.compliance_routes import router as compliance_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
