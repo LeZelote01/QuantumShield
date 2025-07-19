@@ -302,7 +302,9 @@ certfile = None
 
 ### 🔧 **Configuration Supervisor Backend**
 ```ini
-# /etc/supervisor/conf.d/quantumshield-backend.conf
+# CRÉER LE FICHIER : /etc/supervisor/conf.d/quantumshield-backend.conf
+# sudo nano /etc/supervisor/conf.d/quantumshield-backend.conf
+
 [program:quantumshield-backend]
 command=/opt/quantumshield/venv/bin/gunicorn -c /opt/quantumshield/gunicorn.conf.py backend.server:app
 directory=/opt/quantumshield
