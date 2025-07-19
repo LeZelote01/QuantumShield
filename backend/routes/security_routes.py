@@ -12,6 +12,11 @@ from services.security_service import SecurityService, MFAMethod, SecurityEventT
 
 router = APIRouter()
 
+# Helper function to check admin status
+def is_admin_user(user) -> bool:
+    """Check if user has admin privileges"""
+    return getattr(user, 'is_admin', False)
+
 # Modèles de requête
 class MFASetupRequest(BaseModel):
     service_name: str = "QuantumShield"
@@ -42,7 +47,7 @@ async def setup_totp_mfa(
     
     try:
         setup_data = await security_service.setup_totp_mfa(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             service_name=request.service_name
         )
         
@@ -67,7 +72,7 @@ async def verify_totp_setup(
     
     try:
         verification_data = await security_service.verify_totp_setup(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             totp_code=request.totp_code
         )
         
@@ -92,7 +97,7 @@ async def verify_totp(
     
     try:
         is_valid = await security_service.verify_totp_code(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             totp_code=request.totp_code
         )
         
@@ -118,7 +123,7 @@ async def disable_mfa(
     
     try:
         disable_data = await security_service.disable_mfa(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             method=request.method
         )
         
@@ -140,7 +145,7 @@ async def get_mfa_status(current_user = Depends(get_current_user)):
     
     try:
         status_data = await security_service.get_mfa_status(
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
@@ -165,7 +170,7 @@ async def analyze_behavior(
     
     try:
         analysis = await security_service.analyze_user_behavior(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             action=request.action,
             context=request.context
         )
@@ -192,7 +197,7 @@ async def get_security_audit_report(
     
     try:
         # Vérifier les permissions (admin uniquement)
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -246,7 +251,7 @@ async def log_security_event(
     
     try:
         await security_service.log_security_event(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             event_type=event_type,
             details=details
         )
@@ -290,7 +295,7 @@ async def get_security_recommendations(current_user = Depends(get_current_user))
     
     try:
         # Récupérer le statut MFA
-        mfa_status = await security_service.get_mfa_status(current_user["id"])
+        mfa_status = await security_service.get_mfa_status(current_user.id)
         
         # Générer des recommandations
         recommendations = []
@@ -322,7 +327,7 @@ async def get_security_recommendations(current_user = Depends(get_current_user))
         
         return {
             "recommendations": recommendations,
-            "user_id": current_user["id"],
+            "user_id": current_user.id,
             "generated_at": datetime.utcnow(),
             "status": "success"
         }
@@ -369,7 +374,7 @@ async def create_honeypot(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -401,7 +406,7 @@ async def trigger_honeypot(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -431,7 +436,7 @@ async def get_honeypot_report(current_user = Depends(get_current_user)):
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -461,7 +466,7 @@ async def create_security_backup(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -493,7 +498,7 @@ async def restore_security_backup(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -521,7 +526,7 @@ async def get_backup_report(current_user = Depends(get_current_user)):
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -551,7 +556,7 @@ async def generate_gdpr_report(
     
     try:
         # Vérifier les permissions (admin ou utilisateur concerné)
-        if not current_user.get("is_admin", False) and current_user["id"] != request.user_id:
+        if not is_admin_user(current_user) and current_user.id != request.user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès non autorisé"
@@ -582,7 +587,7 @@ async def delete_user_data(
     
     try:
         # Vérifier les permissions (admin ou utilisateur concerné)
-        if not current_user.get("is_admin", False) and current_user["id"] != request.user_id:
+        if not is_admin_user(current_user) and current_user.id != request.user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès non autorisé"
@@ -611,7 +616,7 @@ async def get_compliance_report(current_user = Depends(get_current_user)):
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -638,7 +643,7 @@ async def get_comprehensive_security_report(current_user = Depends(get_current_u
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -664,7 +669,7 @@ async def perform_security_health_check(current_user = Depends(get_current_user)
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
