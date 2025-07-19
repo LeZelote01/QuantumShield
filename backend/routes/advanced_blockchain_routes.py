@@ -819,3 +819,20 @@ async def get_blockchain_overview(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Erreur lors de la récupération de l'aperçu: {str(e)}"
         )
+
+# Alias endpoints pour compatibilité avec les tests
+@router.get("/validators", response_model=List[Validator])
+async def get_validators_alias(
+    active_only: bool = True,
+    current_user: User = Depends(get_current_user)
+):
+    """Récupère la liste des validateurs (alias)"""
+    return await get_validators(active_only=active_only, current_user=current_user)
+
+@router.post("/stake")
+async def stake_tokens_alias(
+    stake_data: StakeRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Stake des tokens auprès d'un validateur (alias)"""
+    return await stake_tokens(stake_data=stake_data, current_user=current_user)
