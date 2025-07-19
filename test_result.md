@@ -121,7 +121,7 @@ backend:
         agent: "main"
         comment: "Successfully cloned QuantumShield repo, installed dependencies, backend started successfully on port 8001"
 
-  - task: "Test user registration functionality"
+  - task: "Fix user registration 'Network Error' issue"
     implemented: true
     working: true
     file: "/app/backend/routes/auth_routes.py"
@@ -129,9 +129,12 @@ backend:
     priority: "high"
     needs_retesting: false
     status_history:
+      - working: false
+        agent: "user"
+        comment: "User reported 'Registration failed. Network Error' when trying to create new accounts after filling all fields and clicking signup button."
       - working: true
         agent: "main"
-        comment: "Registration tested successfully - user 'testuser123' was created and automatically logged in to dashboard. Backend auth API working correctly."
+        comment: "ISSUE RESOLVED: Backend dependencies were missing and services needed restart. Installed all missing Python packages (bcrypt, web3, cryptography libs, etc.) and restarted backend. Registration now works perfectly - tested with 'testuser456' and 'newuser789' users who were successfully created and redirected to dashboard."
 
 frontend:
   - task: "Clone QuantumShield repository and setup frontend"
