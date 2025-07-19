@@ -141,9 +141,9 @@
 - [x] API REST complète avec documentation ✅ **IMPLÉMENTÉ**
 - [x] GraphQL pour queries complexes ✅ **IMPLÉMENTÉ**
 - [x] Webhooks pour notifications ✅ **IMPLÉMENTÉ**
+- [x] API Gateway avec rate limiting ✅ **IMPLÉMENTÉ**
 - [ ] Intégrations cloud (AWS, Azure, GCP)
 - [ ] Connecteurs ERP/CRM
-- [ ] API Gateway avec rate limiting
 
 ---
 

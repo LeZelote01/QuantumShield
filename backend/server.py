@@ -56,6 +56,7 @@ from services.personalized_recommendations_service import PersonalizedRecommenda
 from services.personalizable_dashboard_service import PersonalizableDashboardService
 from services.cloud_integrations_service import CloudIntegrationsService
 from services.erp_crm_connectors_service import ERPCRMConnectorsService
+from services.api_gateway_service import APIGatewayService
 
 ntru_service = NTRUService()
 blockchain_service = BlockchainService(db)
@@ -76,6 +77,7 @@ marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
 personalized_recommendations_service = PersonalizedRecommendationsService(db)
 personalizable_dashboard_service = PersonalizableDashboardService(db)
+api_gateway_service = APIGatewayService(db)
 
 # Initialiser les nouveaux services
 services_dict = {
@@ -113,6 +115,7 @@ from routes.graphql_routes import router as graphql_router
 from routes.webhook_routes import router as webhook_router
 from routes.personalized_recommendations_routes import router as personalized_recommendations_router
 from routes.personalizable_dashboard_routes import router as personalizable_dashboard_router
+from routes.api_gateway_routes import router as api_gateway_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
@@ -124,6 +127,7 @@ import routes.graphql_routes
 import routes.webhook_routes
 import routes.personalized_recommendations_routes
 import routes.personalizable_dashboard_routes
+import routes.api_gateway_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
 routes.geolocation_routes.geolocation_service = geolocation_service
@@ -133,6 +137,7 @@ routes.graphql_routes.init_graphql_service(db, services_dict)
 routes.webhook_routes.init_webhook_service(db)
 routes.personalized_recommendations_routes.init_recommendations_service(personalized_recommendations_service)
 routes.personalizable_dashboard_routes.init_dashboard_service(personalizable_dashboard_service)
+routes.api_gateway_routes.init_api_gateway_service(api_gateway_service)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
 api_router.include_router(crypto_router, prefix="/crypto", tags=["cryptography"])
@@ -156,6 +161,7 @@ api_router.include_router(graphql_router, tags=["graphql"])
 api_router.include_router(webhook_router, tags=["webhooks"])
 api_router.include_router(personalized_recommendations_router, prefix="/recommendations", tags=["recommendations"])
 api_router.include_router(personalizable_dashboard_router, prefix="/custom-dashboards", tags=["custom-dashboards"])
+api_router.include_router(api_gateway_router, prefix="/api-gateway", tags=["api-gateway"])
 
 # Health check endpoint
 @api_router.get("/health")
@@ -180,12 +186,17 @@ async def health_check():
             "webhook": webhook_service.is_ready(),
             "recommendations": personalized_recommendations_service.is_ready(),
             "custom_dashboards": personalizable_dashboard_service.is_ready(),
+            "api_gateway": api_gateway_service.is_ready(),
             "database": True
         }
     }
 
 # Include the router in the main app
 app.include_router(api_router)
+
+# Configure API Gateway middleware
+from middleware.api_gateway_middleware import setup_api_gateway_middleware
+setup_api_gateway_middleware(app, api_gateway_service)
 
 # Add CORS middleware
 app.add_middleware(

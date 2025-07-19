@@ -12,7 +12,8 @@ import {
   XMarkIcon,
   KeyIcon,
   LockClosedIcon,
-  MapPinIcon
+  MapPinIcon,
+  ServerIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -31,6 +32,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
     { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },
     { name: 'Sécurité', href: '/security', icon: LockClosedIcon },
+    { name: 'API Gateway', href: '/api-gateway', icon: ServerIcon },
     { name: 'Profil', href: '/profile', icon: UserCircleIcon },
     { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
   ];
