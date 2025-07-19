@@ -3,7 +3,7 @@ import api from './api';
 class TokenService {
   async getBalance() {
     try {
-      const response = await api.get('/api/tokens/balance');
+      const response = await api.get('/tokens/balance');
       return response.data;
     } catch (error) {
       throw error;
@@ -12,7 +12,7 @@ class TokenService {
 
   async transferTokens(transferData) {
     try {
-      const response = await api.post('/api/tokens/transfer', transferData);
+      const response = await api.post('/tokens/transfer', transferData);
       return response.data;
     } catch (error) {
       throw error;
@@ -21,7 +21,7 @@ class TokenService {
 
   async getTransactions(limit = 100) {
     try {
-      const response = await api.get(`/api/tokens/transactions?limit=${limit}`);
+      const response = await api.get(`/tokens/transactions?limit=${limit}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -30,7 +30,7 @@ class TokenService {
 
   async getRewards(limit = 100) {
     try {
-      const response = await api.get(`/api/tokens/rewards?limit=${limit}`);
+      const response = await api.get(`/tokens/rewards?limit=${limit}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -39,7 +39,7 @@ class TokenService {
 
   async getTokenStats() {
     try {
-      const response = await api.get('/api/tokens/stats');
+      const response = await api.get('/tokens/stats');
       return response.data;
     } catch (error) {
       throw error;
@@ -48,7 +48,7 @@ class TokenService {
 
   async getUserScore() {
     try {
-      const response = await api.get('/api/tokens/score');
+      const response = await api.get('/tokens/score');
       return response.data;
     } catch (error) {
       throw error;
@@ -57,7 +57,7 @@ class TokenService {
 
   async getLeaderboard(limit = 50) {
     try {
-      const response = await api.get(`/api/tokens/leaderboard?limit=${limit}`);
+      const response = await api.get(`/tokens/leaderboard?limit=${limit}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -66,7 +66,7 @@ class TokenService {
 
   async getRewardRates() {
     try {
-      const response = await api.get('/api/tokens/reward-rates');
+      const response = await api.get('/tokens/reward-rates');
       return response.data;
     } catch (error) {
       throw error;
@@ -75,7 +75,7 @@ class TokenService {
 
   async claimReward(rewardData) {
     try {
-      const response = await api.post('/api/tokens/claim-reward', rewardData);
+      const response = await api.post('/tokens/claim-reward', rewardData);
       return response.data;
     } catch (error) {
       throw error;
@@ -84,7 +84,7 @@ class TokenService {
 
   async getPortfolio() {
     try {
-      const response = await api.get('/api/tokens/portfolio');
+      const response = await api.get('/tokens/portfolio');
       return response.data;
     } catch (error) {
       throw error;
@@ -93,7 +93,7 @@ class TokenService {
 
   async getMarketInfo() {
     try {
-      const response = await api.get('/api/tokens/market-info');
+      const response = await api.get('/tokens/market-info');
       return response.data;
     } catch (error) {
       throw error;

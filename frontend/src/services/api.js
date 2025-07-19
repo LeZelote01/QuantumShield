@@ -3,7 +3,7 @@ import axios from 'axios';
 // Create axios instance with base configuration
 const api = axios.create({
   baseURL: (process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001') + '/api',
-  timeout: 5000,  // Timeout réduit à 5 secondes
+  timeout: 15000,  // Timeout augmenté à 15 secondes
   headers: {
     'Content-Type': 'application/json',
   },
@@ -29,8 +29,14 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Log l'erreur pour debugging
-    console.error('API Error:', error.message);
+    // Log l'erreur pour debugging avec plus de détails
+    console.error('API Error Details:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+      method: error.config?.method
+    });
     
     if (error.response?.status === 401) {
       // Token expired or invalid

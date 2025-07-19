@@ -140,18 +140,37 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'LOGIN_START' });
     
     try {
+      // Step 1: Register the user
       const response = await api.post('/auth/register', userData);
       const user = response.data;
       
-      // After successful registration, automatically login
-      const loginResult = await login({
-        username: userData.username,
-        password: userData.password,
-      });
-      
-      return loginResult;
+      // Step 2: After successful registration, automatically login
+      try {
+        const loginResult = await login({
+          username: userData.username,
+          password: userData.password,
+        });
+        
+        return loginResult;
+      } catch (loginError) {
+        // Registration succeeded but auto-login failed
+        const errorMessage = 'Registration successful, but auto-login failed. Please try logging in manually.';
+        dispatch({
+          type: 'LOGIN_FAILURE',
+          payload: errorMessage,
+        });
+        return { success: false, error: errorMessage };
+      }
     } catch (error) {
-      const errorMessage = error.response?.data?.detail || 'Registration failed';
+      // Registration itself failed
+      let errorMessage = 'Registration failed';
+      
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.message) {
+        errorMessage = `Registration failed: ${error.message}`;
+      }
+      
       dispatch({
         type: 'LOGIN_FAILURE',
         payload: errorMessage,
