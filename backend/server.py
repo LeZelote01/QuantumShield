@@ -173,6 +173,9 @@ api_router.include_router(graphql_router, tags=["graphql"])
 api_router.include_router(webhook_router, tags=["webhooks"])
 api_router.include_router(personalized_recommendations_router, prefix="/recommendations", tags=["recommendations"])
 api_router.include_router(personalizable_dashboard_router, prefix="/custom-dashboards", tags=["custom-dashboards"])
+api_router.include_router(cloud_integrations_router, prefix="/cloud-integrations", tags=["cloud-integrations"])
+api_router.include_router(erp_crm_router, prefix="/erp-crm", tags=["erp-crm"])
+api_router.include_router(compliance_router, prefix="/compliance", tags=["compliance"])
 api_router.include_router(api_gateway_router, prefix="/api-gateway", tags=["api-gateway"])
 
 # Health check endpoint
