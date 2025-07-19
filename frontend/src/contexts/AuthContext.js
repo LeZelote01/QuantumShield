@@ -71,6 +71,9 @@ export const AuthProvider = ({ children }) => {
   // Check for existing token on app load
   useEffect(() => {
     const checkAuth = async () => {
+      // Ne pas bloquer l'app - démarrer directement en mode non-loading
+      dispatch({ type: 'SET_LOADING', payload: false });
+      
       const token = localStorage.getItem('token');
       
       if (token) {
@@ -78,15 +81,8 @@ export const AuthProvider = ({ children }) => {
           // Set the token in API headers
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
-          // Verify token with backend avec un timeout court
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 secondes timeout
-          
-          const response = await api.get('/auth/verify-token', {
-            signal: controller.signal
-          });
-          
-          clearTimeout(timeoutId);
+          // Verify token with backend en arrière-plan (ne bloque pas l'UI)
+          const response = await api.get('/auth/verify-token');
           
           dispatch({
             type: 'LOGIN_SUCCESS',
@@ -96,27 +92,17 @@ export const AuthProvider = ({ children }) => {
             },
           });
         } catch (error) {
-          // Token is invalid or network error, remove it and continue
+          // Token is invalid or network error, remove it silently
           console.log('Token verification failed:', error.message);
           localStorage.removeItem('token');
           delete api.defaults.headers.common['Authorization'];
-          dispatch({ type: 'SET_LOADING', payload: false });
+          // L'utilisateur reste sur la page courante
         }
-      } else {
-        dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
 
-    // Démarrer la vérification
+    // Démarrer la vérification sans bloquer l'UI
     checkAuth();
-    
-    // Timeout de sécurité absolu pour éviter le blocage
-    const timeoutId = setTimeout(() => {
-      console.log('Force stopping auth loading after 5 seconds');
-      dispatch({ type: 'SET_LOADING', payload: false });
-    }, 5000);
-
-    return () => clearTimeout(timeoutId);
   }, []);
 
   // Login function
