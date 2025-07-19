@@ -695,7 +695,9 @@ sudo cp prometheus-2.40.0.linux-amd64/{prometheus,promtool} /usr/local/bin/
 sudo chown prometheus:prometheus /usr/local/bin/{prometheus,promtool}
 
 # Configuration Prometheus
-# /etc/prometheus/prometheus.yml
+# CRÉER LE FICHIER : /etc/prometheus/prometheus.yml  
+# sudo nano /etc/prometheus/prometheus.yml
+
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
