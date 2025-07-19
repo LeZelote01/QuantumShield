@@ -11,6 +11,7 @@ import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Toast from './components/UI/Toast';
 
 // Pages
+import Home from './pages/Home/Home';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -59,12 +60,13 @@ function App() {
               <Toast />
               <Routes>
                 {/* Public Routes */}
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 
                 {/* Protected Routes */}
                 <Route
-                  path="/"
+                  path="/dashboard"
                   element={
                     <ProtectedRoute>
                       <Layout />
@@ -72,7 +74,6 @@ function App() {
                   }
                 >
                   <Route index element={<Dashboard />} />
-                  <Route path="dashboard" element={<Dashboard />} />
                   <Route path="devices" element={<Devices />} />
                   <Route path="devices/:deviceId" element={<DeviceDetails />} />
                   <Route path="cryptography" element={<Cryptography />} />
@@ -92,7 +93,7 @@ function App() {
                   <Route path="settings" element={<Settings />} />
                 </Route>
                 
-                {/* Redirect to dashboard by default */}
+                {/* Catch all - redirect to home */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </div>
