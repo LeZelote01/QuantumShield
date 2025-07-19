@@ -836,3 +836,12 @@ async def stake_tokens_alias(
 ):
     """Stake des tokens auprès d'un validateur (alias)"""
     return await stake_tokens(stake_data=stake_data, current_user=current_user)
+
+# Endpoint direct pour templates (alias)
+@router.get("/templates", response_model=List[SmartContractTemplate])
+async def get_contract_templates_alias(
+    category: Optional[str] = None,
+    current_user: User = Depends(get_current_user)
+):
+    """Récupère les templates de smart contracts (alias direct)"""
+    return await get_contract_templates(category=category, current_user=current_user)
