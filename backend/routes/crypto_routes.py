@@ -19,6 +19,7 @@ router = APIRouter()
 # Modèles de requête
 class KeyGenRequest(BaseModel):
     key_size: int = 2048
+    body: Optional[Dict[str, Any]] = None  # Alternative pour compatibilité tests
 
 class SignRequest(BaseModel):
     message: str
@@ -28,6 +29,13 @@ class VerifyRequest(BaseModel):
     message: str
     signature: str
     public_key: str
+
+# Alternative models pour compatibilité
+class KeyGenRequestAlt(BaseModel):
+    body: Dict[str, Any]
+
+class EncryptionRequestAlt(BaseModel):
+    body: Dict[str, Any]
 
 # Routes
 @router.post("/generate-keys", response_model=NTRUKeyPair)
