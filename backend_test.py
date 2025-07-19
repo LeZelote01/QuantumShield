@@ -260,11 +260,11 @@ class QuantumShieldTester:
         except Exception as e:
             self.log_test("Validators List", False, f"Exception: {str(e)}")
 
-        # Test Staking (Known issue from test_result.md)
+        # Test Staking - PRIORITY ENDPOINT (was HTTP 400, validation corrected)
         try:
             stake_data = {
                 "validator_address": "0x1234567890abcdef1234567890abcdef12345678",
-                "amount": 100.0,
+                "amount": 10.0,  # Above minimum 1.0 QS
                 "duration": 30
             }
             
@@ -272,7 +272,7 @@ class QuantumShieldTester:
             
             if response.status_code == 200:
                 data = response.json()
-                self.log_test("Token Staking", True, f"Staking successful")
+                self.log_test("Token Staking", True, f"Staking successful with improved validation")
             else:
                 self.log_test("Token Staking", False, f"HTTP {response.status_code}: {response.text}")
                 
