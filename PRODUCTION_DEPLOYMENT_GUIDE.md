@@ -757,7 +757,9 @@ for handler in logging.root.handlers:
 
 ### 🚨 **Alertes et Notifications**
 ```yaml
-# /etc/prometheus/alert_rules.yml
+# CRÉER LE FICHIER : /etc/prometheus/alert_rules.yml
+# sudo nano /etc/prometheus/alert_rules.yml
+
 groups:
   - name: quantumshield_alerts
     rules:
