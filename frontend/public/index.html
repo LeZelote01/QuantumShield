@@ -106,8 +106,8 @@
       
       // Hide loading screen when React app is ready
       window.addEventListener('load', function() {
-        // Wait a bit more for React to fully load - increased timeout for development
-        setTimeout(hideLoadingScreen, 5000);
+        // Let React handle the loading screen hiding via index.js
+        // setTimeout removed - React will call hideLoadingScreen()
       });
       
       // Also hide loading screen if React sets a flag
