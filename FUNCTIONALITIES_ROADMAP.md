@@ -134,8 +134,8 @@
 - [x] GraphQL pour queries complexes ✅ **IMPLÉMENTÉ**
 - [x] Webhooks pour notifications ✅ **IMPLÉMENTÉ**
 - [x] API Gateway avec rate limiting ✅ **IMPLÉMENTÉ**
-- [ ] Intégrations cloud (AWS, Azure, GCP)
-- [ ] Connecteurs ERP/CRM
+- [x] Intégrations cloud (AWS, Azure, GCP) ✅ **IMPLÉMENTÉ**
+- [x] Connecteurs ERP/CRM ✅ **IMPLÉMENTÉ**
 
 ---
 
