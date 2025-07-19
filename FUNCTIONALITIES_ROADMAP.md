@@ -111,10 +111,6 @@
 - [x] Assurance décentralisée ✅ **IMPLÉMENTÉ**
 - [x] Tokenisation d'actifs physiques ✅ **IMPLÉMENTÉ**
 - [x] Mécanismes de gouvernance décentralisée ✅ **IMPLÉMENTÉ**
-- [x] Tokenisation d'actifs physiques ✅ **IMPLÉMENTÉ**
-- [x] Mécanismes de gouvernance décentralisée ✅ **IMPLÉMENTÉ**
-- [ ] Tokenisation d'actifs physiques
-- [ ] Mécanismes de gouvernance
 
 #### 🛡️ **Sécurité Renforcée**
 - [x] Authentification multi-facteur (2FA/MFA) ✅ **IMPLÉMENTÉ**
