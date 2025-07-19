@@ -655,7 +655,9 @@ sudo apt install kibana
 sudo apt install logstash
 
 # Configuration Logstash pour QuantumShield
-# /etc/logstash/conf.d/quantumshield.conf
+# CRÉER LE FICHIER : /etc/logstash/conf.d/quantumshield.conf
+# sudo nano /etc/logstash/conf.d/quantumshield.conf
+
 input {
   file {
     path => "/opt/quantumshield/logs/*.log"
