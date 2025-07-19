@@ -15,4 +15,4 @@ setTimeout(() => {
   if (window.hideLoadingScreen) {
     window.hideLoadingScreen();
   }
-}, 500);  // Plus rapide pour éviter le blocage
+}, 1000);  // 1 seconde pour laisser le temps à React de s'initialiser
