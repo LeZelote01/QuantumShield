@@ -1,17 +1,17 @@
 {
   "summary": {
-    "total_tests": 9,
-    "passed_tests": 3,
-    "failed_tests": 6,
-    "success_rate": 33.33333333333333,
-    "timestamp": "2025-07-19T09:06:16.586369"
+    "total_tests": 18,
+    "passed_tests": 7,
+    "failed_tests": 11,
+    "success_rate": 38.88888888888889,
+    "timestamp": "2025-07-19T09:06:42.793169"
   },
   "detailed_results": [
     {
       "test": "Global Health Check",
       "success": true,
       "details": "Services: 21/21 healthy. Services: ['ntru', 'blockchain', 'advanced_blockchain', 'advanced_crypto', 'security', 'ai_analytics', 'advanced_economy', 'iot_protocol', 'ota_update', 'geolocation', 'x509', 'marketplace', 'hsm', 'webhook', 'recommendations', 'custom_dashboards', 'cloud_integrations', 'erp_crm', 'compliance', 'api_gateway', 'database']",
-      "timestamp": "2025-07-19T09:06:16.276112",
+      "timestamp": "2025-07-19T09:06:41.812652",
       "response_data": {
         "total": 21,
         "healthy": 21,
@@ -44,56 +44,119 @@
       "test": "User Registration",
       "success": true,
       "details": "User already exists, proceeding with login",
-      "timestamp": "2025-07-19T09:06:16.326493",
+      "timestamp": "2025-07-19T09:06:41.865969",
       "response_data": null
     },
     {
       "test": "User Login",
       "success": true,
       "details": "Login successful, token received",
-      "timestamp": "2025-07-19T09:06:16.576197",
+      "timestamp": "2025-07-19T09:06:42.122565",
       "response_data": null
     },
     {
       "test": "MFA Setup",
       "success": false,
       "details": "HTTP 404: {\"detail\":\"Not Found\"}",
-      "timestamp": "2025-07-19T09:06:16.586097",
+      "timestamp": "2025-07-19T09:06:42.137104",
       "response_data": null
     },
     {
-      "test": "Advanced Cryptography",
+      "test": "Advanced Key Generation",
       "success": false,
-      "details": "No auth token available",
-      "timestamp": "2025-07-19T09:06:16.586145",
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:06:42.189053",
       "response_data": null
     },
     {
-      "test": "Advanced Blockchain",
+      "test": "Batch Encryption",
       "success": false,
-      "details": "No auth token available",
-      "timestamp": "2025-07-19T09:06:16.586152",
+      "details": "HTTP 422: {\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"keypair_id\"],\"msg\":\"Field required\",\"input\":{\"messages\":[\"Quantum message 1\",\"Quantum message 2\",\"Quantum message 3\"],\"algorithm\":\"kyber-768\"},\"url\":\"https://errors.pydantic.dev/2.11/v/missing\"}]}",
+      "timestamp": "2025-07-19T09:06:42.203674",
       "response_data": null
     },
     {
-      "test": "Security Features",
+      "test": "ZK-Proofs Generation",
       "success": false,
-      "details": "No auth token available",
-      "timestamp": "2025-07-19T09:06:16.586158",
+      "details": "HTTP 422: {\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"secret_value\"],\"msg\":\"Field required\",\"input\":{\"proof_type\":\"membership\",\"secret\":\"quantum_secret_2025\",\"public_parameters\":{\"modulus\":2048,\"generator\":2},\"statement\":\"I know the secret value\"},\"url\":\"https://errors.pydantic.dev/2.11/v/missing\"}]}",
+      "timestamp": "2025-07-19T09:06:42.256816",
       "response_data": null
     },
     {
-      "test": "AI Analytics",
-      "success": false,
-      "details": "No auth token available",
-      "timestamp": "2025-07-19T09:06:16.586165",
+      "test": "Blockchain Overview",
+      "success": true,
+      "details": "Overview retrieved: 0 validators, 0 bridges",
+      "timestamp": "2025-07-19T09:06:42.289670",
       "response_data": null
     },
     {
-      "test": "Smart Contracts & Governance",
+      "test": "Network Metrics",
+      "success": true,
+      "details": "Metrics retrieved: Hash rate None, Block time 300.0s",
+      "timestamp": "2025-07-19T09:06:42.346851",
+      "response_data": null
+    },
+    {
+      "test": "Validators List",
       "success": false,
-      "details": "No auth token available",
-      "timestamp": "2025-07-19T09:06:16.586172",
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:06:42.398832",
+      "response_data": null
+    },
+    {
+      "test": "Token Staking",
+      "success": false,
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:06:42.533543",
+      "response_data": null
+    },
+    {
+      "test": "Security Dashboard",
+      "success": true,
+      "details": "Dashboard loaded: 0 threats, score 0",
+      "timestamp": "2025-07-19T09:06:42.588938",
+      "response_data": null
+    },
+    {
+      "test": "Security Alerts",
+      "success": false,
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:06:42.599976",
+      "response_data": null
+    },
+    {
+      "test": "Anomaly Detection",
+      "success": false,
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:06:42.650670",
+      "response_data": null
+    },
+    {
+      "test": "AI Predictions",
+      "success": false,
+      "details": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-07-19T09:06:42.661244",
+      "response_data": null
+    },
+    {
+      "test": "AI Dashboard",
+      "success": true,
+      "details": "Dashboard loaded: 0 active anomalies, status: None",
+      "timestamp": "2025-07-19T09:06:42.675348",
+      "response_data": null
+    },
+    {
+      "test": "Smart Contract Templates",
+      "success": false,
+      "details": "HTTP 404: {\"detail\":\"Contrat templates non trouv\u00e9\"}",
+      "timestamp": "2025-07-19T09:06:42.727688",
+      "response_data": null
+    },
+    {
+      "test": "Governance Proposals",
+      "success": false,
+      "details": "HTTP 400: {\"detail\":\"Erreur lors de la cr\u00e9ation de la proposition: Erreur de validation: 2 validation errors for Transaction\\ntransaction_type\\n  Input should be 'reward', 'detection', 'firmware_update' or 'device_registration' [type=enum, input_value='governance_proposal', input_type=str]\\n    For further information visit https://errors.pydantic.dev/2.11/v/enum\\nhash\\n  Field required [type=missing, input_value={'from_address': '0x818e2...': 'proposal_signature'}, input_type=dict]\\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\"}",
+      "timestamp": "2025-07-19T09:06:42.792896",
       "response_data": null
     }
   ]
