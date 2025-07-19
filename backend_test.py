@@ -12,8 +12,8 @@ from typing import Dict, Any, Optional
 
 class QuantumShieldTester:
     def __init__(self):
-        # Use the production URL from frontend/.env
-        self.base_url = "https://fa71b110-641f-4998-92bb-6968bae54ec8.preview.emergentagent.com/api"
+        # Use the internal URL for testing since external URL is not accessible
+        self.base_url = "http://localhost:8001/api"
         self.session = requests.Session()
         self.auth_token = None
         self.user_id = None
