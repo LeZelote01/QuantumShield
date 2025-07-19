@@ -29,8 +29,14 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Log l'erreur pour debugging
-    console.error('API Error:', error.message);
+    // Log l'erreur pour debugging avec plus de détails
+    console.error('API Error Details:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+      method: error.config?.method
+    });
     
     if (error.response?.status === 401) {
       // Token expired or invalid
