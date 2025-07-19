@@ -204,6 +204,7 @@
     {
       "test": "Governance Proposals",
       "success": false,
+
       "details": "HTTP 400: {\"detail\":\"Erreur lors de la cr\u00e9ation de la proposition: Erreur de validation: 2 validation errors for Transaction\\ntransaction_type\\n  Input should be 'reward', 'detection', 'firmware_update' or 'device_registration' [type=enum, input_value='governance_proposal', input_type=str]\\n    For further information visit https://errors.pydantic.dev/2.11/v/enum\\nhash\\n  Field required [type=missing, input_value={'from_address': '0x266bc...': 'proposal_signature'}, input_type=dict]\\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\"}",
       "timestamp": "2025-07-19T10:17:43.793941",
       "response_data": null
