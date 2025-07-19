@@ -140,7 +140,7 @@ async def get_mfa_status(current_user = Depends(get_current_user)):
     
     try:
         status_data = await security_service.get_mfa_status(
-            user_id=current_user["id"]
+            user_id=current_user.id
         )
         
         return {
