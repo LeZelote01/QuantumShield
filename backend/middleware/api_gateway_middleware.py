@@ -138,7 +138,6 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         
         # NE PAS traiter les JWT tokens comme des clés API
         # Les JWT tokens dans Authorization: Bearer sont gérés par l'auth service
-        
         return None
     
     def _build_rate_limit_headers(self, rate_limit_info: dict) -> dict:
