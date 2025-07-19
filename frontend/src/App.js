@@ -33,8 +33,8 @@ import SecurityDashboard from './pages/Security/SecurityDashboard';
 import AdvancedSecurity from './pages/Security/AdvancedSecurity';
 
 // New Pages
-import Governance from './pages/Governance';
-import SecurityAdvanced from './pages/SecurityAdvanced';
+// import Governance from './pages/Governance';
+// import SecurityAdvanced from './pages/SecurityAdvanced';
 import APIGateway from './pages/APIGateway';
 
 import './App.css';
