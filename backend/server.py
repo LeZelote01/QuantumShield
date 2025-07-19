@@ -147,6 +147,8 @@ routes.graphql_routes.init_graphql_service(db, services_dict)
 routes.webhook_routes.init_webhook_service(db)
 routes.personalized_recommendations_routes.init_recommendations_service(personalized_recommendations_service)
 routes.personalizable_dashboard_routes.init_dashboard_service(personalizable_dashboard_service)
+routes.cloud_integrations_routes.init_cloud_integrations_service(cloud_integrations_service)
+routes.erp_crm_routes.init_erp_crm_service(erp_crm_service)
 routes.api_gateway_routes.init_api_gateway_service(api_gateway_service)
 
 api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
