@@ -3,7 +3,7 @@ import api from './api';
 class AuthService {
   async login(credentials) {
     try {
-      const response = await api.post('/api/auth/login', credentials);
+      const response = await api.post('/auth/login', credentials);
       return response.data;
     } catch (error) {
       throw error;
@@ -12,7 +12,7 @@ class AuthService {
 
   async register(userData) {
     try {
-      const response = await api.post('/api/auth/register', userData);
+      const response = await api.post('/auth/register', userData);
       return response.data;
     } catch (error) {
       throw error;
@@ -21,7 +21,7 @@ class AuthService {
 
   async logout() {
     try {
-      await api.post('/api/auth/logout');
+      await api.post('/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -29,7 +29,7 @@ class AuthService {
 
   async getProfile() {
     try {
-      const response = await api.get('/api/auth/profile');
+      const response = await api.get('/auth/profile');
       return response.data;
     } catch (error) {
       throw error;
@@ -38,7 +38,7 @@ class AuthService {
 
   async updateProfile(profileData) {
     try {
-      const response = await api.put('/api/auth/profile', profileData);
+      const response = await api.put('/auth/profile', profileData);
       return response.data;
     } catch (error) {
       throw error;
@@ -47,7 +47,7 @@ class AuthService {
 
   async changePassword(passwordData) {
     try {
-      const response = await api.post('/api/auth/change-password', passwordData);
+      const response = await api.post('/auth/change-password', passwordData);
       return response.data;
     } catch (error) {
       throw error;
@@ -56,7 +56,7 @@ class AuthService {
 
   async getUserStats() {
     try {
-      const response = await api.get('/api/auth/stats');
+      const response = await api.get('/auth/stats');
       return response.data;
     } catch (error) {
       throw error;
@@ -65,7 +65,7 @@ class AuthService {
 
   async verifyToken() {
     try {
-      const response = await api.get('/api/auth/verify-token');
+      const response = await api.get('/auth/verify-token');
       return response.data;
     } catch (error) {
       throw error;
