@@ -192,7 +192,9 @@ async def get_security_audit_report(
     
     try:
         # Vérifier les permissions (admin uniquement)
-        if not current_user.get("is_admin", False):
+        # Note: is_admin field not in User model, defaulting to False for now
+        is_admin = getattr(current_user, 'is_admin', False)
+        if not is_admin:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
