@@ -109,7 +109,11 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
 │   ├── security_service.py # Sécurité renforcée (2FA, MFA)
 │   ├── ai_analytics_service.py # Intelligence artificielle
 │   ├── iot_protocol_service.py # Protocoles IoT
-│   └── ota_update_service.py # Mises à jour OTA
+│   ├── ota_update_service.py # Mises à jour OTA
+│   ├── cloud_integrations_service.py # Intégrations cloud (AWS, Azure, GCP)
+│   ├── erp_crm_connectors_service.py # Connecteurs ERP/CRM
+│   ├── compliance_service.py # Conformité GDPR/CCPA
+│   └── hsm_service.py     # Modules de sécurité matériels
 └── routes/
     ├── auth_routes.py     # Authentification
     ├── crypto_routes.py   # Cryptographie de base
@@ -120,6 +124,10 @@ Protéger les dispositifs IoT contre les menaces quantiques tout en créant une 
     ├── mining_routes.py   # Mining
     ├── iot_protocol_routes.py # Protocoles IoT
     ├── ota_routes.py      # Mises à jour OTA
+    ├── cloud_integrations_routes.py # Intégrations cloud
+    ├── erp_crm_routes.py  # Connecteurs ERP/CRM
+    ├── compliance_routes.py # Conformité réglementaire
+    ├── hsm_routes.py      # HSM
     └── dashboard_routes.py # Dashboard
 ```
 
