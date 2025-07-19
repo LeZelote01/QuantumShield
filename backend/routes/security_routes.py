@@ -290,7 +290,7 @@ async def get_security_recommendations(current_user = Depends(get_current_user))
     
     try:
         # Récupérer le statut MFA
-        mfa_status = await security_service.get_mfa_status(current_user["id"])
+        mfa_status = await security_service.get_mfa_status(current_user.id)
         
         # Générer des recommandations
         recommendations = []
