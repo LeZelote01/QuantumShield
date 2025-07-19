@@ -291,18 +291,18 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-white/5 backdrop-blur-sm">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Prêt à Sécuriser Votre Avenir ?
           </h2>
-          <p className="text-xl text-gray-200 mb-8">
+          <p className="text-xl text-gray-600 mb-8">
             Rejoignez l'écosystème QuantumShield et protégez vos appareils IoT avec la cryptographie post-quantique
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/register"
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 flex items-center justify-center space-x-2"
+              className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center justify-center space-x-2"
             >
               <UserGroupIcon className="h-5 w-5" />
               <span>Créer un compte gratuit</span>
@@ -310,27 +310,27 @@ const Home = () => {
             </Link>
             <Link
               to="/login"
-              className="bg-white text-indigo-600 hover:bg-indigo-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all"
+              className="bg-white text-gray-900 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all border border-gray-200"
             >
               Accéder à mon compte
             </Link>
           </div>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            <div className="bg-white/10 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <ClockIcon className="h-8 w-8 text-indigo-400 mb-3" />
-              <h3 className="text-white font-semibold mb-2">Inscription Rapide</h3>
-              <p className="text-gray-300 text-sm">Créez votre compte en moins de 2 minutes et commencez immédiatement</p>
+            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+              <ClockIcon className="h-8 w-8 text-gray-700 mb-3" />
+              <h3 className="text-gray-900 font-semibold mb-2">Inscription Rapide</h3>
+              <p className="text-gray-600 text-sm">Créez votre compte en moins de 2 minutes et commencez immédiatement</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <BanknotesIcon className="h-8 w-8 text-green-400 mb-3" />
-              <h3 className="text-white font-semibold mb-2">Wallet $QS Gratuit</h3>
-              <p className="text-gray-300 text-sm">Recevez automatiquement votre wallet de tokens $QS sécurisé</p>
+            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+              <BanknotesIcon className="h-8 w-8 text-gray-700 mb-3" />
+              <h3 className="text-gray-900 font-semibold mb-2">Wallet $QS Gratuit</h3>
+              <p className="text-gray-600 text-sm">Recevez automatiquement votre wallet de tokens $QS sécurisé</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-lg p-6 border border-white/20">
-              <ShieldCheckIcon className="h-8 w-8 text-purple-400 mb-3" />
-              <h3 className="text-white font-semibold mb-2">Sécurité Maximale</h3>
-              <p className="text-gray-300 text-sm">Authentification 2FA et cryptographie post-quantique incluses</p>
+            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+              <ShieldCheckIcon className="h-8 w-8 text-gray-700 mb-3" />
+              <h3 className="text-gray-900 font-semibold mb-2">Sécurité Maximale</h3>
+              <p className="text-gray-600 text-sm">Authentification 2FA et cryptographie post-quantique incluses</p>
             </div>
           </div>
         </div>
