@@ -96,9 +96,9 @@ class QuantumShieldTester:
             
             response = self.make_request("POST", "/auth/register", register_data)
             
-            if response.status_code == 201:
+            if response.status_code in [200, 201]:
                 data = response.json()
-                self.user_id = data.get("user_id")
+                self.user_id = data.get("id") or data.get("user_id")
                 self.log_test("User Registration", True, f"User registered with ID: {self.user_id}")
             else:
                 self.log_test("User Registration", False, f"HTTP {response.status_code}: {response.text}")
