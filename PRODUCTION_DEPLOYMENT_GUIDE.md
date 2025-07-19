@@ -1962,6 +1962,9 @@ echo "📊 Updated from $CURRENT_COMMIT to $LATEST_COMMIT"
 ### 🇪🇺 **GDPR Compliance**
 ```python
 # backend/services/gdpr_service.py
+# CRÉER LE FICHIER : /opt/quantumshield/backend/services/gdpr_service.py
+# sudo nano /opt/quantumshield/backend/services/gdpr_service.py
+
 from datetime import datetime, timedelta
 import asyncio
 from typing import Dict, List, Any
