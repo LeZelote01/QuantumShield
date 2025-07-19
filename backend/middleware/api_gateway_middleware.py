@@ -108,16 +108,25 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         if path.endswith("/health") and request.method == "GET":
             return True
         
+        # Bypass pour les utilisateurs authentifiés avec JWT
+        auth_header = request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer ") and len(auth_header) > 50:  # JWT tokens are longer
+            return True
+        
+        # Bypass pour les endpoints publics de crypto
+        public_crypto_endpoints = [
+            "/api/advanced-crypto/supported-algorithms",
+            "/api/advanced-crypto/performance-comparison",
+            "/api/advanced-crypto/algorithm-recommendations"
+        ]
+        if path in public_crypto_endpoints:
+            return True
+        
         return False
     
     def _extract_api_key(self, request: Request) -> str:
-        """Extrait la clé API de la requête"""
-        # Essayer l'header Authorization
-        auth_header = request.headers.get("Authorization", "")
-        if auth_header.startswith("Bearer "):
-            return auth_header[7:]  # Enlever "Bearer "
-        
-        # Essayer l'header X-API-Key
+        """Extrait la clé API de la requête (pas les JWT tokens)"""
+        # Essayer l'header X-API-Key (clés API dédiées)
         api_key = request.headers.get("X-API-Key")
         if api_key:
             return api_key
@@ -127,6 +136,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         if api_key:
             return api_key
         
+        # NE PAS traiter les JWT tokens comme des clés API
+        # Les JWT tokens dans Authorization: Bearer sont gérés par l'auth service
         return None
     
     def _build_rate_limit_headers(self, rate_limit_info: dict) -> dict:
