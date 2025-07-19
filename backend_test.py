@@ -370,7 +370,7 @@ class QuantumShieldTester:
             self.log_test("Smart Contracts & Governance", False, "No auth token available")
             return
 
-        # Test Smart Contract Templates
+        # Test Smart Contract Templates - PRIORITY ENDPOINT (was HTTP 404)
         try:
             response = self.make_request("GET", "/advanced-blockchain/smart-contracts/templates")
             
@@ -383,6 +383,20 @@ class QuantumShieldTester:
                 
         except Exception as e:
             self.log_test("Smart Contract Templates", False, f"Exception: {str(e)}")
+
+        # Test alternative endpoint for templates - NEW ALIAS ADDED
+        try:
+            response = self.make_request("GET", "/advanced-blockchain/templates")
+            
+            if response.status_code == 200:
+                data = response.json()
+                templates = data.get("templates", [])
+                self.log_test("Smart Contract Templates (Alias)", True, f"Retrieved {len(templates)} templates via alias")
+            else:
+                self.log_test("Smart Contract Templates (Alias)", False, f"HTTP {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            self.log_test("Smart Contract Templates (Alias)", False, f"Exception: {str(e)}")
 
         # Test Governance Proposals
         try:
