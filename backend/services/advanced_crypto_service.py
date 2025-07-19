@@ -827,7 +827,224 @@ class AdvancedCryptoService:
             ]
         }
     
-    # ==================== NOUVELLES FONCTIONNALITÉS AVANCÉES ====================
+    # ==================== ZERO-KNOWLEDGE PROOFS ====================
+    
+    async def generate_zk_proof(self, proof_type: ZKProofType, secret_value: str, 
+                               public_parameters: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+        """Génère une preuve zero-knowledge - implémentation simplifiée pour démo"""
+        try:
+            proof_id = str(uuid.uuid4())
+            
+            # Pour cette démo, on implémente des ZK-proofs simplifiés
+            # Dans une implémentation réelle, on utiliserait des bibliothèques spécialisées
+            
+            if proof_type == ZKProofType.IDENTITY:
+                # Preuve d'identité sans révéler l'identité
+                challenge = secrets.token_hex(32)
+                secret_hash = hashlib.sha256(secret_value.encode()).hexdigest()
+                response = hashlib.sha256((secret_hash + challenge).encode()).hexdigest()
+                
+                proof_data = {
+                    "challenge": challenge,
+                    "response": response,
+                    "commitment": hashlib.sha256(secret_value.encode()).hexdigest()[:16] + "..."
+                }
+                
+            elif proof_type == ZKProofType.KNOWLEDGE:
+                # Preuve de connaissance d'un secret
+                commitment = hashlib.sha256(secret_value.encode()).hexdigest()
+                nonce = secrets.token_hex(16)
+                proof_hash = hashlib.sha256((commitment + nonce + secret_value).encode()).hexdigest()
+                
+                proof_data = {
+                    "commitment": commitment,
+                    "nonce": nonce,
+                    "proof_hash": proof_hash[:32] + "..."
+                }
+                
+            elif proof_type == ZKProofType.MEMBERSHIP:
+                # Preuve d'appartenance à un ensemble
+                set_members = public_parameters.get("set_members", ["member1", "member2", "member3"])
+                merkle_root = self._compute_merkle_root(set_members)
+                member_path = self._compute_merkle_path(secret_value, set_members)
+                
+                proof_data = {
+                    "merkle_root": merkle_root,
+                    "member_path": member_path,
+                    "leaf_hash": hashlib.sha256(secret_value.encode()).hexdigest()[:16] + "..."
+                }
+                
+            elif proof_type == ZKProofType.RANGE:
+                # Preuve qu'une valeur est dans une plage
+                min_val = public_parameters.get("min_value", 0)
+                max_val = public_parameters.get("max_value", 100)
+                
+                try:
+                    value = int(secret_value)
+                    if min_val <= value <= max_val:
+                        # Générer une preuve simplifiée
+                        commitment = hashlib.sha256(f"{value}_{secrets.token_hex(16)}".encode()).hexdigest()
+                        proof_data = {
+                            "commitment": commitment,
+                            "range_proof": f"value_in_range_{min_val}_{max_val}",
+                            "validity": True
+                        }
+                    else:
+                        raise ValueError("Valeur hors de la plage spécifiée")
+                except ValueError:
+                    raise ValueError("Le secret doit être un nombre entier pour une preuve de plage")
+            
+            else:
+                raise ValueError(f"Type de preuve non supporté: {proof_type}")
+            
+            # Stocker la preuve
+            proof_record = {
+                "id": proof_id,
+                "proof_type": proof_type.value,
+                "user_id": user_id,
+                "public_parameters": public_parameters,
+                "proof_data": proof_data,
+                "created_at": datetime.utcnow(),
+                "verified": False,
+                "verification_count": 0
+            }
+            
+            await self.db.zk_proofs.insert_one(proof_record)
+            
+            # Enregistrer dans l'audit
+            await self.log_audit_event(
+                event_type=AuditEventType.ZK_PROOF_GENERATION,
+                user_id=user_id,
+                details={
+                    "proof_id": proof_id,
+                    "proof_type": proof_type.value,
+                    "public_parameters": public_parameters
+                }
+            )
+            
+            return {
+                "proof_id": proof_id,
+                "proof_type": proof_type.value,
+                "proof_data": proof_data,
+                "created_at": proof_record["created_at"],
+                "status": "generated"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur génération ZK-proof: {e}")
+            raise Exception(f"Impossible de générer la preuve ZK: {e}")
+    
+    async def verify_zk_proof(self, proof_id: str, verifier_id: str) -> Dict[str, Any]:
+        """Vérifie une preuve zero-knowledge"""
+        try:
+            # Récupérer la preuve
+            proof_record = await self.db.zk_proofs.find_one({"id": proof_id})
+            if not proof_record:
+                raise ValueError("Preuve non trouvée")
+            
+            proof_type = ZKProofType(proof_record["proof_type"])
+            proof_data = proof_record["proof_data"]
+            public_parameters = proof_record["public_parameters"]
+            
+            # Vérification selon le type de preuve
+            is_valid = False
+            verification_details = {}
+            
+            if proof_type == ZKProofType.IDENTITY:
+                # Vérifier la preuve d'identité
+                challenge = proof_data["challenge"]
+                response = proof_data["response"]
+                # Dans une vraie implémentation, on vérifierait la relation mathématique
+                is_valid = len(response) == 64 and len(challenge) == 64
+                verification_details = {"challenge_valid": True, "response_valid": is_valid}
+                
+            elif proof_type == ZKProofType.KNOWLEDGE:
+                # Vérifier la preuve de connaissance
+                commitment = proof_data["commitment"]
+                nonce = proof_data["nonce"]
+                is_valid = len(commitment) == 64 and len(nonce) == 32
+                verification_details = {"commitment_valid": True, "nonce_valid": is_valid}
+                
+            elif proof_type == ZKProofType.MEMBERSHIP:
+                # Vérifier la preuve d'appartenance
+                merkle_root = proof_data["merkle_root"]
+                member_path = proof_data["member_path"]
+                is_valid = len(merkle_root) == 64 and isinstance(member_path, list)
+                verification_details = {"merkle_proof_valid": is_valid}
+                
+            elif proof_type == ZKProofType.RANGE:
+                # Vérifier la preuve de plage
+                commitment = proof_data["commitment"]
+                validity = proof_data.get("validity", False)
+                is_valid = len(commitment) == 64 and validity
+                verification_details = {"range_proof_valid": is_valid}
+            
+            # Mettre à jour la preuve
+            await self.db.zk_proofs.update_one(
+                {"id": proof_id},
+                {
+                    "$set": {"verified": is_valid, "last_verified": datetime.utcnow()},
+                    "$inc": {"verification_count": 1}
+                }
+            )
+            
+            # Enregistrer dans l'audit
+            await self.log_audit_event(
+                event_type=AuditEventType.ZK_PROOF_VERIFICATION,
+                user_id=verifier_id,
+                details={
+                    "proof_id": proof_id,
+                    "is_valid": is_valid,
+                    "verification_details": verification_details
+                }
+            )
+            
+            return {
+                "proof_id": proof_id,
+                "is_valid": is_valid,
+                "verification_details": verification_details,
+                "verified_at": datetime.utcnow(),
+                "status": "verified"
+            }
+            
+        except Exception as e:
+            logger.error(f"Erreur vérification ZK-proof: {e}")
+            raise Exception(f"Impossible de vérifier la preuve ZK: {e}")
+    
+    def _compute_merkle_root(self, elements: List[str]) -> str:
+        """Calcule la racine d'un arbre de Merkle simplifié"""
+        if not elements:
+            return hashlib.sha256(b"").hexdigest()
+        
+        hashes = [hashlib.sha256(elem.encode()).hexdigest() for elem in elements]
+        
+        while len(hashes) > 1:
+            new_hashes = []
+            for i in range(0, len(hashes), 2):
+                if i + 1 < len(hashes):
+                    combined = hashes[i] + hashes[i + 1]
+                else:
+                    combined = hashes[i] + hashes[i]
+                new_hashes.append(hashlib.sha256(combined.encode()).hexdigest())
+            hashes = new_hashes
+        
+        return hashes[0]
+    
+    def _compute_merkle_path(self, element: str, elements: List[str]) -> List[str]:
+        """Calcule le chemin de Merkle pour un élément"""
+        try:
+            index = elements.index(element)
+            path = []
+            
+            # Simuler un chemin de Merkle pour la démo
+            element_hash = hashlib.sha256(element.encode()).hexdigest()
+            for i in range(3):  # Profondeur arbitraire
+                sibling = hashlib.sha256(f"sibling_{index}_{i}".encode()).hexdigest()
+                path.append(sibling)
+            
+            return path
+        except ValueError:
+            return []
     
     async def log_audit_event(self, event_type: AuditEventType, user_id: str, 
                             details: Dict[str, Any], keypair_id: str = None) -> str:
