@@ -147,6 +147,7 @@ class QuantumShieldTester:
 
     def test_advanced_cryptography(self):
         """Test 3: Advanced Cryptography - Key generation, encryption, ZK-proofs"""
+        print(f"DEBUG: Auth token value: {self.auth_token}")
         if not self.auth_token:
             self.log_test("Advanced Cryptography", False, "No auth token available")
             return
