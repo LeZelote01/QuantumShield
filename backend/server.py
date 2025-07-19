@@ -134,6 +134,9 @@ import routes.graphql_routes
 import routes.webhook_routes
 import routes.personalized_recommendations_routes
 import routes.personalizable_dashboard_routes
+import routes.cloud_integrations_routes
+import routes.erp_crm_routes
+import routes.compliance_routes
 import routes.api_gateway_routes
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
