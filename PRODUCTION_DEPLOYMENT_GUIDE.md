@@ -1169,6 +1169,9 @@ echo "✅ Server hardening completed!"
 ### 🔑 **Authentification Multi-Facteur (2FA)**
 ```python
 # Configuration 2FA dans backend
+# CRÉER LE FICHIER : /opt/quantumshield/backend/services/mfa_service.py
+# sudo nano /opt/quantumshield/backend/services/mfa_service.py
+
 from pyotp import TOTP, random_base32
 import qrcode
 from io import BytesIO
