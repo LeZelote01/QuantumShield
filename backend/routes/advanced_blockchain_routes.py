@@ -747,7 +747,7 @@ async def get_blockchain_metrics(
             detail=f"Erreur lors de la récupération des métriques: {str(e)}"
         )
 
-@router.get("/health", response_model=NetworkHealth)
+@router.get("/network-health", response_model=NetworkHealth)
 async def get_network_health(
     current_user: User = Depends(get_current_user)
 ):
