@@ -98,7 +98,9 @@ docs.quantumshield.com    # Documentation API
 
 ### 🔧 **Variables d'Environnement Backend**
 ```bash
-# /opt/quantumshield/backend/.env.production
+# CRÉER LE FICHIER : /opt/quantumshield/backend/.env.production
+# sudo nano /opt/quantumshield/backend/.env.production
+
 NODE_ENV=production
 PORT=8001
 
