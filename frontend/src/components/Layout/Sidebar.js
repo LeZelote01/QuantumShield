@@ -32,6 +32,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
     { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },
     { name: 'Sécurité', href: '/security', icon: LockClosedIcon },
+    { name: 'API Gateway', href: '/api-gateway', icon: ServerIcon },
     { name: 'Profil', href: '/profile', icon: UserCircleIcon },
     { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
   ];
