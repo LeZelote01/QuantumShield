@@ -87,6 +87,7 @@ function App() {
                   <Route path="security/advanced" element={<AdvancedSecurity />} />
                   <Route path="security-advanced" element={<SecurityAdvanced />} />
                   <Route path="governance" element={<Governance />} />
+                  <Route path="api-gateway" element={<APIGateway />} />
                   <Route path="profile" element={<Profile />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
