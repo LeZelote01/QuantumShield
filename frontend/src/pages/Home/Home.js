@@ -261,29 +261,29 @@ const Home = () => {
       </section>
 
       {/* Security Images */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden border border-white/20">
+            <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
               <img
                 src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHx8MTc1MjkyNTI5MHww&ixlib=rb-4.1.0&q=85"
                 alt="Cybersecurity Technology"
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-white mb-2">Sécurité Cyber Avancée</h3>
-                <p className="text-gray-300">Protection multi-couches contre toutes les menaces</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Sécurité Cyber Avancée</h3>
+                <p className="text-gray-600">Protection multi-couches contre toutes les menaces</p>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden border border-white/20">
+            <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
               <img
                 src="https://images.unsplash.com/photo-1553341640-9397992456f3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxxdWFudHVtJTIwY29tcHV0aW5nfGVufDB8fHx8MTc1MjkyNTI4M3ww&ixlib=rb-4.1.0&q=85"
                 alt="IoT Technology"
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-white mb-2">IoT Nouvelle Génération</h3>
-                <p className="text-gray-300">Connectivité intelligente et sécurisée pour tous vos appareils</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">IoT Nouvelle Génération</h3>
+                <p className="text-gray-600">Connectivité intelligente et sécurisée pour tous vos appareils</p>
               </div>
             </div>
           </div>
