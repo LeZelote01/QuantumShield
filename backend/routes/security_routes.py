@@ -118,7 +118,7 @@ async def disable_mfa(
     
     try:
         disable_data = await security_service.disable_mfa(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             method=request.method
         )
         
