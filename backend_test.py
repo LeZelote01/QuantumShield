@@ -300,14 +300,14 @@ class QuantumShieldTester:
         except Exception as e:
             self.log_test("Security Dashboard", False, f"Exception: {str(e)}")
 
-        # Test Security Alerts
+        # Test Security Alerts - PRIORITY ENDPOINT (was HTTP 500, should now be HTTP 200)
         try:
             response = self.make_request("GET", "/security/alerts")
             
             if response.status_code == 200:
                 data = response.json()
                 alerts = data.get("alerts", [])
-                self.log_test("Security Alerts", True, f"Retrieved {len(alerts)} security alerts")
+                self.log_test("Security Alerts", True, f"Retrieved {len(alerts)} security alerts (method added to SecurityService)")
             else:
                 self.log_test("Security Alerts", False, f"HTTP {response.status_code}: {response.text}")
                 
