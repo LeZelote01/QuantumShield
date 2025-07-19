@@ -2060,6 +2060,9 @@ class GDPRService:
 ### 🛡️ **Audit Trail Implementation**
 ```python
 # backend/middleware/audit_middleware.py
+# CRÉER LE FICHIER : /opt/quantumshield/backend/middleware/audit_middleware.py
+# sudo nano /opt/quantumshield/backend/middleware/audit_middleware.py
+
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 import json
