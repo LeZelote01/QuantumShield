@@ -67,7 +67,7 @@ async def verify_totp_setup(
     
     try:
         verification_data = await security_service.verify_totp_setup(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             totp_code=request.totp_code
         )
         
