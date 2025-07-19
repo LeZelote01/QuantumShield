@@ -22,6 +22,31 @@ from models.quantum_models import User
 
 router = APIRouter()
 
+# === HEALTH CHECK ===
+
+@router.get("/health")
+async def advanced_blockchain_health():
+    """Health check pour le service blockchain avancé"""
+    from server import advanced_blockchain_service
+    
+    try:
+        is_ready = await advanced_blockchain_service.is_ready()
+        
+        return {
+            "status": "healthy" if is_ready else "degraded",
+            "service": "advanced_blockchain",
+            "ready": is_ready,
+            "timestamp": datetime.utcnow()
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "service": "advanced_blockchain", 
+            "ready": False,
+            "error": str(e),
+            "timestamp": datetime.utcnow()
+        }
+
 # === SMART CONTRACTS ===
 
 @router.get("/smart-contracts", response_model=List[SmartContract])
