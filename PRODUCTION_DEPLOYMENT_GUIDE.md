@@ -1813,7 +1813,8 @@ if __name__ == "__main__":
 ### 🧹 **Scripts de Maintenance**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/cleanup-logs.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/cleanup-logs.sh
+# sudo nano /opt/quantumshield/scripts/cleanup-logs.sh
 
 LOG_RETENTION_DAYS=30
 BACKUP_RETENTION_DAYS=90
