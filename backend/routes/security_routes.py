@@ -556,7 +556,7 @@ async def generate_gdpr_report(
     
     try:
         # Vérifier les permissions (admin ou utilisateur concerné)
-        if not is_admin_user(current_user) and current_user["id"] != request.user_id:
+        if not is_admin_user(current_user) and current_user.id != request.user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès non autorisé"
@@ -587,7 +587,7 @@ async def delete_user_data(
     
     try:
         # Vérifier les permissions (admin ou utilisateur concerné)
-        if not is_admin_user(current_user) and current_user["id"] != request.user_id:
+        if not is_admin_user(current_user) and current_user.id != request.user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès non autorisé"
