@@ -2163,6 +2163,9 @@ class AuditTrailMiddleware(BaseHTTPMiddleware):
 ### 📊 **Compliance Reporting**
 ```python
 # backend/services/compliance_service.py
+# CRÉER LE FICHIER : /opt/quantumshield/backend/services/compliance_service.py
+# sudo nano /opt/quantumshield/backend/services/compliance_service.py
+
 from datetime import datetime, timedelta
 import csv
 import io
