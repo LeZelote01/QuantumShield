@@ -374,7 +374,7 @@ async def create_honeypot(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -406,7 +406,7 @@ async def trigger_honeypot(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -436,7 +436,7 @@ async def get_honeypot_report(current_user = Depends(get_current_user)):
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -466,7 +466,7 @@ async def create_security_backup(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -498,7 +498,7 @@ async def restore_security_backup(
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -526,7 +526,7 @@ async def get_backup_report(current_user = Depends(get_current_user)):
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -556,7 +556,7 @@ async def generate_gdpr_report(
     
     try:
         # Vérifier les permissions (admin ou utilisateur concerné)
-        if not current_user.get("is_admin", False) and current_user["id"] != request.user_id:
+        if not is_admin_user(current_user) and current_user["id"] != request.user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès non autorisé"
@@ -587,7 +587,7 @@ async def delete_user_data(
     
     try:
         # Vérifier les permissions (admin ou utilisateur concerné)
-        if not current_user.get("is_admin", False) and current_user["id"] != request.user_id:
+        if not is_admin_user(current_user) and current_user["id"] != request.user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès non autorisé"
@@ -616,7 +616,7 @@ async def get_compliance_report(current_user = Depends(get_current_user)):
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -643,7 +643,7 @@ async def get_comprehensive_security_report(current_user = Depends(get_current_u
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
@@ -669,7 +669,7 @@ async def perform_security_health_check(current_user = Depends(get_current_user)
     
     try:
         # Vérifier les permissions admin
-        if not current_user.get("is_admin", False):
+        if not is_admin_user(current_user):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Accès administrateur requis"
