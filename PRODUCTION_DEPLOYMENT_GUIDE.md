@@ -98,7 +98,9 @@ docs.quantumshield.com    # Documentation API
 
 ### 🔧 **Variables d'Environnement Backend**
 ```bash
-# /opt/quantumshield/backend/.env.production
+# CRÉER LE FICHIER : /opt/quantumshield/backend/.env.production
+# sudo nano /opt/quantumshield/backend/.env.production
+
 NODE_ENV=production
 PORT=8001
 
@@ -139,7 +141,9 @@ ALLOWED_ORIGINS=https://app.quantumshield.com,https://quantumshield.com
 
 ### 🖥️ **Variables d'Environnement Frontend**
 ```bash
-# /opt/quantumshield/frontend/.env.production
+# CRÉER LE FICHIER : /opt/quantumshield/frontend/.env.production
+# sudo nano /opt/quantumshield/frontend/.env.production
+
 REACT_APP_BACKEND_URL=https://api.quantumshield.com
 REACT_APP_WS_URL=wss://ws.quantumshield.com
 REACT_APP_CDN_URL=https://cdn.quantumshield.com
@@ -187,7 +191,9 @@ echo "0 12 * * * /usr/bin/certbot renew --quiet" | sudo crontab -
 
 ### 🛡️ **Configuration Sécurité Nginx**
 ```nginx
-# /etc/nginx/sites-available/quantumshield-security.conf
+# CRÉER LE FICHIER : /etc/nginx/snippets/quantumshield-security.conf
+# sudo nano /etc/nginx/snippets/quantumshield-security.conf
+
 # Headers de sécurité
 add_header X-Frame-Options DENY always;
 add_header X-Content-Type-Options nosniff always;
@@ -253,7 +259,9 @@ sudo -u quantumshield ./venv/bin/pip install sentry-sdk[fastapi]
 
 ### ⚡ **Configuration Gunicorn**
 ```python
-# /opt/quantumshield/gunicorn.conf.py
+# CRÉER LE FICHIER : /opt/quantumshield/gunicorn.conf.py  
+# sudo nano /opt/quantumshield/gunicorn.conf.py
+
 import multiprocessing
 import os
 
@@ -294,7 +302,9 @@ certfile = None
 
 ### 🔧 **Configuration Supervisor Backend**
 ```ini
-# /etc/supervisor/conf.d/quantumshield-backend.conf
+# CRÉER LE FICHIER : /etc/supervisor/conf.d/quantumshield-backend.conf
+# sudo nano /etc/supervisor/conf.d/quantumshield-backend.conf
+
 [program:quantumshield-backend]
 command=/opt/quantumshield/venv/bin/gunicorn -c /opt/quantumshield/gunicorn.conf.py backend.server:app
 directory=/opt/quantumshield
@@ -332,7 +342,9 @@ sudo -u quantumshield npm install --save-dev bundle-analyzer
 
 ### 🏗️ **Configuration Nginx Frontend**
 ```nginx
-# /etc/nginx/sites-available/quantumshield-frontend
+# CRÉER LE FICHIER : /etc/nginx/sites-available/quantumshield-frontend
+# sudo nano /etc/nginx/sites-available/quantumshield-frontend
+
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
@@ -432,7 +444,9 @@ server {
 
 ### 📊 **Configuration API Gateway**
 ```nginx
-# /etc/nginx/sites-available/quantumshield-api
+# CRÉER LE FICHIER : /etc/nginx/sites-available/quantumshield-api
+# sudo nano /etc/nginx/sites-available/quantumshield-api
+
 upstream quantumshield_backend {
     server 127.0.0.1:8001;
     # Pour load balancing multiple instances:
@@ -557,6 +571,9 @@ sudo systemctl start mongod
 sudo systemctl enable mongod
 
 # Configuration /etc/mongod.conf
+# MODIFIER LE FICHIER : /etc/mongod.conf  
+# sudo nano /etc/mongod.conf
+
 storage:
   dbPath: /var/lib/mongodb
   journal:
@@ -638,7 +655,9 @@ sudo apt install kibana
 sudo apt install logstash
 
 # Configuration Logstash pour QuantumShield
-# /etc/logstash/conf.d/quantumshield.conf
+# CRÉER LE FICHIER : /etc/logstash/conf.d/quantumshield.conf
+# sudo nano /etc/logstash/conf.d/quantumshield.conf
+
 input {
   file {
     path => "/opt/quantumshield/logs/*.log"
@@ -676,7 +695,9 @@ sudo cp prometheus-2.40.0.linux-amd64/{prometheus,promtool} /usr/local/bin/
 sudo chown prometheus:prometheus /usr/local/bin/{prometheus,promtool}
 
 # Configuration Prometheus
-# /etc/prometheus/prometheus.yml
+# CRÉER LE FICHIER : /etc/prometheus/prometheus.yml  
+# sudo nano /etc/prometheus/prometheus.yml
+
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -736,7 +757,9 @@ for handler in logging.root.handlers:
 
 ### 🚨 **Alertes et Notifications**
 ```yaml
-# /etc/prometheus/alert_rules.yml
+# CRÉER LE FICHIER : /etc/prometheus/alert_rules.yml
+# sudo nano /etc/prometheus/alert_rules.yml
+
 groups:
   - name: quantumshield_alerts
     rules:
@@ -780,8 +803,10 @@ groups:
 ### 📦 **Stratégie de Sauvegarde**
 ```bash
 # Script de sauvegarde automatisé
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/backup.sh
+# sudo mkdir -p /opt/quantumshield/scripts
+# sudo nano /opt/quantumshield/scripts/backup.sh
 #!/bin/bash
-# /opt/quantumshield/scripts/backup.sh
 
 BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="/opt/quantumshield/backups"
@@ -835,7 +860,8 @@ echo "Backup completed: quantumshield_$BACKUP_DATE.tar.gz"
 ### 🔄 **Script de Restauration**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/restore.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/restore.sh
+# sudo nano /opt/quantumshield/scripts/restore.sh
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <backup-file>"
@@ -890,6 +916,9 @@ echo "✅ Restoration completed successfully!"
 ### ⚡ **Optimisations Backend**
 ```python
 # Ajouts dans backend/server.py pour production
+# MODIFIER LE FICHIER : /opt/quantumshield/backend/server.py
+# sudo nano /opt/quantumshield/backend/server.py
+# AJOUTER CES LIGNES AU DÉBUT DU FICHIER :
 
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
@@ -932,6 +961,9 @@ mongo_client = AsyncIOMotorClient(
 ### 🎯 **Optimisations Frontend**
 ```javascript
 // Webpack optimizations dans craco.config.js
+// MODIFIER LE FICHIER : /opt/quantumshield/frontend/craco.config.js  
+// sudo nano /opt/quantumshield/frontend/craco.config.js
+
 const path = require('path');
 const CompressionPlugin = require('compression-webpack-plugin');
 
@@ -1041,7 +1073,8 @@ db.users.aggregate([
 ### 🛡️ **Hardening Serveur**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/server-hardening.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/server-hardening.sh
+# sudo nano /opt/quantumshield/scripts/server-hardening.sh
 
 echo "🔒 Starting server hardening..."
 
@@ -1136,6 +1169,9 @@ echo "✅ Server hardening completed!"
 ### 🔑 **Authentification Multi-Facteur (2FA)**
 ```python
 # Configuration 2FA dans backend
+# CRÉER LE FICHIER : /opt/quantumshield/backend/services/mfa_service.py
+# sudo nano /opt/quantumshield/backend/services/mfa_service.py
+
 from pyotp import TOTP, random_base32
 import qrcode
 from io import BytesIO
@@ -1174,7 +1210,8 @@ class MFAService:
 ### 🚫 **Protection DDoS et Rate Limiting**
 ```nginx
 # Configuration anti-DDoS dans Nginx
-# /etc/nginx/conf.d/ddos-protection.conf
+# CRÉER LE FICHIER : /etc/nginx/conf.d/ddos-protection.conf
+# sudo nano /etc/nginx/conf.d/ddos-protection.conf
 
 # Rate limiting zones
 limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
@@ -1229,7 +1266,9 @@ if ($http_user_agent ~* "(?:acunetix|BurpSuite|nmap|sqlmap|nikto|wpscan|wordpres
 
 ### 🚀 **Pipeline GitHub Actions**
 ```yaml
-# .github/workflows/deploy-production.yml
+# CRÉER LE FICHIER : .github/workflows/deploy-production.yml
+# Dans votre repository GitHub, créer le dossier .github/workflows/ et le fichier
+
 name: Deploy to Production
 
 on:
@@ -1385,7 +1424,8 @@ jobs:
 ### 📋 **Scripts de Déploiement**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/deploy.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/deploy.sh
+# sudo nano /opt/quantumshield/scripts/deploy.sh
 
 set -e  # Exit on error
 
@@ -1474,6 +1514,10 @@ echo "  - Health: $(curl -s https://api.quantumshield.com/api/health | jq -r .st
 ### 🔄 **Tests d'Intégration Continue**
 ```python
 # tests/test_production_readiness.py
+# CRÉER LE FICHIER : /opt/quantumshield/tests/test_production_readiness.py
+# sudo mkdir -p /opt/quantumshield/tests
+# sudo nano /opt/quantumshield/tests/test_production_readiness.py
+
 import pytest
 import asyncio
 import aiohttp
@@ -1572,6 +1616,9 @@ class ProductionTests:
 ### 📊 **Tests de Charge**
 ```python
 # tests/load_tests.py
+# CRÉER LE FICHIER : /opt/quantumshield/tests/load_tests.py
+# sudo nano /opt/quantumshield/tests/load_tests.py
+
 import asyncio
 import aiohttp
 import time
@@ -1738,7 +1785,8 @@ if __name__ == "__main__":
 
 ### 📅 **Planning de Maintenance**
 ```bash
-# /opt/quantumshield/scripts/maintenance-schedule.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/maintenance-schedule.sh
+# sudo nano /opt/quantumshield/scripts/maintenance-schedule.sh
 
 # Crontab pour maintenance automatique
 # sudo crontab -e
@@ -1765,7 +1813,8 @@ if __name__ == "__main__":
 ### 🧹 **Scripts de Maintenance**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/cleanup-logs.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/cleanup-logs.sh
+# sudo nano /opt/quantumshield/scripts/cleanup-logs.sh
 
 LOG_RETENTION_DAYS=30
 BACKUP_RETENTION_DAYS=90
@@ -1800,7 +1849,8 @@ echo "✅ Log cleanup completed"
 ### 🔄 **Mise à Jour Zero-Downtime**
 ```bash
 #!/bin/bash
-# /opt/quantumshield/scripts/zero-downtime-update.sh
+# CRÉER LE FICHIER : /opt/quantumshield/scripts/zero-downtime-update.sh
+# sudo nano /opt/quantumshield/scripts/zero-downtime-update.sh
 
 set -e
 
@@ -1912,6 +1962,9 @@ echo "📊 Updated from $CURRENT_COMMIT to $LATEST_COMMIT"
 ### 🇪🇺 **GDPR Compliance**
 ```python
 # backend/services/gdpr_service.py
+# CRÉER LE FICHIER : /opt/quantumshield/backend/services/gdpr_service.py
+# sudo nano /opt/quantumshield/backend/services/gdpr_service.py
+
 from datetime import datetime, timedelta
 import asyncio
 from typing import Dict, List, Any
@@ -2007,6 +2060,9 @@ class GDPRService:
 ### 🛡️ **Audit Trail Implementation**
 ```python
 # backend/middleware/audit_middleware.py
+# CRÉER LE FICHIER : /opt/quantumshield/backend/middleware/audit_middleware.py
+# sudo nano /opt/quantumshield/backend/middleware/audit_middleware.py
+
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 import json
@@ -2107,6 +2163,9 @@ class AuditTrailMiddleware(BaseHTTPMiddleware):
 ### 📊 **Compliance Reporting**
 ```python
 # backend/services/compliance_service.py
+# CRÉER LE FICHIER : /opt/quantumshield/backend/services/compliance_service.py
+# sudo nano /opt/quantumshield/backend/services/compliance_service.py
+
 from datetime import datetime, timedelta
 import csv
 import io
