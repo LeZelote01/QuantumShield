@@ -259,7 +259,9 @@ sudo -u quantumshield ./venv/bin/pip install sentry-sdk[fastapi]
 
 ### ⚡ **Configuration Gunicorn**
 ```python
-# /opt/quantumshield/gunicorn.conf.py
+# CRÉER LE FICHIER : /opt/quantumshield/gunicorn.conf.py  
+# sudo nano /opt/quantumshield/gunicorn.conf.py
+
 import multiprocessing
 import os
 
