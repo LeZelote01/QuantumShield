@@ -201,6 +201,9 @@ async def health_check():
             "webhook": webhook_service.is_ready(),
             "recommendations": personalized_recommendations_service.is_ready(),
             "custom_dashboards": personalizable_dashboard_service.is_ready(),
+            "cloud_integrations": cloud_integrations_service.is_ready(),
+            "erp_crm": erp_crm_service.is_ready(),
+            "compliance": compliance_service.is_ready(),
             "api_gateway": api_gateway_service.is_ready(),
             "database": True
         }
