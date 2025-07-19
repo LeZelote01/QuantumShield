@@ -77,6 +77,7 @@ marketplace_service = MarketplaceService(db)
 hsm_service = HSMService(db)
 personalized_recommendations_service = PersonalizedRecommendationsService(db)
 personalizable_dashboard_service = PersonalizableDashboardService(db)
+api_gateway_service = APIGatewayService(db)
 
 # Initialiser les nouveaux services
 services_dict = {
