@@ -165,7 +165,7 @@ async def analyze_behavior(
     
     try:
         analysis = await security_service.analyze_user_behavior(
-            user_id=current_user["id"],
+            user_id=current_user.id,
             action=request.action,
             context=request.context
         )
