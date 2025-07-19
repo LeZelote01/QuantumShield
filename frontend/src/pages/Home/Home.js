@@ -21,44 +21,32 @@ const Home = () => {
     {
       icon: <ShieldCheckIcon className="h-6 w-6" />,
       title: "Cryptographie Post-Quantique NTRU++",
-      description: "Protection avancée contre les menaces quantiques avec algorithmes Kyber, Dilithium et preuves zero-knowledge",
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-50"
+      description: "Protection avancée contre les menaces quantiques avec algorithmes Kyber, Dilithium et preuves zero-knowledge"
     },
     {
       icon: <CubeTransparentIcon className="h-6 w-6" />,
       title: "Blockchain Privée",
-      description: "Blockchain sécurisée avec consensus Proof of Work, gouvernance décentralisée et smart contracts",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50"
+      description: "Blockchain sécurisée avec consensus Proof of Work, gouvernance décentralisée et smart contracts"
     },
     {
       icon: <BanknotesIcon className="h-6 w-6" />,
       title: "Système de Tokens $QS",
-      description: "Économie de tokens intégrée avec récompenses, staking, marketplace et DeFi",
-      color: "text-green-600",
-      bgColor: "bg-green-50"
+      description: "Économie de tokens intégrée avec récompenses, staking, marketplace et DeFi"
     },
     {
       icon: <DevicePhoneMobileIcon className="h-6 w-6" />,
       title: "Gestion IoT Avancée",
-      description: "Support de 8 types d'appareils avec protocoles MQTT, CoAP, LoRaWAN, Zigbee et mises à jour OTA",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50"
+      description: "Support de 8 types d'appareils avec protocoles MQTT, CoAP, LoRaWAN, Zigbee et mises à jour OTA"
     },
     {
       icon: <ChartBarIcon className="h-6 w-6" />,
       title: "Mining Distribué",
-      description: "Pool collaborative de mining avec récompenses automatiques et statistiques en temps réel",
-      color: "text-orange-600",
-      bgColor: "bg-orange-50"
+      description: "Pool collaborative de mining avec récompenses automatiques et statistiques en temps réel"
     },
     {
       icon: <LockClosedIcon className="h-6 w-6" />,
       title: "Sécurité Renforcée",
-      description: "2FA/MFA, honeypots, audit automatisé et conformité GDPR/CCPA",
-      color: "text-red-600",
-      bgColor: "bg-red-50"
+      description: "2FA/MFA, honeypots, audit automatisé et conformité GDPR/CCPA"
     }
   ];
 
