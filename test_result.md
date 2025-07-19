@@ -61,11 +61,12 @@
 - [x] Analyse de la structure du projet (127+ fichiers)
 - [x] Vérification des fichiers de configuration (.env)
 - [x] Documentation des fonctionnalités identifiées
+- [x] Installation des dépendances backend (Python) - 32 nouvelles librairies installées
+- [x] Installation des dépendances frontend (Node.js/Yarn) - Installation réussie
+- [x] Redémarrage des services (backend, frontend, mongodb, code-server) - Tous RUNNING
 
 ### 🔄 Tâches en Cours
-- [ ] Installation des dépendances backend (Python)
-- [ ] Installation des dépendances frontend (Node.js/Yarn)
-- [ ] Tests backend complets
+- [ ] Tests backend complets (prêt à commencer)
 - [ ] Tests frontend complets
 - [ ] Correction des erreurs identifiées
 
