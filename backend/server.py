@@ -115,6 +115,7 @@ from routes.graphql_routes import router as graphql_router
 from routes.webhook_routes import router as webhook_router
 from routes.personalized_recommendations_routes import router as personalized_recommendations_router
 from routes.personalizable_dashboard_routes import router as personalizable_dashboard_router
+from routes.api_gateway_routes import router as api_gateway_router
 
 # Inject services into routes
 import routes.iot_protocol_routes
