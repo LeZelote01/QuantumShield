@@ -354,6 +354,38 @@ REACT_APP_ENABLE_NOTIFICATIONS=true
 - `GET /api/advanced-economy/staking/pools` - Pools de staking disponibles
 - `GET /api/advanced-economy/recommendations` - Recommandations économiques
 
+#### Intégrations Cloud (AWS, Azure, GCP)
+- `GET /api/cloud-integrations/providers` - Fournisseurs cloud supportés
+- `POST /api/cloud-integrations/credentials` - Stocker credentials cloud
+- `GET /api/cloud-integrations/integrations` - Intégrations utilisateur
+- `POST /api/cloud-integrations/test-connection/{provider}` - Tester connexion
+- `POST /api/cloud-integrations/sync-devices` - Synchroniser dispositifs IoT
+- `POST /api/cloud-integrations/backup` - Sauvegarder données
+- `POST /api/cloud-integrations/deploy-edge` - Déployer edge computing
+- `GET /api/cloud-integrations/logs` - Logs d'intégrations
+- `GET /api/cloud-integrations/services/{provider}` - Services disponibles
+
+#### Connecteurs ERP/CRM
+- `GET /api/erp-crm/supported-systems` - Systèmes ERP/CRM supportés
+- `POST /api/erp-crm/connectors` - Créer connecteur
+- `GET /api/erp-crm/connectors` - Liste connecteurs utilisateur
+- `PUT /api/erp-crm/connectors/{connector_id}` - Mettre à jour connecteur
+- `DELETE /api/erp-crm/connectors/{connector_id}` - Supprimer connecteur
+- `POST /api/erp-crm/connectors/{connector_id}/sync` - Synchronisation manuelle
+- `GET /api/erp-crm/connectors/{connector_id}/logs` - Logs connecteur
+- `GET /api/erp-crm/logs` - Tous les logs synchronisation
+- `GET /api/erp-crm/statistics` - Statistiques ERP/CRM
+
+#### Conformité Réglementaire
+- `POST /api/compliance/privacy-policy/generate` - Générer politique confidentialité
+- `POST /api/compliance/data-mapping/generate` - Cartographie des données
+- `POST /api/compliance/data-subject-request` - Demandes personnes concernées
+- `POST /api/compliance/privacy-assessment` - Analyse d'impact vie privée
+- `POST /api/compliance/compliance-report` - Rapport de conformité
+- `GET /api/compliance/supported-regulations` - Réglementations supportées
+- `GET /api/compliance/user-rights` - Droits utilisateur GDPR/CCPA
+- `GET /api/compliance/statistics` - Statistiques conformité
+
 #### Blockchain
 - `GET /api/blockchain/stats` - Statistiques blockchain
 - `GET /api/blockchain/blocks` - Liste des blocs
