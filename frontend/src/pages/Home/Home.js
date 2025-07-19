@@ -129,27 +129,27 @@ const Home = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20">
+      <section className="relative overflow-hidden py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              L'avenir de la <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Sécurité IoT</span>
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              L'avenir de la <span className="text-gray-600">Sécurité IoT</span>
             </h1>
-            <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               QuantumShield révolutionne la sécurité des objets connectés avec la cryptographie post-quantique, 
               une blockchain privée et un écosystème complet de tokens $QS pour l'ère quantique.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 to="/register"
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 flex items-center space-x-2"
+                className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-2"
               >
                 <PlayIcon className="h-5 w-5" />
                 <span>Commencer maintenant</span>
               </Link>
               <Link
                 to="/login"
-                className="bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-8 py-4 rounded-xl font-semibold text-lg transition-all border border-white/20"
+                className="bg-white text-gray-900 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all border border-gray-200"
               >
                 Déjà membre ? Se connecter
               </Link>
@@ -159,10 +159,10 @@ const Home = () => {
 
         {/* Hero Image */}
         <div className="mt-16 max-w-6xl mx-auto px-4">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1617839625591-e5a789593135?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwxfHxxdWFudHVtJTIwY29tcHV0aW5nfGVufDB8fHx8MTc1MjkyNTI4M3ww&ixlib=rb-4.1.0&q=85"
-              alt="Quantum Computing Circuit"
+              src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHx8MTc1MjkyNTI5MHww&ixlib=rb-4.1.0&q=85"
+              alt="Cybersecurity Technology"
               className="w-full h-64 object-cover"
             />
           </div>
