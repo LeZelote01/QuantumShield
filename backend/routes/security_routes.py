@@ -12,6 +12,11 @@ from services.security_service import SecurityService, MFAMethod, SecurityEventT
 
 router = APIRouter()
 
+# Helper function to check admin status
+def is_admin_user(user) -> bool:
+    """Check if user has admin privileges"""
+    return getattr(user, 'is_admin', False)
+
 # Modèles de requête
 class MFASetupRequest(BaseModel):
     service_name: str = "QuantumShield"
