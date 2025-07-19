@@ -78,8 +78,15 @@ export const AuthProvider = ({ children }) => {
           // Set the token in API headers
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
-          // Verify token with backend with timeout
-          const response = await api.get('/auth/verify-token');
+          // Verify token with backend avec un timeout court
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 secondes timeout
+          
+          const response = await api.get('/auth/verify-token', {
+            signal: controller.signal
+          });
+          
+          clearTimeout(timeoutId);
           
           dispatch({
             type: 'LOGIN_SUCCESS',
@@ -89,22 +96,25 @@ export const AuthProvider = ({ children }) => {
             },
           });
         } catch (error) {
-          // Token is invalid, remove it
+          // Token is invalid or network error, remove it and continue
+          console.log('Token verification failed:', error.message);
           localStorage.removeItem('token');
           delete api.defaults.headers.common['Authorization'];
-          dispatch({ type: 'LOGOUT' });
+          dispatch({ type: 'SET_LOADING', payload: false });
         }
       } else {
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
 
+    // Démarrer la vérification
     checkAuth();
     
-    // Timeout de sécurité pour éviter le blocage
+    // Timeout de sécurité absolu pour éviter le blocage
     const timeoutId = setTimeout(() => {
+      console.log('Force stopping auth loading after 5 seconds');
       dispatch({ type: 'SET_LOADING', payload: false });
-    }, 5000);  // 5 secondes maximum
+    }, 5000);
 
     return () => clearTimeout(timeoutId);
   }, []);
