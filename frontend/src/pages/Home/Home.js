@@ -149,8 +149,8 @@ const Home = () => {
         <div className="mt-16 max-w-6xl mx-auto px-4">
           <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5fGVufDB8fHx8MTc1MjkyNTI5MHww&ixlib=rb-4.1.0&q=85"
-              alt="Cybersecurity Technology"
+              src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxzZXJ2ZXIlMjByb29tfGVufDB8fHx8MTc1MjkyNTI5MHww&ixlib=rb-4.1.0&q=85"
+              alt="Modern Server Technology"
               className="w-full h-64 object-cover"
             />
           </div>
