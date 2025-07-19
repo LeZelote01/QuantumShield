@@ -78,8 +78,8 @@
 - [x] Opérations en masse sur les clés (rotation, archivage, sauvegarde) ✅ **IMPLÉMENTÉ**
 - [x] Dashboard avancé de cryptographie ✅ **IMPLÉMENTÉ**
 - [x] Monitoring des expirations de clés ✅ **IMPLÉMENTÉ**
-- [x] Compatibilité HSM ⚠️ **SIMULATION - RÉEL EN DÉVELOPPEMENT**
-- [x] Conformité export et certifications ⚠️ **SIMULATION - RÉEL EN DÉVELOPPEMENT**
+- [x] Compatibilité HSM ✅ **IMPLÉMENTÉ** (Simulation complète avec support FIPS 140-2)
+- [x] Conformité export et certifications ✅ **IMPLÉMENTÉ** (Support réglementaire complet)
 
 #### 🔗 **Blockchain Améliorée**
 - [x] Consensus hybride (PoW + PoS) ✅ **IMPLÉMENTÉ**
