@@ -121,9 +121,7 @@ class QuantumShieldTester:
             
             if response.status_code == 200:
                 data = response.json()
-                print(f"DEBUG: Login response data: {data}")
                 self.auth_token = data.get("access_token") or data.get("token")
-                print(f"DEBUG: Extracted auth token: {self.auth_token}")
                 self.log_test("User Login", True, f"Login successful, token received")
             else:
                 self.log_test("User Login", False, f"HTTP {response.status_code}: {response.text}")
