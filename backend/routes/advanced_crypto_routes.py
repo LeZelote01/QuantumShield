@@ -54,6 +54,7 @@ class KeyRotationRequest(BaseModel):
 class ZKProofRequest(BaseModel):
     proof_type: ZKProofType
     secret_value: str
+    secret: Optional[str] = None  # Alternative field name for compatibility
     public_parameters: Dict[str, Any]
 
 class ZKProofVerificationRequest(BaseModel):
