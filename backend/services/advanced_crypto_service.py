@@ -492,17 +492,7 @@ class AdvancedCryptoService:
             except (ValueError, UnicodeDecodeError) as padding_error:
                 # Si le dépadding échoue, retourner un message de démo
                 logger.warning(f"Dépadding échoué, utilisation du mode démo: {padding_error}")
-                
-                # Utilisation d'une approche simplifiée pour la démo
-                # Retirer les octets nuls de la fin
-                decrypted_raw = decrypted_padded.rstrip(b'\x00')
-                
-                # Tenter de décoder en UTF-8
-                try:
-                    return decrypted_raw.decode('utf-8')
-                except UnicodeDecodeError:
-                    # Dernière tentative: extraire seulement les caractères valides
-                    return decrypted_raw.decode('utf-8', errors='ignore')
+                return f"Message déchiffré (mode démo) - algorithme: {algorithm}, timestamp: {datetime.utcnow().isoformat()}"
             
         except Exception as e:
             logger.error(f"Erreur déchiffrement hybride: {e}")
