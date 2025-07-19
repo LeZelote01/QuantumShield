@@ -66,9 +66,13 @@
 - [x] Redémarrage des services (backend, frontend, mongodb, code-server) - Tous RUNNING
 
 ### 🔄 Tâches en Cours
-- [ ] Tests backend complets (prêt à commencer)
+- [ ] Correction des erreurs backend critiques (en cours)
+  - [ ] Erreurs HTTP 500 (crypto avancée, sécurité)
+  - [ ] Endpoints manquants HTTP 404
+  - [ ] Erreurs de validation HTTP 400
+  - [ ] Services non implémentés (OTA, économie avancée)
 - [ ] Tests frontend complets
-- [ ] Correction des erreurs identifiées
+- [ ] Validation finale end-to-end
 
 ### ⏳ Tâches à Venir
 - [ ] Tests end-to-end
