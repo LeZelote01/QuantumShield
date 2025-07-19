@@ -444,7 +444,9 @@ server {
 
 ### 📊 **Configuration API Gateway**
 ```nginx
-# /etc/nginx/sites-available/quantumshield-api
+# CRÉER LE FICHIER : /etc/nginx/sites-available/quantumshield-api
+# sudo nano /etc/nginx/sites-available/quantumshield-api
+
 upstream quantumshield_backend {
     server 127.0.0.1:8001;
     # Pour load balancing multiple instances:
