@@ -17,8 +17,8 @@ class SecurityTester:
         self.session = None
         self.auth_token = None
         self.test_user = {
-            "username": "security_tester",
-            "email": "security@quantumshield.com",
+            "username": f"security_tester_{datetime.now().strftime('%H%M%S')}",
+            "email": f"security_{datetime.now().strftime('%H%M%S')}@quantumshield.com",
             "password": "SecurePassword123!"
         }
 
