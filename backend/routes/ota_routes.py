@@ -43,6 +43,10 @@ class BulkUpdateModel(BaseModel):
 
 # Dépendance pour obtenir le service
 def get_ota_service():
+    global ota_service
+    if ota_service is None:
+        from server import ota_update_service
+        return ota_update_service
     return ota_service
 
 @router.get("/health")
