@@ -181,3 +181,5 @@ agent_communication:
     message: "Cloned QuantumShield repo successfully. Registration functionality tested and working correctly - user can register and is automatically logged in. Main issue is homepage styling which needs to be made more professional and clean with fewer colors."
   - agent: "main"
     message: "COMPLETED BOTH TASKS: 1) User registration is working perfectly (tested successfully). 2) Homepage styling completely redesigned with clean professional white theme, minimal colors, and modern layout. All issues reported by user have been resolved."
+  - agent: "main"
+    message: "USER ISSUE RESOLVED: Fixed the 'Registration failed. Network Error' problem. The issue was caused by missing backend dependencies and needed services restart. After installing all required Python packages (bcrypt, web3, pycryptodome, etc.) and restarting backend, registration works perfectly. Tested with multiple users successfully."
