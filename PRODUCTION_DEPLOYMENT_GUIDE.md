@@ -1266,7 +1266,9 @@ if ($http_user_agent ~* "(?:acunetix|BurpSuite|nmap|sqlmap|nikto|wpscan|wordpres
 
 ### 🚀 **Pipeline GitHub Actions**
 ```yaml
-# .github/workflows/deploy-production.yml
+# CRÉER LE FICHIER : .github/workflows/deploy-production.yml
+# Dans votre repository GitHub, créer le dossier .github/workflows/ et le fichier
+
 name: Deploy to Production
 
 on:
