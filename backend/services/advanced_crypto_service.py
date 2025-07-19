@@ -489,7 +489,7 @@ class AdvancedCryptoService:
             try:
                 decrypted_message = unpad(decrypted_padded, AES.block_size)
                 return decrypted_message.decode('utf-8')
-            except ValueError as padding_error:
+            except (ValueError, UnicodeDecodeError) as padding_error:
                 # Si le dépadding échoue, essayer avec une approche différente
                 logger.warning(f"Erreur de padding, tentative alternative: {padding_error}")
                 
