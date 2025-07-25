@@ -241,7 +241,19 @@ class BlockchainService:
                 sort=[("block_number", -1)]
             )
             
-            last_block_time = datetime.fromisoformat(last_block["timestamp"]) if last_block else datetime.utcnow()
+            # Gérer le timestamp du dernier bloc
+            last_block_time = datetime.utcnow()
+            if last_block:
+                timestamp = last_block.get("timestamp", datetime.utcnow())
+                if isinstance(timestamp, str):
+                    try:
+                        last_block_time = datetime.fromisoformat(timestamp)
+                    except (ValueError, TypeError):
+                        last_block_time = datetime.utcnow()
+                elif isinstance(timestamp, datetime):
+                    last_block_time = timestamp
+                else:
+                    last_block_time = datetime.utcnow()
             
             return BlockchainStats(
                 total_blocks=total_blocks,
