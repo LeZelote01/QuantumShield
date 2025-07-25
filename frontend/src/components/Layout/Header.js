@@ -52,6 +52,16 @@ const Header = ({ onMenuClick, user }) => {
             <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
           </button>
 
+          {/* Quick logout button */}
+          <button
+            onClick={handleLogout}
+            className="hidden md:flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg border border-gray-300 transition-colors"
+            title="Déconnexion"
+          >
+            <ArrowRightOnRectangleIcon className="h-4 w-4" />
+            <span>Déconnexion</span>
+          </button>
+
           {/* User menu */}
           <div className="relative">
             <button
@@ -76,7 +86,7 @@ const Header = ({ onMenuClick, user }) => {
                 <div className="py-1">
                   <button
                     onClick={handleLogout}
-                    className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 md:hidden"
                   >
                     <ArrowRightOnRectangleIcon className="h-4 w-4 mr-2" />
                     Déconnexion
