@@ -13,28 +13,57 @@ import {
   KeyIcon,
   LockClosedIcon,
   MapPinIcon,
-  ServerIcon
+  ServerIcon,
+  ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const { showSuccess } = useToast();
 
-  const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-    { name: 'Devices IoT', href: '/devices', icon: CpuChipIcon },
-    { name: 'Géolocalisation', href: '/geolocation', icon: MapPinIcon },
-    { name: 'Cryptographie', href: '/cryptography', icon: ShieldCheckIcon },
-    { name: 'Crypto Avancée', href: '/advanced-cryptography', icon: ShieldCheckIcon },
-    { name: 'Gestion Clés', href: '/advanced-key-management', icon: KeyIcon },
-    { name: 'Blockchain', href: '/blockchain', icon: CubeIcon },
-    { name: 'Mining', href: '/mining', icon: WrenchScrewdriverIcon },
-    { name: 'Tokens $QS', href: '/tokens', icon: CurrencyDollarIcon },
-    { name: 'Sécurité', href: '/security', icon: LockClosedIcon },
-    { name: 'API Gateway', href: '/api-gateway', icon: ServerIcon },
-    { name: 'Profil', href: '/profile', icon: UserCircleIcon },
-    { name: 'Paramètres', href: '/settings', icon: Cog6ToothIcon },
+  const handleLogout = async () => {
+    await logout();
+    showSuccess('Déconnecté avec succès');
+    onClose();
+  };
+
+  const navigationSections = [
+    {
+      title: 'Principal',
+      items: [
+        { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+        { name: 'Devices IoT', href: '/dashboard/devices', icon: CpuChipIcon },
+        { name: 'Géolocalisation', href: '/dashboard/geolocation', icon: MapPinIcon },
+      ]
+    },
+    {
+      title: 'Sécurité',
+      items: [
+        { name: 'Cryptographie', href: '/dashboard/cryptography', icon: ShieldCheckIcon },
+        { name: 'Crypto Avancée', href: '/dashboard/advanced-cryptography', icon: ShieldCheckIcon },
+        { name: 'Gestion Clés', href: '/dashboard/advanced-key-management', icon: KeyIcon },
+        { name: 'Sécurité', href: '/dashboard/security', icon: LockClosedIcon },
+      ]
+    },
+    {
+      title: 'Blockchain & Économie',
+      items: [
+        { name: 'Blockchain', href: '/dashboard/blockchain', icon: CubeIcon },
+        { name: 'Mining', href: '/dashboard/mining', icon: WrenchScrewdriverIcon },
+        { name: 'Tokens $QS', href: '/dashboard/tokens', icon: CurrencyDollarIcon },
+      ]
+    },
+    {
+      title: 'Système',
+      items: [
+        { name: 'API Gateway', href: '/dashboard/api-gateway', icon: ServerIcon },
+        { name: 'Profil', href: '/dashboard/profile', icon: UserCircleIcon },
+        { name: 'Paramètres', href: '/dashboard/settings', icon: Cog6ToothIcon },
+      ]
+    }
   ];
 
   return (
@@ -82,36 +111,51 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="px-6 py-4">
-          <ul className="space-y-2">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <li key={item.name}>
-                  <Link
-                    to={item.href}
-                    onClick={onClose}
-                    className={`
-                      flex items-center px-3 py-2 rounded-lg text-sm font-medium
-                      transition-colors duration-200
-                      ${isActive 
-                        ? 'bg-indigo-700 text-white' 
-                        : 'text-indigo-200 hover:bg-indigo-700 hover:text-white'
-                      }
-                    `}
-                  >
-                    <item.icon className="h-5 w-5 mr-3" />
-                    {item.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+        <nav className="px-6 py-4 flex-1 overflow-y-auto">
+          {navigationSections.map((section, sectionIndex) => (
+            <div key={section.title} className={sectionIndex > 0 ? 'mt-8' : ''}>
+              <h3 className="text-indigo-300 text-xs font-semibold uppercase tracking-wide mb-3">
+                {section.title}
+              </h3>
+              <ul className="space-y-2">
+                {section.items.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        to={item.href}
+                        onClick={onClose}
+                        className={`
+                          flex items-center px-3 py-2 rounded-lg text-sm font-medium
+                          transition-colors duration-200
+                          ${isActive 
+                            ? 'bg-indigo-700 text-white' 
+                            : 'text-indigo-200 hover:bg-indigo-700 hover:text-white'
+                          }
+                        `}
+                      >
+                        <item.icon className="h-5 w-5 mr-3" />
+                        {item.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </nav>
 
-        {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-6">
-          <div className="bg-indigo-700 rounded-lg p-4">
+        {/* Footer avec bouton de déconnexion */}
+        <div className="p-6 border-t border-indigo-700">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center px-4 py-2 bg-indigo-700 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors duration-200"
+          >
+            <ArrowRightOnRectangleIcon className="h-5 w-5 mr-2" />
+            Déconnexion
+          </button>
+          
+          <div className="mt-4 bg-indigo-700 rounded-lg p-4">
             <p className="text-indigo-200 text-sm">Version 1.0.0</p>
             <p className="text-indigo-300 text-xs mt-1">
               Cryptographie post-quantique pour l'IoT
