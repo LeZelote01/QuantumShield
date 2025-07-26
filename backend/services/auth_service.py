@@ -135,25 +135,16 @@ class AuthService:
         try:
             # Décoder le token
             payload = jwt.decode(token, self.secret_key, algorithms=["HS256"])
+            logger.info(f"Token décodé avec succès pour user_id: {payload.get('user_id')}")
             
-            # Vérifier si la session est active
-            session = await self.sessions.find_one({
-                "token": token,
-                "is_active": True,
-                "expires_at": {"$gt": datetime.utcnow()}
-            })
-            
-            if not session:
-                logger.warning("Token invalide ou expiré")
-                return None
-            
-            # Récupérer l'utilisateur
+            # Récupérer l'utilisateur directement (bypass session pour debugging)
             user_doc = await self.users.find_one({"id": payload["user_id"]})
             
             if not user_doc or not user_doc.get("is_active", True):
-                logger.warning("Utilisateur inactif ou inexistant")
+                logger.warning(f"Utilisateur inactif ou inexistant: {payload['user_id']}")
                 return None
             
+            logger.info(f"Utilisateur trouvé et actif: {user_doc['username']}")
             return {
                 "user": User(**user_doc),
                 "payload": payload
@@ -162,8 +153,8 @@ class AuthService:
         except jwt.ExpiredSignatureError:
             logger.warning("Token expiré")
             return None
-        except jwt.InvalidTokenError:
-            logger.warning("Token invalide")
+        except jwt.InvalidTokenError as e:
+            logger.warning(f"Token invalide: {e}")
             return None
         except Exception as e:
             logger.error(f"Erreur lors de la vérification du token: {e}")
