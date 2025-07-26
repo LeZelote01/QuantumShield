@@ -125,6 +125,7 @@ from routes.erp_crm_routes import router as erp_crm_router
 from routes.compliance_routes import router as compliance_router
 
 # Inject services into routes
+import routes.auth_routes
 import routes.iot_protocol_routes
 import routes.ota_routes
 import routes.geolocation_routes
@@ -138,6 +139,8 @@ import routes.cloud_integrations_routes
 import routes.erp_crm_routes
 import routes.compliance_routes
 import routes.api_gateway_routes
+routes.auth_routes.init_auth_service(auth_service)
+routes.auth_routes.init_security_service(security_service)
 routes.iot_protocol_routes.iot_protocol_service = iot_protocol_service
 routes.ota_routes.ota_service = ota_update_service
 routes.geolocation_routes.geolocation_service = geolocation_service
