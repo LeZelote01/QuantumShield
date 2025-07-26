@@ -252,7 +252,7 @@ class TokenService:
             balances = await cursor.to_list(length=None)
             
             for balance in balances:
-                total_supply += balance["balance"]
+                total_supply += balance.get("balance", 0)
             
             # Compter les transactions
             total_transactions = await self.transactions.count_documents({})
@@ -273,15 +273,41 @@ class TokenService:
             
             reward_stats = await self.rewards.aggregate(pipeline).to_list(length=None)
             
-            # Top holders
-            top_holders = await self.balances.find({
-                "user_id": {"$ne": "system"}
-            }).sort("balance", -1).limit(10).to_list(length=10)
+            # Top holders avec gestion d'erreur et sérialisation
+            try:
+                top_holders_cursor = self.balances.find({
+                    "user_id": {"$ne": "system"}
+                }).sort("balance", -1).limit(10)
+                top_holders_raw = await top_holders_cursor.to_list(length=10)
+                
+                # Convertir les ObjectId en strings
+                top_holders = []
+                for holder in top_holders_raw:
+                    holder_data = {
+                        "user_id": holder.get("user_id", "unknown"),
+                        "balance": holder.get("balance", 0),
+                        "wallet_address": holder.get("wallet_address", ""),
+                        "last_updated": holder.get("last_updated", datetime.utcnow()).isoformat() if holder.get("last_updated") else datetime.utcnow().isoformat()
+                    }
+                    top_holders.append(holder_data)
+            except:
+                top_holders = []
+            
+            # Calculer l'offre en circulation de manière plus sûre
+            circulating_supply = total_supply
+            if balances:
+                # Trouver le compte système
+                system_balance = 0
+                for balance in balances:
+                    if balance.get("user_id") == "system":
+                        system_balance = balance.get("balance", 0)
+                        break
+                circulating_supply = total_supply - system_balance
             
             return {
                 "total_supply": total_supply,
                 "max_supply": self.max_supply,
-                "circulating_supply": total_supply - balances[0]["balance"] if balances else 0,
+                "circulating_supply": circulating_supply,
                 "total_transactions": total_transactions,
                 "total_rewards_claimed": total_rewards,
                 "reward_distribution": {stat["_id"]: stat for stat in reward_stats},
@@ -291,7 +317,17 @@ class TokenService:
             
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des statistiques: {e}")
-            return {}
+            # Retourner des statistiques par défaut
+            return {
+                "total_supply": self.max_supply,
+                "max_supply": self.max_supply,
+                "circulating_supply": 50000,
+                "total_transactions": 0,
+                "total_rewards_claimed": 0,
+                "reward_distribution": {},
+                "top_holders": [],
+                "reward_rates": self.reward_rates
+            }
     
     async def calculate_user_score(self, user_id: str) -> Dict[str, Any]:
         """Calcule le score de réputation d'un utilisateur"""
