@@ -108,11 +108,6 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         if path.endswith("/health") and request.method == "GET":
             return True
         
-        # Bypass pour les utilisateurs authentifiés avec JWT
-        auth_header = request.headers.get("Authorization", "")
-        if auth_header.startswith("Bearer ") and len(auth_header) > 50:  # JWT tokens are longer
-            return True
-        
         # Bypass pour les endpoints publics de crypto
         public_crypto_endpoints = [
             "/api/advanced-crypto/supported-algorithms",
